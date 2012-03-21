@@ -1,0 +1,128 @@
+#-------------------------------------------------------------------------------
+#- FTMGS FEATURES --------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+* Based on: FTMGS: Fair Traceable Multigroup Signatures. FC'08
+
+* Developed in C (ANSI-C 89) and GNU/Linux (code also for Windows)
+    - minor system dependencies (random entropy and word endianness)
+    - easy port to other platforms
+
+* Licensed under LGPL
+
+* It uses GMP library (LGPL) for multiple precision arithmetic
+
+* It uses LIBTASN1 library (LGPL) for ANS1 data conversion
+    - In future releases, this dependency will be removed for
+      efficiency purposes, and ASN1 conversion will be supported
+      internally.
+
+* Non-Adaptive Drawing of Random Powers follows the specified in
+        A. Kiayias et al. Traceable Signatures.
+
+* Random Number generator based on NIST-SP-300-90 document
+
+* Sophie-Germain Prime Numbers based on:
+        Ronald Cramer and Victor Shoup,
+        "Signature Schemes Based on the Strong RSA Assumption"
+        ACM Transactions on Information and System Security
+        May 9, 2000
+        6th ACM Conf on Computer and Communication Security, 1999
+        Section 7: "Remarks on Key Generation"
+
+* Miller-Rabin number of tests based on FIPS-186-3 recomendations
+    - High-Security: (for modulus factors, sophie-germain primes)
+           * Nbits: 512  ;  NTests: 40
+           * Nbits: 1024 ;  NTests: 40
+           * Nbits: 2048 ;  NTests: 56
+           * Nbits: --   ;  NTests: 64
+
+    - Low-Security: (for exponents: (Group: hj ; Join: ei; FA-PrivateKey: xj)
+           * Nbits: 512  ;  NTests: 7
+           * Nbits: 1024 ;  NTests: 5
+           * Nbits: 2048 ;  NTests: 4
+           * Nbits: --   ;  NTests: 4
+
+* Security Parameters:
+    - Nu: 1024;  K: 128
+    - Nu: 2048;  K: 256
+    - Nu: 3072;  K: 512
+
+* Accepts DSA User Authentication in Join. DSA parameters:
+    - N: 1024
+    - N: 2048
+    - N: 3072
+
+* Precomputations enabled/disabled at compile time
+
+* Current Development Status: Alpha
+
+* Things To-Do:
+    - User Manual documenting API and usage examples
+    - Prepare a battery of tests
+    - Accepting RSA User Authentication in Join
+    - Checking that a RSA modulus lacks of small prime factors
+    - Distributed generation of RSA modulus with unknown factorization
+    - Improving the automatic building and installation (GNU/Linux)
+    - Developing installation packages for Debian [optional]
+    - Porting the building and installation to other systems (Windows)
+
+* Some statistics (exponentiations and timings) follow:
+
+#-------------------------------------------------------------------------------
+#- FTMGS EXPONENTIATIONS -------------------------------------------------------
+#-------------------------------------------------------------------------------
+                Precomp                 No-Precomp
+#-------------------------------------------------------------------------------
+Join:           50 pow                  64 pow
+  Join+UsrAuth: 55 pow                  69 pow
+----
+Sign:           19 pow                  19 pow
+Vrfy:           22 pow                  28 pow
+----
+Open:           NFAS*9 pow              NFAS*9 pow
+Check:          11 pow                  15 pow          [1*VrfyJoinLog]
+  Join+UsrAuth: 14 pow                  18 pow
+----
+Reveal:         NFAS*20+12 pow          NFAS*24+16 pow  [(NFAS+1)*VrfyJoinLog]
+  Join+UsrAuth: NFAS*23+15 pow          NFAS*27+19 pow
+Trace:          1 pow                   1 pow
+----
+Claim:          2 pow                   2 pow           [1*check(y==g^x)]
+VrfyClaim:      3 pow                   3 pow
+----
+Link:           4 pow                   4 pow           [2*check(y==g^x)]
+VrfyLink:       6 pow                   6 pow
+----
+VrfyJoinLog:    11 pow                  15 pow
+  Join+UsrAuth: 14 pow                  18 pow
+#-------------------------------------------------------------------------------
+
+#-------------------------------------------------------------------------------
+#- FTMGS TIMINGS (2GHz) --------------------------------------------------------
+#-------------------------------------------------------------------------------
+                Precomp                 No-Precomp
+#-------------------------------------------------------------------------------
+Join:           0.33 sec                0.42 sec
+  Join+UsrAuth: 0.35 sec                0.44 sec
+----
+Sign:           0.05 sec                0.05 sec
+Vrfy:           0.05 sec                0.08 sec
+----
+Open:           NFAS*0.02+0.01 sec      NFAS*0.02+0.01 sec
+Check:          0.07 sec                0.11 sec           [1*VrfyJoinLog]
+  Join+UsrAuth: 0.08 sec                0.12 sec
+----
+Reveal:         NFAS*0.34+0.10 sec      NFAS*0.39+0.13 sec [(NFAS+1)*VrfyJLog]
+  Join+UsrAuth: NFAS*0.35+0.10 sec      NFAS*0.39+0.15 sec
+Trace:          0.01 sec                0.01 sec
+----
+Claim:          0.01 sec                0.01 sec           [1*check(y==g^x)]
+VrfyClaim:      0.01 sec                0.01 sec
+----
+Link:           0.01 sec                0.01 sec           [2*check(y==g^x)]
+VrfyLink:       0.01 sec                0.01 sec
+----
+VrfyJoinLog:    0.07 sec                0.11 sec
+  Join+UsrAuth: 0.08 sec                0.12 sec
+#-------------------------------------------------------------------------------

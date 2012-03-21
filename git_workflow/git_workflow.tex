@@ -1,0 +1,242 @@
+%-------------------------------------------------------------------------------
+% Copyright (C)  2012  Vicente Benjumea, University of Malaga, Spain
+% 
+% Redistribution and use in source (LaTeX) and 'compiled' forms (SGML,
+% HTML, PDF, PostScript, RTF and so forth) with or without
+% modification, are permitted provided that the following conditions
+% are met:
+% 
+%  1. Redistributions of source code (LaTeX) must retain the
+%     above copyright notice, this list of conditions and the following
+%     disclaimer as the first lines of this file unmodified.
+% 
+%  2. Redistributions in compiled form (transformed to other DTDs,
+%    converted to PDF, PostScript, RTF and other formats) must
+%    reproduce the above copyright notice, this list of conditions and
+%    the following disclaimer in the documentation and/or other
+%    materials provided with the distribution.
+% 
+% THIS DOCUMENTATION IS PROVIDED BY THE COPYRIGHT HOLDERS "AS IS" AND
+% ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+% PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+% HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+% EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+% PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+% PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+% OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+% USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF
+% SUCH DAMAGE.
+%-------------------------------------------------------------------------------
+\documentclass[a4paper]{article}
+%%\usepackage{latexsym}
+%%\usepackage{amssymb}
+%%\usepackage{amsfonts}
+%%\usepackage{multicol}
+\usepackage{alltt}
+%-------------------------------------------------------------------------------
+\newenvironment{code}%
+{\begin{quote}\footnotesize\begin{alltt}}%
+{\end{alltt}\end{quote}}%
+%---------------------------------------
+\newenvironment{api}%
+{\noindent$\bullet$\hfill\begin{minipage}[t]{0.97\linewidth}\footnotesize\begin{alltt}}%
+{\end{alltt}\end{minipage}}%
+%---------------------------------------
+\newenvironment{apix}%
+{\noindent$\diamond$\hfill\begin{minipage}[t]{0.97\linewidth}\footnotesize\begin{alltt}}%
+{\end{alltt}\end{minipage}}%
+%-------------------------------------------------------------------------------
+\newcommand{\tuple}[1]{\ensuremath{\langle #1 \rangle}}
+%-------------------------------------------------------------------------------
+\title{Development Workflow Using GIT}
+\author{Vicente Benjumea}
+\date{(DRAFT)}
+\bibliographystyle{abbrv}
+%-------------------------------------------------------------------------------
+\newcommand{\text}[2]{\makebox[#1]{\raisebox{-.65ex}{#2}}}
+\newcommand{\version}[1]{\makebox[8.5ex]{\oval(25,10)\raisebox{-.65ex}{\makebox[0pt][c]{#1}}}}%
+\newcommand{\commit}[1]{\makebox[5ex]{\oval(15,10)\raisebox{-.65ex}{\makebox[0pt][c]{#1}}}}%
+\newcommand{\merge}[1]{\makebox[3.5ex]{\oval(10,10)\raisebox{-.65ex}{\makebox[0pt][c]{#1}}}}%
+\newcommand{\arrow}{\makebox[3.5ex]{\vector(1,0){10}}}
+\newcommand{\arrowup}{\makebox[0pt][l]{\vector(1,2){10}}}
+\newcommand{\arrowdown}{\makebox[0pt][l]{\vector(1,-2){10}}}
+\newcommand{\arrowdup}{\makebox[0pt][l]{\vector(1,4){10}}}
+\newcommand{\arrowddown}{\makebox[0pt][l]{\vector(1,-4){10}}}
+\newcommand{\arrowlen}[1]{\makebox[#1]{\rule[0pt]{#1}{0.4pt}\vector(1,0){0}}}
+%-------------------------------------------------------------------------------
+\begin{document}
+\maketitle
+%-------------------------------------------------------------------------------
+\subsection*{Abstract}
+%-------------------------------------------------------------------------------
+\begin{quote}\small
+This document describes the workflow for development using
+GIT. It is largely based on the \verb|gitworkflows| manual
+page\footnote{\texttt{http://schacon.github.com/git/gitworkflows.html}}. So
+many rules presented in this guide, as well as their rationale, can be
+found in such docu-ment.
+\end{quote}
+%-------------------------------------------------------------------------------
+\section{Version Numbering}
+%-------------------------------------------------------------------------------
+Version numbering of development uses three numbers: \emph{Version
+  Major}, \emph{Version Minor} and \emph{Revision Number}, with the
+following meanings: \par{\footnotesize\begin{itemize}%
+\item \emph{Version Major}: each number in the sequence defines a new
+  release that incorporates major changes in source code that affect
+  the \emph{public interface}, API and functionality. It usually
+  incorporates new added features, and the public interface may not be
+  compatible with a previous release.
+\item \emph{Version Minor}: each number in the sequence defines a new
+  release that incorporates changes in source code that do not affect
+  the \emph{public} behavior of the interface. The incorporated
+  changes usually improve the way things are done, but do not add new
+  features. The public interface should be fully compatible with
+  previous release.
+\item \emph{Revision Number}: each number in the sequence defines a
+  new release that incorporates changes in source code that fixes some
+  bugs present in previous releases and do not affect the
+  \emph{public} behavior of the interface.
+\end{itemize}}%
+%-------------------------------------------------------------------------------
+%\newpage
+\vspace*{\fill}\noindent
+\begin{minipage}{\linewidth}\scriptsize
+\hrulefill\\
+\noindent
+Copyright (c)  2012  Vicente Benjumea, University of Malaga, Spain\\
+
+\noindent
+Redistribution and use in source (LaTeX) and 'compiled' forms
+(SGML, HTML, PDF, PostScript, RTF and so forth) with or without
+modification, are permitted provided that the following conditions are
+met:
+\begin{enumerate}
+\item Redistributions of source code (LaTeX) must retain the
+      above copyright notice, this list of conditions and the
+      following disclaimer as the first lines of this file unmodified.
+
+\item Redistributions in compiled form (transformed to other DTDs,
+      converted to PDF, PostScript, RTF and other formats) must
+      reproduce the above copyright notice, this list of conditions
+      and the following disclaimer in the documentation and/or other
+      materials provided with the distribution.
+\end{enumerate}
+THIS DOCUMENTATION IS PROVIDED BY THE COPYRIGHT HOLDERS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\end{minipage}
+%-------------------------------------------------------------------------------
+\newpage
+%-------------------------------------------------------------------------------
+\section{Development Branches}
+%-------------------------------------------------------------------------------
+
+There are three main development \emph{branches} (\emph{maint},
+\emph{master} and \emph{unstable}), as well as some maintenance
+branches for previous releases, and a \emph{topic} branch for each 
+bug-fix, minor changes and new added features.
+
+\begin{itemize}%
+\item The \emph{maint} branch tracks the commits for bug-fixes for the
+  last released version, and hold all released revisions for the
+  previous released version. For example, if the last released version
+  is \verb|0.1.0|, then this branch tracks all later bug-fix commits
+  and revisions, such as \verb|0.1.1|, \verb|0.1.2|, \verb|0.1.3|, and
+  so on.
+\item The \emph{master} branch tracks the commits for minor and major
+  changes that should go into the next released version
+  (\verb|X.Y.0|).
+\item The \emph{unstable} branch is used to commit minor and major
+  changes for testing their stability. After successful testing,
+  such changes can be incorporated into the \emph{master} branch.
+\begin{center}
+\fbox{\begin{picture}(230,80)\sffamily\scriptsize%
+\put(0,0){Time:$\,\longmapsto$}
+\put(0,60){\text{10ex}{Unstable:}\phantom{\version{v0.1.0}\arrow}\commit{c8}\arrow\commit{c10}}
+\put(0,40){\text{10ex}{Master:}\version{v0.1.0}\arrowup\arrowdown\arrow\commit{c6}\arrow\commit{c7}\arrow\commit{c9}\arrow\version{v0.2.0}}
+\put(0,20){\text{10ex}{Maint:}\phantom{\version{v0.1.0}\arrow}\commit{c1}\arrow\commit{c3}\arrow\version{v0.1.1}\arrow\commit{c5}\arrow\version{v0.1.2}}
+\end{picture}}%
+\end{center}
+
+\item As new versions are relased, older maintenance branches are
+  renamed after the version number they maintain, e.g.:
+  \emph{maint-0.1}
+\begin{center}
+\fbox{\begin{picture}(270,100)\sffamily\scriptsize%
+\put(0,0){Time:$\,\longmapsto$}
+\put(0,80){\text{10ex}{Unstable:}\phantom{\version{v0.1.0}\arrowup\arrowddown\arrow\commit{c6}\arrow\commit{c7}\arrow\commit{c9}\arrow\version{v0.2.0}\arrow}\commit{c13}}
+\put(0,60){\text{10ex}{Master:}\version{v0.1.0}\arrowddown\arrow\commit{c6}\arrow\commit{c7}\arrow\commit{c9}\arrow\version{v0.2.0}\arrowup\arrowdown\arrow\commit{c12}\arrow\commit{c14}\arrow\version{v1.0.0}}
+\put(0,40){\text{10ex}{Maint:}\phantom{\version{v0.1.0}\arrowup\arrowddown\arrow\commit{c6}\arrow\commit{c7}\arrow\commit{c9}\arrow\version{v0.2.0}\arrow}\commit{c11}\arrow\version{v0.2.1}}
+\put(0,20){\text{10ex}{Maint-0.1:}\phantom{\version{v0.1.0}\arrow}\commit{c1}\arrow\commit{c3}\arrow\version{v0.1.1}\arrow\commit{c5}\arrow\version{v0.1.2}}
+\end{picture}}%
+\end{center}
+
+\item From time to time (at least for every revision/maintenance
+  release), merge from \emph{maint} into \emph{master}, and from
+  \emph{master} into \emph{unstable}. Never merge in the opposite way.
+\begin{center}
+\fbox{\begin{picture}(250,80)\sffamily\scriptsize%
+\put(0,0){Time:$\,\longmapsto$}
+\put(0,60){\text{10ex}{Unstable:}\phantom{\version{v0.1.0}\arrow}\commit{c8}\arrowlen{31ex}\merge{+}\arrow\commit{c10}}
+\put(0,40){\text{10ex}{Master:}\version{v0.1.0}\arrowup\arrowdown\arrow\commit{c6}\arrow\commit{c7}\arrowlen{15.5ex}\merge{+}\arrowup\arrow\commit{c9}\arrow\version{v0.2.0}}
+\put(0,20){\text{10ex}{Maint:}\phantom{\version{v0.1.0}\arrow}\commit{c1}\arrow\commit{c3}\arrow\version{v0.1.1}\arrowup\arrow\commit{c5}\arrow\version{v0.1.2}}
+\end{picture}}%
+\end{center}
+
+\item Each topic (bug-fix, feature, etc) will be tracked in an
+  individual \emph{topic} branch, which will be forked off from the
+  branch (\emph{maint} or \emph{master}) the topic will be eventually
+  incorporated into (merged).
+\begin{center}
+\fbox{\begin{picture}(270,120)\sffamily\scriptsize%
+\put(0,0){Time:$\,\longmapsto$}
+\put(0,100){\text{10ex}{Unstable:}\phantom{\version{v0.1.0}\arrow}\commit{c8}\arrow\commit{c10}}
+\put(0,80){\text{10ex}{Master:}\version{v0.1.0}\arrowup\arrowdown\arrow\commit{c6}\arrow\commit{c7}\arrow\commit{c9}\arrow\version{v0.2.0}}
+\put(0,60){\text{10ex}{Maint:}\phantom{\version{v0.1.0}\arrow}\commit{c1}\arrowdown\arrowddown\arrowlen{12ex}\merge{+}\arrowlen{5ex}\merge{+}\arrow\version{v0.1.1}\arrow\commit{c5}\arrow\version{v0.1.2}}
+\put(0,40){\text{10ex}{Bug-fix-1:}\phantom{\version{v0.1.0}\arrow\commit{c1}\arrow}\commit{c3}\arrowup}
+\put(0,20){\text{10ex}{Bug-fix-2:}\phantom{\version{v0.1.0}\arrow\commit{c1}\arrow}\commit{c2}\arrow\commit{c4}\arrowdup}
+\end{picture}}%
+\end{center}
+
+  Relevance changes will be incorporated from the topic branch into
+  the \emph{unstable} branch (for stability testing) before being
+  incorporated from the topic branch into the destination branch. Note
+  that changes and bugfixes should be applied into the suitable
+  \emph{topic} branch, and not into the \emph{unstable} branch. Never
+  merge from the \emph{unstable} branch into the other ones.
+\begin{center}
+\fbox{\begin{picture}(270,100)\sffamily\scriptsize%
+\put(0,0){Time:$\,\longmapsto$}
+\put(0,80){\text{10ex}{Unstable:}\phantom{\version{v0.1.0}\arrow}\commit{c8}\arrow\commit{c10}\arrowlen{12ex}\merge{+}\arrowlen{5ex}\merge{+}\text{10ex}{testing}}
+\put(0,60){\text{10ex}{Feature-1:}\phantom{\version{v0.1.0}\arrow\commit{c1}\arrow}\commit{c2}\arrow\commit{c4}\arrowup\arrow\commit{c12}\arrowup\arrowdown\text{20ex}{testing passed}}
+\put(0,40){\text{10ex}{Master:}\version{v0.1.0}\arrowdup\arrowdown\arrow\commit{c6}\arrowup\arrow\commit{c7}\arrow\commit{c9}\arrowlen{12ex}\merge{+}\arrow\version{v0.2.0}}
+\put(0,20){\text{10ex}{Maint:}\phantom{\version{v0.1.0}\arrow}\commit{c1}\arrow\commit{c3}\arrow\version{v0.1.1}\arrow\commit{c5}\arrow\version{v0.1.2}}
+\end{picture}}%
+\end{center}
+
+\item As a general rule, changes should be split into small logical
+  steps, and commit each of them separately. They should be
+  consistent, working independently of any later commits and pass the
+  test suite.
+\end{itemize}%
+
+
+
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------------------------

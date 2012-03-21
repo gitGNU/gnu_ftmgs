@@ -1,0 +1,439 @@
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Linux	Intel386
+	model name	: Intel(R) Pentium(R) M processor 2.00GHz
+	cpu MHz		: 800.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 1
+-Random-Numbers-----------------
+N: 959	X: 0xaf03a4ba	Y: 0x3adf14aa
+N: 614	X: 0xd2cd25ad	Y: 0x198bd857
+N: 776	X: 0x5ea94c8d	Y: 0xff869c20
+N: 367	X: 0x798e56cb	Y: 0xe6d7965b
+-Create-Group-------------------
+	SGPrime Time: 2.37000000 seconds	powmod: 1071
+	SGPrime Time: 3.98000000 seconds	powmod: 1790
+	Prime_LUB Time: 6.13000000 seconds	powmod: 0
+	SGPrime Time: 0.12000000 seconds	powmod: 54
+	SGPrime Time: 5.65000000 seconds	powmod: 2543
+	Prime_NB Time: 0.24000000 seconds	powmod: 0
+	Prime_LUB Time: 0.04000000 seconds	powmod: 0
+	GroupSetup Time: 18.81000000 seconds	powmod: 5474
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds	powmod: 7
+	Join2 Time: 0.12000000 seconds	powmod: 8
+	Join3 Time: 0.36000000 seconds	powmod: 17
+	Prime_LUB Time: 0.34000000 seconds	powmod: 0
+	Join4 Time: 0.79000000 seconds	powmod: 31
+	Join5 Time: 0.01000000 seconds	powmod: 1
+	Join Time: 1.41000000 seconds	powmod: 64
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds	powmod: 7
+	Join2 Time: 0.12000000 seconds	powmod: 8
+	Join3 Time: 0.37000000 seconds	powmod: 19
+	Prime_LUB Time: 0.35000000 seconds	powmod: 0
+	Join4 Time: 0.82000000 seconds	powmod: 34
+	Join5 Time: 0.01000000 seconds	powmod: 1
+	Join Time: 1.45000000 seconds	powmod: 69
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds	powmod: 19
+	Verify Time: 0.19000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds	powmod: 19
+	Verify Time: 0.18000000 seconds	powmod: 28
+	SignVerify Time: 0.33000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds	powmod: 19
+	Verify Time: 0.19000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds	powmod: 19
+	Verify Time: 0.19000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Open-Check---------------------
+	Open Time: 0.05000000 seconds	powmod: 9
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Check Time: 0.29000000 seconds	powmod: 15
+	OpenCheck Time: 0.34000000 seconds	powmod: 24
+-Open-Check---------------------
+	Open Time: 0.05000000 seconds	powmod: 9
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Check Time: 0.29000000 seconds	powmod: 15
+	OpenCheck Time: 0.34000000 seconds	powmod: 24
+-Open-Check---------------------
+	Open Time: 0.05000000 seconds	powmod: 9
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Check Time: 0.30000000 seconds	powmod: 18
+	OpenCheck Time: 0.35000000 seconds	powmod: 27
+-Open-Check---------------------
+	Open Time: 0.06000000 seconds	powmod: 9
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Check Time: 0.30000000 seconds	powmod: 18
+	OpenCheck Time: 0.36000000 seconds	powmod: 27
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Reveal Time: 1.30000000 seconds	powmod: 40
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 1.31000000 seconds	powmod: 41
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Reveal Time: 1.31000000 seconds	powmod: 40
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 1.32000000 seconds	powmod: 41
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Reveal Time: 1.34000000 seconds	powmod: 46
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 1.35000000 seconds	powmod: 47
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Reveal Time: 1.34000000 seconds	powmod: 46
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 1.35000000 seconds	powmod: 47
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds	powmod: 4
+	Verify Time: 0.02000000 seconds	powmod: 6
+	LinkVerify Time: 0.04000000 seconds	powmod: 10
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds	powmod: 4
+	Verify Time: 0.02000000 seconds	powmod: 6
+	LinkVerify Time: 0.04000000 seconds	powmod: 10
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Linux	Intel386
+	model name	: Intel(R) Pentium(R) M processor 2.00GHz
+	cpu MHz		: 800.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 4
+-Random-Numbers-----------------
+N: 573	X: 0x958764d4	Y: 0x514bf76a
+N: 66	X: 0x825893f0	Y: 0xa61110f5
+N: 956	X: 0x8b999fcf	Y: 0xa72a1beb
+N: 209	X: 0x1fde72ca	Y: 0x404840b3
+-Create-Group-------------------
+	SGPrime Time: 2.68000000 seconds	powmod: 1205
+	SGPrime Time: 2.86000000 seconds	powmod: 1292
+	Prime_LUB Time: 1.28000000 seconds	powmod: 0
+	Prime_LUB Time: 2.48000000 seconds	powmod: 0
+	Prime_LUB Time: 9.28000000 seconds	powmod: 0
+	Prime_LUB Time: 4.41000000 seconds	powmod: 0
+	SGPrime Time: 0.73000000 seconds	powmod: 328
+	SGPrime Time: 6.75000000 seconds	powmod: 3012
+	Prime_NB Time: 0.02000000 seconds	powmod: 0
+	Prime_LUB Time: 0.18000000 seconds	powmod: 0
+	Prime_NB Time: 0.10000000 seconds	powmod: 0
+	Prime_LUB Time: 0.02000000 seconds	powmod: 0
+	Prime_NB Time: 0.11000000 seconds	powmod: 0
+	Prime_LUB Time: 0.07000000 seconds	powmod: 0
+	Prime_NB Time: 0.08000000 seconds	powmod: 0
+	Prime_LUB Time: 0.20000000 seconds	powmod: 0
+	GroupSetup Time: 31.85000000 seconds	powmod: 5862
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds	powmod: 7
+	Join2 Time: 0.12000000 seconds	powmod: 8
+	Join3 Time: 0.37000000 seconds	powmod: 17
+	Prime_LUB Time: 0.36000000 seconds	powmod: 0
+	Join4 Time: 0.81000000 seconds	powmod: 31
+	Join5 Time: 0.01000000 seconds	powmod: 1
+	Join Time: 1.44000000 seconds	powmod: 64
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds	powmod: 7
+	Join2 Time: 0.12000000 seconds	powmod: 8
+	Join3 Time: 0.37000000 seconds	powmod: 19
+	Prime_LUB Time: 0.81000000 seconds	powmod: 0
+	Join4 Time: 1.28000000 seconds	powmod: 34
+	Join5 Time: 0.02000000 seconds	powmod: 1
+	Join Time: 1.93000000 seconds	powmod: 69
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 18
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds	powmod: 19
+	Verify Time: 0.19000000 seconds	powmod: 28
+	SignVerify Time: 0.33000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds	powmod: 19
+	Verify Time: 0.19000000 seconds	powmod: 28
+	SignVerify Time: 0.33000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds	powmod: 19
+	Verify Time: 0.20000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds	powmod: 19
+	Verify Time: 0.20000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Open-Check---------------------
+	Open Time: 0.21000000 seconds	powmod: 36
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	Check Time: 0.28000000 seconds	powmod: 15
+	OpenCheck Time: 0.49000000 seconds	powmod: 51
+-Open-Check---------------------
+	Open Time: 0.22000000 seconds	powmod: 36
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Check Time: 0.29000000 seconds	powmod: 15
+	OpenCheck Time: 0.51000000 seconds	powmod: 51
+-Open-Check---------------------
+	Open Time: 0.21000000 seconds	powmod: 36
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Check Time: 0.30000000 seconds	powmod: 18
+	OpenCheck Time: 0.51000000 seconds	powmod: 54
+-Open-Check---------------------
+	Open Time: 0.21000000 seconds	powmod: 36
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Check Time: 0.30000000 seconds	powmod: 18
+	OpenCheck Time: 0.51000000 seconds	powmod: 54
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Reveal Time: 4.20000000 seconds	powmod: 112
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 4.21000000 seconds	powmod: 113
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	Reveal Time: 4.21000000 seconds	powmod: 112
+	Trace Time: 0.00000000 seconds	powmod: 1
+	RevTrace Time: 4.21000000 seconds	powmod: 113
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Reveal Time: 4.26000000 seconds	powmod: 127
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 4.27000000 seconds	powmod: 128
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Reveal Time: 4.26000000 seconds	powmod: 127
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 4.27000000 seconds	powmod: 128
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.01000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds	powmod: 2
+	Verify Time: 0.02000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds	powmod: 4
+	Verify Time: 0.02000000 seconds	powmod: 6
+	LinkVerify Time: 0.04000000 seconds	powmod: 10
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds	powmod: 4
+	Verify Time: 0.02000000 seconds	powmod: 6
+	LinkVerify Time: 0.04000000 seconds	powmod: 10
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Linux	Intel386
+	model name	: Intel(R) Pentium(R) M processor 2.00GHz
+	cpu MHz		: 800.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 8
+-Random-Numbers-----------------
+N: 775	X: 0xea3f77a6	Y: 0x4eadafae
+N: 158	X: 0x4c956c92	Y: 0x3501ab5a
+N: 867	X: 0xe7d5b5f6	Y: 0xef3e377c
+N: 821	X: 0x3a57a8ad	Y: 0x80d17ae7
+-Create-Group-------------------
+	SGPrime Time: 0.46000000 seconds	powmod: 208
+	SGPrime Time: 0.39000000 seconds	powmod: 179
+	Prime_LUB Time: 14.31000000 seconds	powmod: 0
+	Prime_LUB Time: 18.72000000 seconds	powmod: 0
+	Prime_LUB Time: 16.05000000 seconds	powmod: 0
+	Prime_LUB Time: 24.43000000 seconds	powmod: 0
+	Prime_LUB Time: 8.94000000 seconds	powmod: 0
+	Prime_LUB Time: 12.90000000 seconds	powmod: 0
+	Prime_LUB Time: 20.74000000 seconds	powmod: 0
+	Prime_LUB Time: 2.45000000 seconds	powmod: 0
+	SGPrime Time: 2.36000000 seconds	powmod: 1062
+	SGPrime Time: 0.43000000 seconds	powmod: 195
+	Prime_NB Time: 0.34000000 seconds	powmod: 0
+	Prime_LUB Time: 0.04000000 seconds	powmod: 0
+	Prime_NB Time: 0.08000000 seconds	powmod: 0
+	Prime_LUB Time: 0.09000000 seconds	powmod: 0
+	Prime_NB Time: 0.12000000 seconds	powmod: 0
+	Prime_LUB Time: 0.06000000 seconds	powmod: 0
+	Prime_NB Time: 0.03000000 seconds	powmod: 0
+	Prime_LUB Time: 0.04000000 seconds	powmod: 0
+	Prime_NB Time: 0.05000000 seconds	powmod: 0
+	Prime_LUB Time: 0.02000000 seconds	powmod: 0
+	Prime_NB Time: 0.09000000 seconds	powmod: 0
+	Prime_LUB Time: 0.04000000 seconds	powmod: 0
+	Prime_NB Time: 0.02000000 seconds	powmod: 0
+	Prime_LUB Time: 0.04000000 seconds	powmod: 0
+	Prime_NB Time: 0.06000000 seconds	powmod: 0
+	Prime_LUB Time: 0.02000000 seconds	powmod: 0
+	GroupSetup Time: 124.36000000 seconds	powmod: 1681
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds	powmod: 7
+	Join2 Time: 0.12000000 seconds	powmod: 8
+	Join3 Time: 0.36000000 seconds	powmod: 17
+	Prime_LUB Time: 0.11000000 seconds	powmod: 0
+	Join4 Time: 0.57000000 seconds	powmod: 31
+	Join5 Time: 0.01000000 seconds	powmod: 1
+	Join Time: 1.19000000 seconds	powmod: 64
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+-Join-New-Member----------------
+	Join1 Time: 0.12000000 seconds	powmod: 7
+	Join2 Time: 0.12000000 seconds	powmod: 8
+	Join3 Time: 0.38000000 seconds	powmod: 19
+	Prime_LUB Time: 0.26000000 seconds	powmod: 0
+	Join4 Time: 0.72000000 seconds	powmod: 34
+	Join5 Time: 0.01000000 seconds	powmod: 1
+	Join Time: 1.35000000 seconds	powmod: 69
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds	powmod: 19
+	Verify Time: 0.19000000 seconds	powmod: 28
+	SignVerify Time: 0.33000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds	powmod: 19
+	Verify Time: 0.20000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds	powmod: 19
+	Verify Time: 0.20000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds	powmod: 19
+	Verify Time: 0.19000000 seconds	powmod: 28
+	SignVerify Time: 0.34000000 seconds	powmod: 47
+-Open-Check---------------------
+	Open Time: 0.43000000 seconds	powmod: 72
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Check Time: 0.29000000 seconds	powmod: 15
+	OpenCheck Time: 0.72000000 seconds	powmod: 87
+-Open-Check---------------------
+	Open Time: 0.43000000 seconds	powmod: 72
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	Check Time: 0.29000000 seconds	powmod: 15
+	OpenCheck Time: 0.72000000 seconds	powmod: 87
+-Open-Check---------------------
+	Open Time: 0.43000000 seconds	powmod: 72
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Check Time: 0.30000000 seconds	powmod: 18
+	OpenCheck Time: 0.73000000 seconds	powmod: 90
+-Open-Check---------------------
+	Open Time: 0.43000000 seconds	powmod: 72
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Check Time: 0.30000000 seconds	powmod: 18
+	OpenCheck Time: 0.73000000 seconds	powmod: 90
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	Reveal Time: 8.10000000 seconds	powmod: 208
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 8.11000000 seconds	powmod: 209
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 15
+	VrfyJoinLog Time: 0.28000000 seconds	powmod: 15
+	Reveal Time: 8.09000000 seconds	powmod: 208
+	Trace Time: 0.01000000 seconds	powmod: 1
+	RevTrace Time: 8.10000000 seconds	powmod: 209
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 18
+	Reveal Time: 8.22000000 seconds	powmod: 235
+	Trace Time: 0.00000000 seconds	powmod: 1
+	RevTrace Time: 8.22000000 seconds	powmod: 236
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.29000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	VrfyJoinLog Time: 0.30000000 seconds	powmod: 18
+	Reveal Time: 8.23000000 seconds	powmod: 235
+	Trace Time: 0.00000000 seconds	powmod: 1
+	RevTrace Time: 8.23000000 seconds	powmod: 236
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.01000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds	powmod: 2
+	Verify Time: 0.01000000 seconds	powmod: 3
+	ClaimVerify Time: 0.02000000 seconds	powmod: 5
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds	powmod: 4
+	Verify Time: 0.02000000 seconds	powmod: 6
+	LinkVerify Time: 0.04000000 seconds	powmod: 10
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds	powmod: 4
+	Verify Time: 0.02000000 seconds	powmod: 6
+	LinkVerify Time: 0.05000000 seconds	powmod: 10
+--------------------------------

@@ -1,0 +1,302 @@
+-- =============================================================================
+-- Copyright (c) 2012 Vicente Benjumea, University of Malaga, Spain
+-- 
+-- This file is part of the <FTMGS> Library
+-- 
+-- This library is free software: you can redistribute it and/or
+-- modify it under the terms of the GNU Lesser General Public
+-- License as published by the Free Software Foundation, either
+-- version 2.1 of the License, or (at your option) any later
+-- version.
+-- 
+-- This library is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+-- GNU Lesser General Public License for more details.
+-- 
+-- You should have received a copy of the GNU Lesser General
+-- Public License along with this library. If not, see
+-- <http://www.gnu.org/licenses/>.
+-- =============================================================================
+-- ASN.1 FTMGS Structure Definitions
+Ftmgs { 1 2 3 4 }
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+
+-- DSA
+id-dsa OBJECT IDENTIFIER ::= {
+	iso(1) member-body(2) us(840) x9-57(10040) x9cm(4) 1 
+}
+
+id-dsa-with-sha1 OBJECT IDENTIFIER ::=  {
+	iso(1) member-body(2) us(840) x9-57(10040) x9cm(4) 3 
+}
+
+-- RFC-3279
+Dss-Parms ::= SEQUENCE  {
+	p		INTEGER,
+	q		INTEGER,
+	g		INTEGER  
+}
+
+-- RFC-3279
+DSAPublicKey ::= INTEGER -- public key, Y 
+
+-- RFC-5958 pg.5
+DSAPrivateKey ::= INTEGER -- private key, x
+
+-- RFC-3279
+Dss-Sig-Value ::=  SEQUENCE  {
+	r		INTEGER,
+	s		INTEGER  
+}
+
+-- Object Identifiers
+-- DSA: iso(1) member-body(2) us(840) x9-57(10040) x9cm(4)
+id-ftmgs-base OBJECT IDENTIFIER ::= {
+	1 2 3 4		-- some arcs to be registered
+}
+
+id-ftmgs OBJECT IDENTIFIER ::= {
+	id-ftmgs-base 1 
+}
+
+id-ftmgs-with-sha1 OBJECT IDENTIFIER ::=  {
+	id-ftmgs-base 3 
+}
+
+id-ftmgs-with-sha256 OBJECT IDENTIFIER ::=  {
+	id-ftmgs-base 5 
+}
+
+id-ftmgs-with-sha512 OBJECT IDENTIFIER ::=  {
+	id-ftmgs-base 7 
+}
+
+-- Unsigned Small Integer (16 bits)
+UInt16 ::= INTEGER (0..65535)
+
+-- Syspar Structure Definition
+SysPar ::= SEQUENCE {
+	nu	UInt16,
+	k	UInt16
+}
+
+-- Fairness Authorities' Public Key
+FAPbKey ::= SEQUENCE {
+	sp		SysPar,
+	nkeys	UInt16,
+	n		INTEGER,
+	g		INTEGER,
+	y		INTEGER
+}
+
+-- Fairness Authorities' Group Public Key
+FAGrPbKey ::= SEQUENCE {
+	sp		SysPar,
+	nkeys	UInt16,
+	n		INTEGER,
+	g		INTEGER,
+	y		INTEGER
+}
+
+-- Group Public Key
+GrPbKey ::= SEQUENCE {
+	gmpk	FAGrPbKey,
+	a0		INTEGER,
+	a		INTEGER,
+	b		INTEGER,
+	h		INTEGER,
+	fapk	FAPbKey
+}
+
+-- Group Manager's Private Key [JOIN]
+GrPrKey ::= SEQUENCE {
+	p	INTEGER,
+	q	INTEGER
+}
+
+-- Fairness Authority's Public Key
+FAPbKeyShare ::= SEQUENCE {
+	yj		INTEGER
+}
+
+-- Fairness Authority's Private Key [REVEAL]
+FAPrKey ::= SEQUENCE {
+	xj		INTEGER
+}
+
+-- Fairness Authority's Group Public Key
+FAGrPbKeyShare ::= SEQUENCE {
+	yj		INTEGER,
+	hj		INTEGER
+}
+
+-- Fairness Authority's Group Private Key [OPEN]
+FAGrPrKey ::= SEQUENCE {
+	xj		INTEGER
+}
+
+-- User's Master Public Key (from DSA or FTMGS-Signature)
+DLog ::= SEQUENCE {
+	n			INTEGER,
+	g			INTEGER,
+	y			INTEGER
+}
+
+-- User's Master Private Key (from DSA o FTMGS-Signature)
+DLogX ::= SEQUENCE {
+	x			INTEGER
+}
+
+-- Join Proof
+JoinProof ::= SEQUENCE {
+	c			INTEGER,
+	sx1			INTEGER,
+	sr			INTEGER,
+	sx			INTEGER
+}
+
+JoinU1Prv ::= SEQUENCE {
+	nadrp-xx	INTEGER,
+	nadrp-rr	INTEGER,
+	x1i			INTEGER
+}
+
+JoinU1Pbl ::= SEQUENCE {
+	nadrp-C1	INTEGER,
+	nadrp-C2	INTEGER,
+	nadrp-c		INTEGER,
+	nadrp-sx	INTEGER,
+	nadrp-sr	INTEGER,
+	ci			INTEGER
+}
+
+JoinGM2Pbl ::= SEQUENCE {
+	nadrp-yy	INTEGER
+}
+
+JoinU3Prv ::= SEQUENCE {
+	nadrp-x		INTEGER,
+	xi			INTEGER
+}
+
+JoinU3Pbl ::= SEQUENCE {
+	nadrp-C3	INTEGER,
+	nadrp-c		INTEGER,
+	nadrp-sx	INTEGER,
+	nadrp-sz	INTEGER,
+	nadrp-sr	INTEGER,
+	ui			INTEGER,
+	vi			INTEGER,
+	eiproof		JoinProof
+}
+
+JoinGM4Pbl ::= SEQUENCE {
+	ai			INTEGER,
+	ei			INTEGER
+}
+
+JoinPbl ::= SEQUENCE {
+	status	UInt16,
+	data CHOICE {
+		u1		[0] JoinU1Pbl,
+		gm2		[1] JoinGM2Pbl,
+		u3		[2] JoinU3Pbl,
+		gm4		[3] JoinGM4Pbl,
+		error	[4] NULL
+	}
+}
+
+JoinPrv ::= SEQUENCE {
+	status	UInt16,
+	data CHOICE {
+		u1		[0] JoinU1Prv,
+		u3		[1] JoinU3Prv,
+		error	[2] NULL
+	}
+}
+
+-- Member's Reference
+MbrRef ::= SEQUENCE {
+	ai			INTEGER,
+	ei			INTEGER,
+	ci			INTEGER,
+	xi			INTEGER,
+	ui			INTEGER,
+	vi			INTEGER,
+	uauth	[0]	DLog		OPTIONAL,
+	eiproof		JoinProof
+}
+
+-- Member's Private Key
+MbrPrKey ::= SEQUENCE {
+	ai			INTEGER,
+	ei			INTEGER,
+	xi			INTEGER,
+	x1i			INTEGER
+}
+
+-- Sign
+Sign ::= SEQUENCE {
+	t1			INTEGER,
+	t2			INTEGER,
+	t3			INTEGER,
+	t4			INTEGER,
+	t5			INTEGER,
+	t6			INTEGER,
+	t7			INTEGER,
+	c			INTEGER,
+	sx			INTEGER,
+	sx1			INTEGER,
+	se			INTEGER,
+	sr			INTEGER,
+	sh1			INTEGER
+}
+
+-- Open
+Open ::= SEQUENCE {
+	a			INTEGER
+}
+
+OpenShare ::= SEQUENCE {
+	alphax		INTEGER,
+	c			INTEGER,
+	sx			INTEGER
+}
+
+OpenAcc ::= SEQUENCE {
+	nshares		UInt16,
+	a			INTEGER
+}
+
+-- Reveal&Trace
+MTKey ::= SEQUENCE {
+	n			INTEGER,
+	x			INTEGER
+}
+
+MTKeyShare ::= SEQUENCE {
+	alphax		INTEGER,
+	c			INTEGER,
+	sx			INTEGER
+}
+
+MTKeyAcc ::= SEQUENCE {
+	nshares		UInt16,
+	a			INTEGER
+}
+
+-- Claim
+Claim ::= SEQUENCE {
+	c			INTEGER,
+	sx			INTEGER
+}
+
+-- Link
+Link ::= SEQUENCE {
+	c			INTEGER,
+	sx			INTEGER
+}
+
+END

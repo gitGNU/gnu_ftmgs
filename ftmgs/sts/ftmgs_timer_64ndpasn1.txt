@@ -1,0 +1,680 @@
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Precomputations	Linux	Intel64
+	model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+	cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 1
+-Random-Numbers-----------------
+N: 3802358783	X: 0x6cf33ebb	Y: 0x23f6e6c8
+N: 1350035753	X: 0x67179a99	Y: 0xdf044819
+N: 4251736750	X: 0x224a4b89	Y: 0x7d51f02c
+N: 238860051	X: 0x880f40ca	Y: 0x53ceb33a
+-Create-Group-------------------
+	GroupSetup Time: 0.98000000 seconds
+	ASN1 DER encoding size: ftmgs_fa_pbkey_t: 411
+	ASN1 DER encoding size: ftmgs_pbkey_t: 1606
+	ASN1 DER encoding size: ftmgs_prkey_t: 137
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 69
+-Join-New-Member----------------
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 748
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 54
+	ASN1 DER encoding size: ftmgs_join_prv_t: 352
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 1324
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 238
+	ASN1 DER encoding size: ftmgs_join_prv_t: 207
+	Join Time: 0.10000000 seconds
+	ASN1 DER encoding size: ftmgs_mbr_ref_t: 1278
+	ASN1 DER encoding size: ftmgs_mbr_prkey_t: 334
+	VrfyJoinLog Time: 0.01000000 seconds
+	ASN1 DER encoding size: dss_parms_t: 290
+	ASN1 DER encoding size: dsa_pbkey_t: 132
+	ASN1 DER encoding size: dsa_prkey_t: 22
+	ASN1 DER encoding size: dlogx_t: 24
+	ASN1 DER encoding size: dlog_t: 399
+-Join-New-Member----------------
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 749
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 54
+	ASN1 DER encoding size: ftmgs_join_prv_t: 340
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 1344
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 239
+	ASN1 DER encoding size: ftmgs_join_prv_t: 206
+	Join Time: 0.05000000 seconds
+	ASN1 DER encoding size: ftmgs_mbr_ref_t: 1687
+	ASN1 DER encoding size: ftmgs_mbr_prkey_t: 322
+	VrfyJoinLog Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1307
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1308
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1325
+	Verify Time: 0.00000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1327
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.00000000 seconds
+	OpenCheck Time: 0.01000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.01000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.00000000 seconds
+	OpenCheck Time: 0.01000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.07000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 201
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.07000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.06000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 201
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.06000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.06000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 200
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.06000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.07000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 200
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.07000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 55
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 54
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 73
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 74
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_link_t: 54
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_link_t: 74
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Precomputations	Linux	Intel64
+	model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+	cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+cpu MHz		: 3193.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 4
+-Random-Numbers-----------------
+N: 3996814886	X: 0xda0b5e9c	Y: 0x1404cb7b
+N: 2493005061	X: 0xfa0c39fa	Y: 0x9234dd67
+N: 4259765038	X: 0x1a2c1bcf	Y: 0x65401d27
+N: 1710991040	X: 0x2adec1da	Y: 0x3a058142
+-Create-Group-------------------
+	GroupSetup Time: 2.08000000 seconds
+	ASN1 DER encoding size: ftmgs_fa_pbkey_t: 412
+	ASN1 DER encoding size: ftmgs_pbkey_t: 1610
+	ASN1 DER encoding size: ftmgs_prkey_t: 137
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 69
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 267
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 267
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 69
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 267
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 69
+-Join-New-Member----------------
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 750
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 54
+	ASN1 DER encoding size: ftmgs_join_prv_t: 352
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 1326
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 239
+	ASN1 DER encoding size: ftmgs_join_prv_t: 206
+	Join Time: 0.07000000 seconds
+	ASN1 DER encoding size: ftmgs_mbr_ref_t: 1280
+	ASN1 DER encoding size: ftmgs_mbr_prkey_t: 334
+	VrfyJoinLog Time: 0.01000000 seconds
+	ASN1 DER encoding size: dss_parms_t: 290
+	ASN1 DER encoding size: dsa_pbkey_t: 132
+	ASN1 DER encoding size: dsa_prkey_t: 22
+	ASN1 DER encoding size: dlogx_t: 24
+	ASN1 DER encoding size: dlog_t: 399
+-Join-New-Member----------------
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 749
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 54
+	ASN1 DER encoding size: ftmgs_join_prv_t: 340
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 1345
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 239
+	ASN1 DER encoding size: ftmgs_join_prv_t: 206
+	Join Time: 0.05000000 seconds
+	ASN1 DER encoding size: ftmgs_mbr_ref_t: 1687
+	ASN1 DER encoding size: ftmgs_mbr_prkey_t: 322
+	VrfyJoinLog Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1308
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1309
+	Verify Time: 0.00000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1328
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1330
+	Verify Time: 0.00000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 138
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 138
+	Open Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.02000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.00000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 138
+	Open Time: 0.02000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.03000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 220
+	ASN1 DER encoding size: ftmgs_openacc_t: 138
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 138
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.21000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 201
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.21000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.21000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 201
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.21000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.20000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 201
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.20000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.20000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 201
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.20000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 55
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 55
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 74
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 74
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_link_t: 55
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_link_t: 73
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Precomputations	Linux	Intel64
+	model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+	cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+cpu MHz		: 3193.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 8
+-Random-Numbers-----------------
+N: 995937844	X: 0x5ab13187	Y: 0x77ccc0d0
+N: 3706986517	X: 0xfb5dde91	Y: 0x4824f370
+N: 2385151723	X: 0xd17a5bd4	Y: 0xe4e3ea9a
+N: 3381032748	X: 0x4e0274fc	Y: 0x82ff6c7e
+-Create-Group-------------------
+	GroupSetup Time: 4.55000000 seconds
+	ASN1 DER encoding size: ftmgs_fa_pbkey_t: 412
+	ASN1 DER encoding size: ftmgs_pbkey_t: 1609
+	ASN1 DER encoding size: ftmgs_prkey_t: 137
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 69
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 265
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+	ASN1 DER encoding size: ftmgs_faj_pbkey_share_t: 264
+	ASN1 DER encoding size: ftmgs_faj_prkey_t: 264
+	ASN1 DER encoding size: ftmgs_faj_gr_pbkey_share_t: 266
+	ASN1 DER encoding size: ftmgs_faj_gr_prkey_t: 68
+-Join-New-Member----------------
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 749
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 54
+	ASN1 DER encoding size: ftmgs_join_prv_t: 352
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 1326
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 239
+	ASN1 DER encoding size: ftmgs_join_prv_t: 207
+	Join Time: 0.05000000 seconds
+	ASN1 DER encoding size: ftmgs_mbr_ref_t: 1280
+	ASN1 DER encoding size: ftmgs_mbr_prkey_t: 335
+	VrfyJoinLog Time: 0.01000000 seconds
+	ASN1 DER encoding size: dss_parms_t: 290
+	ASN1 DER encoding size: dsa_pbkey_t: 132
+	ASN1 DER encoding size: dsa_prkey_t: 22
+	ASN1 DER encoding size: dlogx_t: 24
+	ASN1 DER encoding size: dlog_t: 399
+-Join-New-Member----------------
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 748
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 54
+	ASN1 DER encoding size: ftmgs_join_prv_t: 340
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 1345
+	ASN1 DER encoding size: ftmgs_join_pbl_t: 239
+	ASN1 DER encoding size: ftmgs_join_prv_t: 207
+	Join Time: 0.05000000 seconds
+	ASN1 DER encoding size: ftmgs_mbr_ref_t: 1688
+	ASN1 DER encoding size: ftmgs_mbr_prkey_t: 323
+	VrfyJoinLog Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1308
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1307
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1326
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	ASN1 DER encoding size: ftmgs_sign_t: 1327
+	Verify Time: 0.00000000 seconds
+	SignVerify Time: 0.01000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.02000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.03000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.03000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.04000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.03000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.04000000 seconds
+-Open-Check---------------------
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 218
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	ASN1 DER encoding size: ftmgs_opensharej_t: 219
+	ASN1 DER encoding size: ftmgs_openacc_t: 137
+	Open Time: 0.02000000 seconds
+	ASN1 DER encoding size: ftmgs_open_t: 134
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.03000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 544
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 268
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 268
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.40000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 202
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.40000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 544
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 544
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 268
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 268
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.40000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 202
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.40000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.41000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 202
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.41000000 seconds
+-Reveal-Trace-------------------
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 543
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	ASN1 DER encoding size: ftmgs_mtkey_sharej_t: 542
+	ASN1 DER encoding size: ftmgs_mtkey_acc_t: 267
+	Reveal Time: 0.41000000 seconds
+	ASN1 DER encoding size: ftmgs_mtkey_t: 202
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.41000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 55
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 55
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 73
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_claim_t: 73
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_link_t: 55
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	ASN1 DER encoding size: ftmgs_link_t: 74
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+--------------------------------

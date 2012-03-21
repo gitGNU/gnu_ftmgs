@@ -1,0 +1,2883 @@
+%-------------------------------------------------------------------------------
+% Copyright (C)  2012  Vicente Benjumea, University of Malaga, Spain
+% 
+% Redistribution and use in source (LaTeX) and 'compiled' forms (SGML,
+% HTML, PDF, PostScript, RTF and so forth) with or without
+% modification, are permitted provided that the following conditions
+% are met:
+% 
+%  1. Redistributions of source code (LaTeX) must retain the
+%     above copyright notice, this list of conditions and the following
+%     disclaimer as the first lines of this file unmodified.
+% 
+%  2. Redistributions in compiled form (transformed to other DTDs,
+%    converted to PDF, PostScript, RTF and other formats) must
+%    reproduce the above copyright notice, this list of conditions and
+%    the following disclaimer in the documentation and/or other
+%    materials provided with the distribution.
+% 
+% THIS DOCUMENTATION IS PROVIDED BY THE COPYRIGHT HOLDERS "AS IS" AND
+% ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+% PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+% HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+% EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+% PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+% PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+% OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+% USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF
+% SUCH DAMAGE.
+%-------------------------------------------------------------------------------
+\documentclass[a4paper]{article}
+%%\usepackage{latexsym}
+%%\usepackage{amssymb}
+%%\usepackage{amsfonts}
+%%\usepackage{multicol}
+\usepackage{alltt}
+%-------------------------------------------------------------------------------
+\newenvironment{code}%
+{\begin{quote}\footnotesize\begin{alltt}}%
+{\end{alltt}\end{quote}}%
+%---------------------------------------
+\newenvironment{api}%
+{\noindent$\bullet$\hfill\begin{minipage}[t]{0.97\linewidth}\footnotesize\begin{alltt}}%
+{\end{alltt}\end{minipage}}%
+%---------------------------------------
+\newenvironment{apix}%
+{\noindent$\diamond$\hfill\begin{minipage}[t]{0.97\linewidth}\footnotesize\begin{alltt}}%
+{\end{alltt}\end{minipage}}%
+%-------------------------------------------------------------------------------
+\newcommand{\tuple}[1]{\ensuremath{\langle #1 \rangle}}
+%-------------------------------------------------------------------------------
+\title{FTMGS: Fair Traceable Multi-Group Signatures}
+\author{User Manual (DRAFT)}
+\date{Version 0.1}
+\bibliographystyle{abbrv}
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\begin{document}
+\maketitle
+\enlargethispage{8mm}
+\tableofcontents
+%-------------------------------------------------------------------------------
+\newpage
+\vspace*{\fill}\noindent
+\begin{minipage}{\linewidth}\footnotesize
+\noindent
+Copyright (c)  2012  Vicente Benjumea, University of Malaga, Spain\\
+
+\noindent
+Redistribution and use in source (LaTeX) and 'compiled' forms
+(SGML, HTML, PDF, PostScript, RTF and so forth) with or without
+modification, are permitted provided that the following conditions are
+met:
+\begin{enumerate}
+\item Redistributions of source code (LaTeX) must retain the
+      above copyright notice, this list of conditions and the
+      following disclaimer as the first lines of this file unmodified.
+
+\item Redistributions in compiled form (transformed to other DTDs,
+      converted to PDF, PostScript, RTF and other formats) must
+      reproduce the above copyright notice, this list of conditions
+      and the following disclaimer in the documentation and/or other
+      materials provided with the distribution.
+\end{enumerate}
+THIS DOCUMENTATION IS PROVIDED BY THE COPYRIGHT HOLDERS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\end{minipage}
+\newpage
+%-------------------------------------------------------------------------------
+\section{Introduction}
+%-------------------------------------------------------------------------------
+
+The FTMGS library implements the \emph{Fair Traceable Multi-Group
+  Signatures} scheme as defined in~\cite{bcly:2008:ftmgs}.
+
+Fair Traceable Multi-Group Signatures (FTMGS, pronounced: fat-mugs),
+is a primitive that supports anonymity with extended concerns that
+rise in realistic scenarios. It can be regarded as a primitive that
+has the flavor of anonymous signatures with various revocations but
+with a refined notion of access control (via multiple groups) and thus
+supporting anonymous activities in a fashion similar to anonymous
+credential systems. The main issues that make this primitive suitable
+to various trust relationships are:
+
+\begin{itemize}%
+\item 
+The group manager (GM) creates and manages a group with the help of
+some Fairness Authorities (FA), which are only involved when special
+circumstances arise.
+
+\item 
+Users (U) join a group, and become members (M), if the group manager
+(GM) allows them to do so.
+
+\item 
+Members (M) issue group signatures (on behalf of the whole group)
+which can be verified with the \emph{group public key} (GPK). These
+group signatures provide the guarantee the their issuers are indeed
+members of the group, but they are anonymous and unlinkable, in the
+sense that there is no \emph{direct} way to identify which member
+issued a given signature, nor it is even possible to link different
+signatures as having been issued by the same member of the group.
+
+\item
+Belonging to a group usually implies that members fulfill the set of
+privileges required by the group manager (GM) to join the group.
+
+In authorization and access control scenarios, issuing a group
+signature is a suitable way to prove, in an anonymous and unlinkable
+way, that the issuer fulfills a set of privileges required by the GM
+to join the group.
+
+Sometimes, in authorization scenarios, a user must simultaneously
+prove that is a member of several groups at tehsame time, and thus she
+fulfills the privileges to belong to all these groups, therefore she
+must issue group signatures for all of them, and at the same time she
+must prove that all these signatures were issued by the same real
+anonymous user, that is, they have not been issued by a collusion of
+different users belonging to different groups.
+
+\item 
+It includes multi-group features to guarantee that several signatures
+have been issued by the same anonymous user with no detriment of
+user’s anonymity. This allows limited local linkability most useful in
+many cases (linking is user controlled).
+
+\item 
+It includes a mechanism to dissuade the group members from sharing
+their private membership keys. This is very useful in increasing the
+incentive for better “access control” to anonymous credentials.
+
+\item 
+In the undesirable case of abuse of anonymity, the group manager in
+collaboration with the fairness authorities provide a mechanism to
+identify which member of the group actually issued a given group
+signature, breaking in this way with the anonymity of the misbehaved
+user.
+
+Note that this breaking of anonymity can only be done if all the
+fairness authorities agree on doing so, because there are enough
+circumstances that motivate such action. However, if any of the
+fairness authorities thinks there are not enough reasons for that,
+then anonymity can not be broken. In this way, the fairness
+authorities become the guarantee that anonymity will be only broken
+when there are enough reasons to do so.
+
+\item
+On the other way, if a member is under suspicion, it is possible to
+obtain, again if the fairness authorities agree, a \emph{member
+  tracing key} that allows to identify the signatures that were issued
+by such a member of the group under suspicion. Again, the fairness
+authorities become the guarantee that anonymity will be only broken
+when there are enough reasons to do so.
+
+\item
+This previous mechanism can also be used to revoke membership from the
+group for a given member.
+
+\item 
+Note that a single fairness authority alone cannot do the opening or
+revealing. In this way, a user’s sensitive information can be
+guaranteed only to be disclosed when there exist enough reasons.
+
+\end{itemize}%
+
+
+%-------------------------------------------------------------------------------
+\section{Operational Model}
+%-------------------------------------------------------------------------------
+
+The group manager creates a group with the collaboration of designated
+fairness authorities. A user, that has been authorized by some
+external procedure, is able to join the group by engaging in an
+interactive protocol with the group manager. The external user’s
+authentication can be based on her identity (DSA signature) or even an
+anonymous authentication supported by this new primitive (FTMGS
+signature). At the end of the procedure, the group manager gets some
+sensitive data regarding the new member (i.e. join transcript with
+authentication information), and the user gets a membership private
+key that enables her to issue signatures on behalf of the group.
+
+When a user wants to carry out a transaction with a server, she
+sometimes has to generate a proof to show she has the required
+privilege. This proof usually implies that she belongs to several
+groups. In this case, she issues suitable signatures for the involved
+groups, and establishes a link among them to guarantee that they have
+been issued by the same single anonymous user. This proof is anonymous
+and unlinkable.
+
+Under critical circumstances, fairness authorities and the judge open
+a signature to identify a malicious user. If necessary, they may also
+reveal her tracing trapdoor so that tracing agents, using the
+trapdoor, trace all the transactions she issued.
+
+The user owns a single master key, and this key is embedded, when
+joining to the group, in every membership private key of hers. Because
+this master key is actually the private key corresponding to her
+public key (e.g., her DSA public key published via the PKI), she is
+dissuaded from sharing her membership private keys. Moreover, this
+binding also guarantees that different users have different master
+keys.
+
+This master key provides a common nexus among all membership private
+keys that belong to each user, so that she can link any two signatures
+of hers by proving that the signatures have been issued by membership
+private keys into which the same master key is embedded. This
+capability of linking helps our scheme to enjoy multi-group
+features. Note that even when the user joins the group by means of an
+anonymous authentication, the join procedure forces her to use the
+same master key, so that the relationship between her master key and
+public key still holds.
+
+The group is created by the collaboration among the group manager and
+the fairness authorities.  The GM is able to join new
+members. Fairness authorities are also involved in the setup process,
+in such a way that the keys related to opening and revealing are
+distributed among the fairness authorities. Therefore, opening a
+signature or revealing a member tracing key requires the agreement and
+participation of fariness authorities.
+
+Opening a signature is a matter of the distributed decryption, by the
+fairness authorities, of part of the signature. Likewise, revealing a
+member tracing key is also a matter of the distributed decryption, by
+the fairness authorities, of the encrypted member's tracing key.
+
+Finally, the join transcript also holds some non-repudiable proofs
+that allow to verify the integrity of the record, making the scheme
+robust against some kind of database manipulation.
+
+%-------------------------------------------------------------------------------
+\section{Sequence Diagrams}\label{seqdia}
+%-------------------------------------------------------------------------------
+\newcommand{\man}{\begin{tabular}{@{}c@{}}{$\circ$}\\$/|\backslash$\\$/\backslash$\\\end{tabular}}
+\newcommand{\boxed}[1]{\begin{tabular}{|c|}\hline#1\\\hline\end{tabular}}
+\newcommand{\mcol}[1]{\multicolumn{2}{c}{\begin{tabular}{c}#1\end{tabular}}}
+\newcommand{\rarrowhead}{\hspace*{\fill}\begin{picture}(0,0)(-2,5.5)\texttt{>}\end{picture}}
+\newcommand{\larrowhead}{\begin{picture}(0,0)(7,5.5)\texttt{<}\end{picture}\hspace*{\fill}}
+\newcommand{\msg}[1]{{\sffamily\scriptsize$\langle$ {#1} $\rangle$}}
+
+%-------------------------------------------------------------------------------
+\subsection{Group Setup}\label{seqdia:group}
+%-------------------------------------------------------------------------------
+\noindent{\footnotesize\begin{tabular}{c|ccc|ccc|ccc|c}
+\mcol{\man\\GM}&&\mcol{\man\\FA$_1$}&{\Large$\cdots$}&\mcol{\man\\FA$_n$}&&\mcol{\man\\FA$_0$}\\
+\hspace*{10ex}&&&\hspace*{9ex}&&&\hspace*{9ex}&&&\hspace*{7ex}&\\
+&&&&&&&&&\mcol{\boxed{FA0-Setup}}\\
+&&&&\larrowhead&&&\larrowhead&\msg{fapk}&&\\\cline{5-10}
+&&&&&&&&&&\\
+&&&\mcol{\boxed{FAj-Setup}}&{\Large$\cdots$}&\mcol{\boxed{FAj-Setup}}&&&\\
+&&&&&&&&&&\\
+\mcol{\boxed{GM-Init-Setup}}&&&&&&&&&\\
+&&\msg{gpk}&\rarrowhead&&&\rarrowhead&&&&\\\cline{2-7}
+&&&&&&&&&&\\
+&&&\mcol{\boxed{FAj-GrSetup}}&{\Large$\cdots$}&\mcol{\boxed{FAj-GrSetup}}&&&\\
+&\larrowhead&\msg{fa$_1$pk}&&&&&&&&\\\cline{2-4}
+&&&&&&&&&&\\
+\mcol{\boxed{GM-GrSetup}}&&&&&&&&&\\
+&&&&&&&&&&\\
+\mcol{\Large$\vdots$}&&&&{\Large$\ddots$}&&&&&\\
+&\larrowhead&\msg{fa$_n$pk}&&&&&&&&\\\cline{2-7}
+&&&&&&&&&&\\
+\mcol{\boxed{GM-GrSetup}}&&&&&&&&&\\
+&&&&&&&&&&\\
+\end{tabular}}
+
+%-------------------------------------------------------------------------------
+\subsubsection*{Check GPK}\label{seqdia:check}
+%-------------------------------------------------------------------------------
+\noindent{\footnotesize\begin{tabular}{c|c}
+\mcol{\man\\Any}\\
+\hspace*{11ex}&\\
+\mcol{\boxed{Check-GPK}}\\
+&\\
+\mcol{\boxed{Check-GPK-FA$_1$}}\\
+&\\
+\mcol{\Large$\vdots$}\\
+&\\
+\mcol{\boxed{Check-GPK-FA$_n$}}\\
+&\\
+\end{tabular}}
+
+%-------------------------------------------------------------------------------
+\subsection{Join New Member}\label{seqdia:join}
+%-------------------------------------------------------------------------------
+\noindent{\footnotesize\begin{tabular}{c|ccc|c}
+\mcol{\man\\User}&&\mcol{\man\\GM}\\
+\hspace*{11ex}&&&\hspace*{11ex}&\\
+&\larrowhead&{\sffamily\scriptsize\boxed{External User Authorization (DSA/FTMGS)}}&\rarrowhead&\\\cline{2-4}
+&&&&\\
+\mcol{\boxed{Extract-UMK\\from-DSA/MSK}}&&\mcol{\boxed{Extract-UAUTH\\from-DSA/SG}}\\
+&&&&\\
+\mcol{\boxed{Join-Usr}}&&&\\
+&&\msg{pbl:u1}&\rarrowhead&\\\cline{2-4}
+&&&&\\
+&&&\mcol{\boxed{Join-GM}}\\
+&\larrowhead&\msg{pbl:gm2}&&\\\cline{2-4}
+&&&&\\
+\mcol{\boxed{Join-Usr}}&&&\\
+&&\msg{pbl:u3}&\rarrowhead&\\\cline{2-4}
+&&&&\\
+&&&\mcol{\boxed{Join-GM}}\\
+&\larrowhead&\msg{pbl:gm4}&&\\\cline{2-4}
+&&&&\\
+\mcol{\boxed{Join-Usr}}&&&\\
+&&&&\\
+\end{tabular}}
+
+%-------------------------------------------------------------------------------
+\subsection{Sign / Verify}\label{seqdia:sign}
+%-------------------------------------------------------------------------------
+\noindent{\footnotesize\begin{tabular}{c|ccc|c}
+\mcol{\man\\Member}&&\mcol{\man\\Any}\\
+\hspace*{4ex}&&&\hspace*{5ex}&\\
+\mcol{\boxed{Sign}}&&&\\
+&&\msg{msg, signature}&\rarrowhead&\\\cline{2-4}
+&&&&\\
+&&&\mcol{\boxed{Verify}}\\
+&&&&\\
+\end{tabular}}
+
+%-------------------------------------------------------------------------------
+\subsection{Open / Check}\label{seqdia:open}
+%-------------------------------------------------------------------------------
+\noindent{\footnotesize\begin{tabular}{c|ccc|ccc|ccc|c}
+\mcol{\man\\Judge}&&\mcol{\man\\FA$_1$}&{\Large$\cdots$}&\mcol{\man\\FA$_n$}&&\mcol{\man\\GM}\\
+\hspace*{7ex}&&&\hspace*{9ex}&&&\hspace*{9ex}&&&\hspace*{9ex}&\\
+&&\msg{sg}&\rarrowhead&&&\rarrowhead&&&&\\\cline{2-7}
+&&&&&&&&&&\\
+&&&\mcol{\boxed{Open-DShare}}&{\Large$\cdots$}&\mcol{\boxed{Open-DShare}}&&&\\
+&\larrowhead&\msg{dshare$_1$}&&&&&&&&\\\cline{2-4}
+&&&&&&&&&&\\
+\mcol{\boxed{Open-Sign}}&&&&&&&&&\\
+&&&&&&&&&&\\
+\mcol{\Large$\vdots$}&&&&{\Large$\ddots$}&&&&&\\
+&\larrowhead&\msg{dshare$_n$}&&&&&&&&\\\cline{2-7}
+&&&&&&&&&&\\
+\mcol{\boxed{Open-Sign}}&&&&&&&&&\\
+&&\msg{op}&&&&&&&\rarrowhead&\\\cline{2-10}
+&&&&&&&&&&\\
+&&&&&&&&&\mcol{\boxed{Open-Check\\+ DB-Search}}\\
+&\larrowhead&\msg{usr-id}&&&&&&&&\\\cline{2-10}
+&&&&&&&&&&\\
+\end{tabular}}
+
+%-------------------------------------------------------------------------------
+\subsection{Reveal / Trace}\label{seqdia:reveal}
+%-------------------------------------------------------------------------------
+\hspace*{-5em}\noindent{\footnotesize\begin{tabular}{c|ccc|ccc|ccc|ccc|c}
+\mcol{\man\\Judge}&&\mcol{\man\\GM}&&\mcol{\man\\FA$_1$}&{\Large$\cdots$}&\mcol{\man\\FA$_n$}&&\mcol{\man\\TA}\\
+\hspace*{10ex}&&&\hspace*{7ex}&&&\hspace*{9ex}&&&\hspace*{9ex}&&&\hspace*{4ex}&\\
+&&\msg{usr-id}&\rarrowhead&&&&&&&&&&\\\cline{2-4}
+&&&&&&&&&&&&&\\
+&&&\mcol{\boxed{DB-Search}}&&&&&&&&&\\
+&\larrowhead&\msg{mr}&&&&&&&&&&&\\\cline{2-4}
+&&&&&&&&&&&&&\\
+&&\msg{mr}&&&&\rarrowhead&&&\rarrowhead&&&&\\\cline{2-10}
+&&&&&&&&&&&&&\\
+&&&&&&\mcol{\boxed{Reveal-DShare}}&{\Large$\cdots$}&\mcol{\boxed{Reveal-DShare}}&&&\\
+&\larrowhead&\msg{dshare$_1$}&&&&&&&&&&&\\\cline{2-7}
+&&&&&&&&&&&&&\\
+\mcol{\boxed{Reveal-MTKey}}&&&&&&&&&&&&\\
+&&&&&&&&&&&&&\\
+\mcol{\Large$\vdots$}&&&&&&&{\Large$\ddots$}&&&&&\\
+&\larrowhead&\msg{dshare$_n$}&&&&&&&&&&&\\\cline{2-10}
+&&&&&&&&&&&&&\\
+\mcol{\boxed{Reveal-MTKey}}&&&&&&&&&&&&\\
+&&\msg{mtkey}&&&&&&&&&&\rarrowhead&\\\cline{2-13}
+&&&&&&&&&&&&&\\
+&&&&&&&&&&&&\mcol{\boxed{Trace}}\\
+&\larrowhead&\msg{sg$_i$}&&&&&&&&&&&\\\cline{2-13}
+&&&&&&&&&&&&&\\
+\end{tabular}}
+
+%-------------------------------------------------------------------------------
+\section{Implementation: Features and Security Issues}
+%-------------------------------------------------------------------------------
+\begin{itemize}%
+\item Based on: \emph{FTMGS: Fair Traceable Multigroup
+  Signatures}~\cite{bcly:2008:ftmgs}.
+
+\item Developed in C (ANSI-C 89) and GNU/Linux (code also for Windows)
+\begin{itemize}%
+\item Minor system dependencies (random entropy and word endianness)
+\item Easy port to other platforms
+\end{itemize}%
+
+\item Licensed under LGPLv2.1
+
+\item It uses GMP library (LGPL) for multiple precision arithmetic
+
+\item It uses LIBTASN1 library (LGPL) for ANS1 data conversion
+\begin{itemize}%
+\item In future releases, this dependency will be removed for
+      efficiency purposes, and ASN1 conversion will be provided
+      internally.
+\end{itemize}%
+
+\item It uses SHA library code from IETF RFC-6234 (license included in
+  the \verb|licenses| directory)
+
+\item All functions are re-entrant
+
+\item Signatures of Knowledge follows the specified in
+        Traceable Signatures~\cite{KTY04}.
+
+\item Non-Adaptive Drawing of Random Powers follows the specified in
+        Traceable Signatures~\cite{KTY04}.
+
+\item Random Number generator based on \emph{NIST-SP-800-90} document
+  (based on SHA) 
+  \begin{itemize}%
+  \item Entropy source at seeding is \verb|/dev/random| for
+    \verb|True_Entropy|, and \verb|/dev/urandom| for
+    \verb|Pseudo_Entropy| in a Linux environment, and
+    \verb|CryptGenRandom| in a Windows environment.
+  \item It implements Hash\_DRBG based on SHA-256, with the following
+    parameters: HSStrength = 256, MinEntropy = 256, SeedLen = 440.
+  \item Validation based on FIPS-140-2
+  \end{itemize}%
+
+\item Sophie-Germain Prime Numbers based on~\cite{CS00}.
+
+\item Miller-Rabin number of tests based on FIPS-186-3 recomendations
+\begin{itemize}%
+\item High-Security: (modulus factors, sophie-germain primes)
+\item Low-Security: (exponents for: Group: hj ; Join: ei; FA-PrivKey: xj)
+\begin{center}\footnotesize
+\begin{tabular}{cc}
+High Security & Low Security \\
+\begin{tabular}{l|cccc}\hline
+Nbits  & 512 & 1024 & 2048 & $>$2048 \\\hline
+Ntests &  40 &   40 &   56 & 64 \\\hline
+\end{tabular}
+&
+\begin{tabular}{l|cccc}\hline
+Nbits  & 512 & 1024 & 2048 & $>$2048 \\\hline
+Ntests &   7 &    5 &    4 & 4 \\\hline
+\end{tabular}
+\end{tabular}
+\end{center}
+\end{itemize}%
+
+\item FTMGS Security Parameters:
+\begin{center}\footnotesize
+\begin{tabular}{l|ccc}\hline
+Nu  & 1024 & 2048 & 3072 \\\hline
+K   &  128 &  256 &  512 \\\hline
+\end{tabular}
+\end{center}
+
+\item Accepts DSA User Authentication in Join. DSA [1024, 2048, 3072].
+
+\item Precomputations enabled/disabled at compile time
+
+\item Current Development Status: Alpha
+
+\item Things To-Do:
+\begin{itemize}%
+\item Change the names of API functions and types to make them shorter.
+\item Define and request an ASN.1 Object Identifier (OID) number for FTMGS
+\item Prepare a battery of tests
+\item Accepting RSA User Authentication in Join
+\item Checking that a RSA modulus lacks of small prime factors
+\item Distributed generation of RSA modulus with unknown factorization
+\item Improving the automatic building and installation (GNU/Linux)
+\item Developing installation packages for Debian [optional]
+\item Porting the building and installation to other systems (Windows)
+\end{itemize}%
+\end{itemize}%
+
+%-------------------------------------------------------------------------------
+\section{Performace}
+%-------------------------------------------------------------------------------
+
+\subsection*{FTMGS Modular Exponentiations}
+
+{\footnotesize\begin{tabular}{lrccc}\hline
+&& Precomp & No-Precomp & \\\hline
+Join && 50 & 64 & \\
+Join & (Join+UsrAuth) & 55 & 69 & \\
+\\
+Sign && 19 & 19 & \\
+Vrfy && 22 & 28 & \\
+\\
+Open && NFAS$\times$9 & NFAS$\times$9 & \\
+Check && 11 & 15 & [1$\times$VrfyJoinLog] \\
+Check & (Join+UsrAuth) & 14 & 18 & \\
+\\
+Reveal && NFAS$\times$20+12 & NFAS$\times$24+16 & [(NFAS+1)$\times$VrfyJoinLog] \\
+Reveal & (Join+UsrAuth) & NFAS$\times$23+15 & NFAS$\times$27+19 & \\
+Trace && 1 & 1 & \\
+\\
+Claim && 2 & 2 & [1$\times$check(y==$g^x$)] \\
+VrfyClaim && 3 & 3 & \\
+\\
+Link && 4 & 4 & [2$\times$check(y==$g^x$)] \\
+VrfyLink && 6 & 6 & \\
+\\
+VrfyJoinLog && 11 & 15 & \\
+VrfyJoinLog & (Join+UsrAuth) & 14 & 18 & \\
+\\\hline
+\end{tabular}}
+
+\subsection*{FTMGS Timings (in seconds) [Pentium 32 bits 2GHz]}
+
+{\footnotesize\begin{tabular}{lrccc}\hline
+&& Precomp & No-Precomp & \\\hline
+Join && 0.33 & 0.42 & [+ searching for prime $e_i$]\\
+Join & (Join+UsrAuth) & 0.35 & 0.44 & [+ searching for prime $e_i$]\\
+\\
+Sign && 0.05 & 0.05 & \\
+Vrfy && 0.05 & 0.08 & \\
+\\
+Open && NFAS$\times$0.02+0.01 & NFAS$\times$0.02+0.01 & \\
+Check && 0.07 & 0.11 & [1$\times$VrfyJoinLog] \\
+Check & (Join+UsrAuth) & 0.08 & 0.12 & \\
+\\
+Reveal && NFAS$\times$0.34+0.10 & NFAS$\times$0.39+0.13 & [(NFAS+1)$\times$VrfyJoinLog] \\
+Reveal & (Join+UsrAuth) & NFAS$\times$0.35+0.10 & NFAS$\times$0.39+0.15 & \\
+Trace && 0.01 & 0.01 & \\
+\\
+Claim && 0.01 & 0.01 & [1$\times$check(y==$g^x$)] \\
+VrfyClaim && 0.01 & 0.01 & \\
+\\
+Link && 0.01 & 0.01 & [2$\times$check(y==$g^x$)] \\
+VrfyLink && 0.01 & 0.01 & \\
+\\
+VrfyJoinLog && 0.07 & 0.11 & \\
+VrfyJoinLog & (Join+UsrAuth) & 0.08 & 0.12 & \\
+\\\hline
+\end{tabular}}
+
+\subsection*{FTMGS Timings (in seconds) [Pentium 64 bits 3.2GHz]}
+
+{\footnotesize\begin{tabular}{lrccc}\hline
+&& Precomp & No-Precomp & \\\hline
+Join && 0.05 & 0.07 & \\
+Join & (Join+UsrAuth) & 0.07 & 0.08 & \\
+\\
+Sign && 0.01 & 0.01 & \\
+Vrfy && 0.01 & 0.02 & \\
+\\
+Open && NFAS$\times$0.0025 & NFAS$\times$0.0025 & \\
+Check && 0.01 & 0.02 & [1$\times$VrfyJoinLog] \\
+Check & (Join+UsrAuth) & 0.01 & 0.02 & \\
+\\
+Reveal && NFAS$\times$0.05 & NFAS$\times$0.05 & [(NFAS+1)$\times$VrfyJoinLog] \\
+Reveal & (Join+UsrAuth) & NFAS$\times$0.05 & NFAS$\times$0.06 & \\
+Trace && 0.00 & 0.00 & \\
+\\
+Claim && 0.00 & 0.00 & [1$\times$check(y==$g^x$)] \\
+VrfyClaim && 0.00 & 0.00 & \\
+\\
+Link && 0.00 & 0.00 & [2$\times$check(y==$g^x$)] \\
+VrfyLink && 0.00 & 0.00 & \\
+\\
+VrfyJoinLog && 0.01 & 0.01 & \\
+VrfyJoinLog & (Join+UsrAuth) & 0.01 & 0.02 & \\
+\\\hline
+\end{tabular}}
+
+% #-------------------------------------------------------------------------------
+%                 Precomp                 No-Precomp
+% #-------------------------------------------------------------------------------
+% Join:           50 pow                  64 pow
+%   Join+UsrAuth: 55 pow                  69 pow
+% ----
+% Sign:           19 pow                  19 pow
+% Vrfy:           22 pow                  28 pow
+% ----
+% Open:           NFAS*9 pow              NFAS*9 pow
+% Check:          11 pow                  15 pow          [1*VrfyJoinLog]
+%   Join+UsrAuth: 14 pow                  18 pow
+% ----
+% Reveal:         NFAS*20+12 pow          NFAS*24+16 pow  [(NFAS+1)*VrfyJoinLog]
+%   Join+UsrAuth: NFAS*23+15 pow          NFAS*27+19 pow
+% Trace:          1 pow                   1 pow
+% ----
+% Claim:          2 pow                   2 pow           [1*check(y==g^x)]
+% VrfyClaim:      3 pow                   3 pow
+% ----
+% Link:           4 pow                   4 pow           [2*check(y==g^x)]
+% VrfyLink:       6 pow                   6 pow
+% ----
+% VrfyJoinLog:    11 pow                  15 pow
+%   Join+UsrAuth: 14 pow                  18 pow
+% #-------------------------------------------------------------------------------
+
+% #-------------------------------------------------------------------------------
+% #- FTMGS TIMINGS (2GHz) --------------------------------------------------------
+% #-------------------------------------------------------------------------------
+%                 Precomp                 No-Precomp
+% #-------------------------------------------------------------------------------
+% Join:           0.33 sec                0.42 sec
+%   Join+UsrAuth: 0.35 sec                0.44 sec
+% ----
+% Sign:           0.05 sec                0.05 sec
+% Vrfy:           0.05 sec                0.08 sec
+% ----
+% Open:           NFAS*0.02+0.01 sec      NFAS*0.02+0.01 sec
+% Check:          0.07 sec                0.11 sec           [1*VrfyJoinLog]
+%   Join+UsrAuth: 0.08 sec                0.12 sec
+% ----
+% Reveal:         NFAS*0.34+0.10 sec      NFAS*0.39+0.13 sec [(NFAS+1)*VrfyJLog]
+%   Join+UsrAuth: NFAS*0.35+0.10 sec      NFAS*0.39+0.15 sec
+% Trace:          0.01 sec                0.01 sec
+% ----
+% Claim:          0.01 sec                0.01 sec           [1*check(y==g^x)]
+% VrfyClaim:      0.01 sec                0.01 sec
+% ----
+% Link:           0.01 sec                0.01 sec           [2*check(y==g^x)]
+% VrfyLink:       0.01 sec                0.01 sec
+% ----
+% VrfyJoinLog:    0.07 sec                0.11 sec
+%   Join+UsrAuth: 0.08 sec                0.12 sec
+% #-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+\section{Installing the FTMGS Library}
+%-------------------------------------------------------------------------------
+
+\begin{itemize}%
+\item To cleanup the library
+\begin{verbatim}
+    $ make cleanup
+\end{verbatim}
+\item To compile the library
+\begin{verbatim}
+    $ make
+\end{verbatim}
+\item To install the library (as root)
+\begin{verbatim}
+    # make install
+\end{verbatim}
+\item To compile the test program
+\begin{verbatim}
+    $ gcc -o test test.c -lftmgs
+\end{verbatim}
+\item To run the test program
+\begin{verbatim}
+	$ ./test
+\end{verbatim}
+\item To uninstall the library (as root)
+\begin{verbatim}
+    # make uninstall
+\end{verbatim}
+\end{itemize}%
+
+Please, see the README file for more updated information
+
+%-------------------------------------------------------------------------------
+\section{Compiling and Linking with the FTMGS Library}
+%-------------------------------------------------------------------------------
+
+Source files the make use of the facilities provided by the FTMGS
+library should include the header file \verb|ftmgs.h|, where the
+public API is defined. This header file is installed in the system
+include directory by the installation process, thus the file should be
+included by the following directive:
+\begin{verbatim}
+    #include <ftmgs.h>
+\end{verbatim}
+
+The object files should be linked with the FTMGS library
+(\verb|libftmgs.a| or \verb|libftmgs.so| in unix like systems):
+\begin{verbatim}
+    $ gcc -o test test.c -lftmgs
+\end{verbatim}
+
+%-------------------------------------------------------------------------------
+\section{Abstract Data Types and Function API}
+%-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+\subsection{Miscellaneous Data Types}
+%-------------------------------------------------------------------------------
+
+The public API of FTMGS library is defined in the header file
+\verb|ftmgs.h|, which should be included.
+
+%---------------------------------------
+\subsubsection*{FTMGS Version and Revision}
+%---------------------------------------
+
+FTMGS version and revision numbers are defined as preprocessor macros,
+to allow their use from both, C programs and preprocessor
+conditionals. They follow the following guidelines:
+
+{\footnotesize\begin{itemize}%
+\item Version Major: identifies changes in public API and functionality
+\item Version Minor: identifies internal changes that do not affect the public behavior
+\item Revision: for bug fixes
+\end{itemize}}%
+They are defined as follows, where a \emph{version major} value lower
+than 1 identifies alpha or beta pre-releases.
+\begin{code}
+#define FTMGS_VERSION_MAJOR     0
+#define FTMGS_VERSION_MINOR     1
+#define FTMGS_REVISION          0
+\end{code}
+
+%---------------------------------------
+\subsubsection*{Boolean Type}
+%---------------------------------------
+
+The boolean type and values are defined under preprocessor
+conditionals to avoid clashing with other definitions. Additionally,
+the boolean values are checked for their right definitions.
+
+\begin{code}
+#ifndef BOOL_T_DEFINED__
+#define BOOL_T_DEFINED__    1
+typedef char bool_t;
+#endif
+#ifndef TRUE
+#define TRUE    1
+#elif TRUE == 0
+#error "Bad definition of symbol TRUE"
+#endif
+#ifndef FALSE
+#define FALSE   0
+#elif FALSE != 0
+#error "Bad definition of symbol FALSE"
+#endif
+\end{code}
+
+The boolean values are returned from functions to indicate either
+successful or erroneous execution (\verb|TRUE| or \verb|FALSE|
+respectively).
+
+%---------------------------------------
+\subsubsection*{Function Return Code}
+%---------------------------------------
+
+The type \verb|ftmgs_retcode_t| defines the return code for
+incremental (iterative) functions, which can be error
+(\verb|FTMGS_ERROR|), success (\verb|FTMGS_OK|), or still unfinished
+(\verb|FTMGS_UNFINISHED|), which means that the (iterative) operation
+is still unfinished and it needs to be executed some more times,
+till either error or success is found.
+
+\begin{code}
+typedef enum ftmgs_retcode_t \{
+    FTMGS_ERROR, FTMGS_OK, FTMGS_UNFINISHED
+\} ftmgs_retcode_t;
+\end{code}
+
+%-------------------------------------------------------------------------------
+\subsection{Abstract Data Types and Function API}
+%-------------------------------------------------------------------------------
+
+The public API of FTMGS library is defined in the header file
+\verb|ftmgs.h|, which should be included.
+
+All defined data in the FTMGS library, except for enumerations, are
+Abstract Data Types (ADT), and therefore their internal representation
+is hidden (and protected). This fact has several advantages. 
+
+{\footnotesize\begin{itemize}%
+\item The internal representation is hidden, so there is no need to
+  expose the internal data types and internal implementation.
+\item As the internal representation is hidden, it diminishes the
+  possibility (and temptation) to bypass the API and dealing with the
+  internal data representation.
+\item It improves the possibility of internal modifications that do
+  not affect to the external public API.
+\item It improves the binary compatibility of the library, since all
+  data are defined as pointers to the internal representation, which
+  can change without affecting to the external pointers.
+\end{itemize}}%
+
+As abstract data types, except for enumerations, any variable to deal
+with data must be declared as a \textbf{pointer} to the hidden data
+representation. Each of them will be created through a function (the
+\textbf{constructor}) that allocates memory space to hold the internal
+representation, and initializes the data to a known initial
+state. Moreover, when such data is not useful anymore, then it is
+necessary to call a function (the \textbf{destructor}) to free the
+allocated resources associated with the internal
+representation. Additionally, there is also a function (the
+\textbf{cloner}) that allows to clone the internal representation of
+the abstract data.
+
+For each type in the library, these functions are named by the name of
+the type followed by the word \emph{new}, \emph{delete} and
+\emph{clone} respectively. For example, for the type \verb|rndctx_t|,
+the following code defines a variable to point to the internal
+representation, calls the constructors, other functions from the API,
+cloning and finally calls the destructors:
+\begin{code}
+#include <ftmgs.h>
+int main()
+\{
+    unsigned x;
+    rndctx_t* rctx;                             /* uninitialized variable */
+    rndctx_t* random_context = rndctx_t_new();  /* constructor */
+    /* ... */
+    bi_random_seed(random_context, PseudoEntropy);
+    /* ... */
+    x = bi_random_ui(10, random_context);
+    /* ... */
+    rctx = rndctx_t_clone(random_context);      /* cloner     */
+    /* ... */
+    rndctx_t_delete(random_context);            /* destructor */
+    rndctx_t_delete(rctx);                      /* destructor */
+    return 0;
+\}
+\end{code}
+
+%-------------------------------------------------------------------------------
+\subsection{Random Numbers}
+%-------------------------------------------------------------------------------
+
+The following values define the sources of entropy for seeding the
+random number generator:
+
+{\footnotesize\begin{itemize}%
+\item \verb|TrueEntropy|: it seeds the random number generator with
+  real random bits from a source of entropy that uses random noise
+  from internal devices. If there is not enough real random bits, as
+  required, from the source of entropy, then the operation blocks
+  until there are enough real random bits available. This mode is
+  \textbf{required} for secure cryptographic use.
+\item \verb|PseudoEntropy|: it seeds the random number generator with
+  random bits from a source of entropy that uses random noise from
+  internal devices. If there is not enough real random bits, as
+  required, from the source of entropy, then the rest of required bits
+  are generated internally following some pseudo-random number
+  generation. This mode is \textbf{not valid} for secure cryptographic
+  use, but it can be used for other less secure requirement scenarios.
+\item \verb|NoEntropy|: it does not use any source of entropy for
+  seeding. It seeds the random number generator with the same fixed
+  seed, so it is useful for debugging purposes, since, as it starts
+  with the same seed, it repeats the same sequence of generated random
+  numbers.
+\end{itemize}}%
+\begin{code}
+enum entropy_src_t \{
+    TrueEntropy, PseudoEntropy, NoEntropy
+\};
+\end{code}
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|rndctx_t|: it is used to hold the internal context of the
+  random number generator. 
+
+  It is used extensively throughout the library, and it is required to
+  have been seeded previously.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructor, cloner and destructor
+for the aforementioned abstract data type:
+\begin{code}
+rndctx_t* rndctx_t_new();
+rndctx_t* rndctx_t_clone(const rndctx_t* o);
+void rndctx_t_delete(rndctx_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+\begin{api}
+unsigned bi_random_seed(rndctx_t* rnd_ctx, unsigned entropy_src);
+\end{api}
+\begin{quote}\footnotesize
+It allows to initialize and seed the context for the random number
+generator. The source of entropy may be any of the aforementioned
+values with their explained meaning. This function must be called once
+before using the generator context in any other function. It returns
+the amount of bytes used from the entropy source.
+\end{quote}
+%---------------------------------------
+\begin{api}
+unsigned bi_random_reseed(rndctx_t* rnd_ctx, unsigned entropy_src);
+\end{api}
+\begin{quote}\footnotesize
+It allows to re-seed the context for the random number
+generator. The source of entropy may be any of the aforementioned
+values with their explained meaning. It returns
+the amount of bytes used from the entropy source.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void bi_random_bytes(void* buf, unsigned buflen, rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It generates \verb|buflen| random bytes that will be stored in the
+memory pointed to by \verb|buf|, by using the previously seeded random
+context \verb|rnd_ctx|. The memory pointed by \verb|buf| must have
+been previously allocated with enough room to hold \verb|buflen| bytes.
+\end{quote}
+%---------------------------------------
+\begin{api}
+unsigned bi_random_ui(unsigned max, rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It returns a random \verb|unsigned| number between 0 and \verb|max|
+(\verb|max| exclusive), by using the previously seeded random context
+\verb|rnd_ctx|.
+\end{quote}
+
+%-------------------------------------------------------------------------------
+\subsection{Group Creation}
+%-------------------------------------------------------------------------------
+The following values define the security parameters used when creating
+a group:
+\begin{code}
+enum secpar_t \{
+    Nu1 = 1024, Nu2 = 2048, Nu3 = 3072
+\};
+\end{code}
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|ftmgs_fa_pbkey_t|: it holds the modulus \tuple{\hat{n}} and
+  generator \tuple{\hat{g}} for the paillier encryption scheme.
+\item \verb|ftmgs_faj_pbkey_share_t|: it holds the fairness authority
+  public key share \tuple{\hat{y}_j} for the paillier encryption scheme.
+\item \verb|ftmgs_faj_prkey_t|: it holds the fairness authority
+  private key \tuple{\hat{o}_j} for the paillier encryption scheme. It
+  allows to recover the member's tracing key.
+\item \verb|ftmgs_pbkey_t|: it holds the group public key
+  \tuple{n,a,a_o,b,g,h,y,\hat{n},\hat{g},\hat{y}}. It allows to verify
+  group signatures, as well as provides support for all operations
+  dealing with the group.
+\item \verb|ftmgs_prkey_t|: it holds the group manager private key,
+  the prime factors of the group modulus \tuple{p,q}. It allows to
+  join new members to the group.
+\item \verb|ftmgs_faj_gr_pbkey_share_t|: it holds the fairness
+  authority public key share \tuple{y_j,h_j} for the el-gamal encryption
+  scheme for a given group.
+\item \verb|ftmgs_faj_gr_prkey_t|: it holds the fairness authority
+  private key \tuple{o_j} for the el-gamal encryption scheme for a given
+  group. It allows to open signatures.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructors, cloners and destructors
+for the aforementioned abstract data types:
+\begin{code}
+ftmgs_fa_pbkey_t* ftmgs_fa_pbkey_t_new();
+ftmgs_fa_pbkey_t* ftmgs_fa_pbkey_t_clone(const ftmgs_fa_pbkey_t* o);
+void ftmgs_fa_pbkey_t_delete(ftmgs_fa_pbkey_t* p);
+
+ftmgs_faj_pbkey_share_t* ftmgs_faj_pbkey_share_t_new();
+tmgs_faj_pbkey_share_t* ftmgs_faj_pbkey_share_t_clone(const ftmgs_faj_pbkey_share_t* o);
+void ftmgs_faj_pbkey_share_t_delete(ftmgs_faj_pbkey_share_t* p);
+
+ftmgs_faj_prkey_t* ftmgs_faj_prkey_t_new();
+ftmgs_faj_prkey_t* ftmgs_faj_prkey_t_clone(const ftmgs_faj_prkey_t* o);
+void ftmgs_faj_prkey_t_delete(ftmgs_faj_prkey_t* p);
+
+ftmgs_pbkey_t* ftmgs_pbkey_t_new();
+ftmgs_pbkey_t* ftmgs_pbkey_t_clone(const ftmgs_pbkey_t* o);
+void ftmgs_pbkey_t_delete(ftmgs_pbkey_t* p);
+
+ftmgs_prkey_t* ftmgs_prkey_t_new();
+ftmgs_prkey_t* ftmgs_prkey_t_clone(const ftmgs_prkey_t* o);
+void ftmgs_prkey_t_delete(ftmgs_prkey_t* p);
+
+ftmgs_faj_gr_pbkey_share_t* ftmgs_faj_gr_pbkey_share_t_new();
+ftmgs_faj_gr_pbkey_share_t* ftmgs_faj_gr_pbkey_share_t_clone(const ftmgs_faj_gr_pbkey_share_t* o);
+void ftmgs_faj_gr_pbkey_share_t_delete(ftmgs_faj_gr_pbkey_share_t* p);
+
+ftmgs_faj_gr_prkey_t* ftmgs_faj_gr_prkey_t_new();
+ftmgs_faj_gr_prkey_t* ftmgs_faj_gr_prkey_t_clone(const ftmgs_faj_gr_prkey_t* o);
+void ftmgs_faj_gr_prkey_t_delete(ftmgs_faj_gr_prkey_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+The group setup process follows the sequence specified in the diagram in
+section~\ref{seqdia:group}~and~\ref{seqdia:check}.
+
+\begin{api}
+void ftmgs_fa0_setup_mono(ftmgs_fa_pbkey_t* fa_pk_preimage,
+                          unsigned nu,
+                          rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It allows to create an initial public key modulus and generator for
+the fairness authorities, where the security parameter \verb|nu| may
+have any of the aforementioned values. It is necessary that the random
+number generator context \verb|rnd_ctx| had been previously seeded.
+
+\textbf{Note:} This function create the public key modulus and
+generator for the fairness authorities for the \emph{paillier}
+encryption scheme. It is necessary to be aware that the security of
+the \emph{paillier} encryption scheme relies on the unknown
+factorization of this public modulus, and in this case, the entity
+that creates this modulus is able to know such factorization, and it
+must be, therefore, a trusted authority with an overall power over the
+others. Therefore, in order to improve the security of the scheme, in
+next versions of this library, new functions for creating such a
+public modulus in a distributed and collaborative manner will be
+incorporated.
+
+$\diamond$ In a next version of this library, a \verb|ftmgs_fa0_setup()|
+function will be incorporate to implement a protocol for the
+distributed generation of the RSA modulus~\cite{FS01}, to be played
+among the involved fairness authorities.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void ftmgs_faj_setup(ftmgs_faj_pbkey_share_t* faj_pk,
+                     ftmgs_faj_pbkey_share_t* faj_pk_preimage,
+                     ftmgs_faj_prkey_t* faj_sk,
+                     const ftmgs_fa_pbkey_t* fa_pk,
+                     rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It is used by each fairness authority to generate the public and
+private keys (\verb|faj_pk|, and \verb|faj_sk| respectively) for a
+given public modulus and generator (\verb|fa_pk|) created by using
+\verb|ftmgs_fa0_setup()|. These keys are used to deal with
+encryption/decryption of \emph{member tracing keys}.
+
+Note that \verb|faj_pk_preimage| may be NULL, but otherwise it will
+hold the preimage for the public key \verb|faj_pk|, that is 
+\verb|faj_pk| $\equiv$ \verb|faj_pk_preimage|$^2$. This preimage is
+used by the \emph{Group Manager} when creating the group.
+
+Note that by squaring the preimage, it is assured that
+$\hat{y}_j\in\mathit{QR}(n)$.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void ftmgs_gm_init_setup(ftmgs_pbkey_t* gpk_preimage,
+                         ftmgs_prkey_t* gsk,
+                         unsigned nu,
+                         rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It is used by the \emph{Group Manager} (GM) to compute the modulus,
+generator and related terms (a preimage of the group public key
+\verb|gpk|), as well as the group private key that allows the GM to
+join new members to the group. The security parameter \verb|nu| may
+have the aforementioned values.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void ftmgs_faj_group_setup(ftmgs_faj_gr_pbkey_share_t* faj_gpk,
+                           ftmgs_faj_gr_pbkey_share_t* faj_gpk_preimage,
+                           ftmgs_faj_gr_prkey_t* faj_gsk,
+                           const ftmgs_pbkey_t* gpk_preimage,
+                           rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It is used by each fairness authority to generate the public and
+private keys (\verb|faj_gpk|, and \verb|faj_gsk| respectively) for a
+given group public key (\verb|gpk_preimage|) created by using
+\verb|ftmgs_gm_init_setup()|. These keys are used to deal with
+encryption/decryption for \emph{opening} signatures.
+
+Note that \verb|faj_gpk_preimage| may be NULL, but otherwise it will
+hold the preimage for the public key \verb|faj_gpk|, that is 
+\verb|faj_gpk| $\equiv$ \verb|faj_gpk_preimage|$^2$. This preimage is
+used by the \emph{Group Manager} when creating the group.
+
+Note that by squaring the preimage, it is assured that
+$y_j\in\mathit{QR}(n)$ and $h_j\in\mathit{QR}(n)$.
+\end{quote}
+%---------------------------------------
+\begin{api}
+ftmgs_retcode_t ftmgs_gm_group_setup(ftmgs_pbkey_t* gpk,
+                                     ftmgs_pbkey_t* gpk_preimage,
+                                     unsigned nfas,
+                                     const ftmgs_fa_pbkey_t* fa_pk_preimage,
+                                     const ftmgs_faj_pbkey_share_t* faj_pk_preimage,
+                                     const ftmgs_faj_gr_pbkey_share_t* faj_gpk_preimage);
+\end{api}
+\begin{quote}\footnotesize
+It is used by the \emph{Group Manager} (GM) to incorporate into the
+group public key the public key preimages for each fairness authority
+that will supervise \emph{opening} and \emph{revealing} operations fro
+the group, where \verb|nfas| specifies the total number of required
+fairness authorities in the process.
+
+This function belongs to an iterative process to incorporate the
+public keys for all the fairness authorities, and therefore it returns
+\verb|FTMGS_UNFINISHED| while the number of incorporated fairness
+authority's public keys is lower that the amount of required fairness
+authorities (\verb|nfas|). When the process is over, then
+either \verb|FTMGS_OK| or \verb|FTMGS_ERROR| is returned to indicate
+success or failure in the operation.
+
+Note that \verb|gpk_preimage| may be NULL, but otherwise it will
+hold the preimage for the group public key \verb|gpk|, that is 
+\verb|gpk| $\equiv$ \verb|gpk_preimage|$^2$. This preimage is
+used by any entity to check that the group members have the right
+order. Note that by squaring the preimage, it is assured that group
+members belong to $\mathit{QR}(n)$.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_check_gpk(const ftmgs_pbkey_t* gpk,
+                       const ftmgs_pbkey_t* gpk_preimage);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if the group public key (\verb|gpk|)
+is well formed with respect to the preimage (\verb|gpk_preimage|),
+which means that all members have the right order and belong to
+$\mathit{QR}(n)$. It returns \verb|FALSE| (\verb|0|) otherwise.
+
+$\diamond$ In a next version of this library, this function will also
+check that the moduli in the group public key do not have small prime
+factors~\cite{CM99}.
+\end{quote}
+%---------------------------------------
+\begin{api}
+ftmgs_retcode_t ftmgs_check_gpk_fa(ftmgs_pbkey_t* gpk_aux,
+                                   const ftmgs_pbkey_t* gpk,
+                                   const ftmgs_fa_pbkey_t* fa_pk,
+                                   const ftmgs_faj_pbkey_share_t* faj_pk,
+                                   const ftmgs_faj_gr_pbkey_share_t* faj_gpk);
+\end{api}
+\begin{quote}\footnotesize
+This function belongs to an iterative process to check that the public
+keys for all the fairness authorities have been incorporated to the
+group public key, and therefore it returns \verb|FTMGS_UNFINISHED|
+while the number of checked fairness authority's public keys is lower
+that the amount of required fairness authorities previously
+incorporated to the group public key. When the process is over, then
+either \verb|FTMGS_OK| or \verb|FTMGS_ERROR| is returned to indicate
+success or failure in the operation.
+
+Note that the fairness authority's public keys are used, instead of
+their preimages. Also note that \verb|gpk_aux| is used to temporarily
+hold the incorporation of checked public keys while the iterative
+process is being carried out.
+\end{quote}
+%---------------------------------------
+\begin{api}
+unsigned ftmgs_get_nfas_reveal(const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It returns the number of fairness authorities required to reveal a
+\emph{member tracing key}.
+\end{quote}
+%---------------------------------------
+\begin{api}
+unsigned ftmgs_get_nfas_open(const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It returns the number of fairness authorities required to open a
+signature.
+\end{quote}
+%---------------------------------------
+
+%-------------------------------------------------------------------------------
+\subsection{Joining New Members}
+%-------------------------------------------------------------------------------
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|dss_parms_t|: it holds the DSS parameters \tuple{p, q, g},
+  used by the user when authenticated to join the group.
+\item \verb|dsa_pbkey_t|: it holds the DSA user's public key
+  \tuple{y}, used by the user when authenticated to join the group.
+\item \verb|dsa_prkey_t|: it holds the DSA user's private key
+  \tuple{x}, used by the user when authenticated to join the group.
+\end{itemize}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|dlogx_t|: it holds a user's master private key
+  \tuple{x}, used by the user when authenticated to join the group. It
+  can come from the user's DSA private key, or from a group member's
+  private key.
+\item \verb|dlog_t|: it holds a user's master public key \tuple{n, g,
+  y}, used by the user when authenticated to join the group. It can
+  come from the user's DSA public key and DSS parameters, or from a
+  group signature issued by the member when authenticated in joining a
+  new group.
+\end{itemize}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|ftmgs_join_prv_t|: it holds temporal user's private data
+  generated while the iterative process of joining to a group.
+\item \verb|ftmgs_join_pbl_t|: it holds temporal public data generated
+  while the iterative process of joining a new member to a group.
+\item \verb|ftmgs_mbr_ref_t|: it holds the member's reference
+  \tuple{A_i,e_i,C_i,X_i,U_i,V_i,E^{\wp}_i,\mathcal{A}_u} (join log)
+  kept by the group manager for each member of the group. It holds
+  information to allow recovery, with the collaboration of the
+  fairness authorities, of tracing keys and opening signatures, as
+  well as non-repudiable bindings with the user.
+\item \verb|ftmgs_mbr_prkey_t|: it holds the member's private key
+  \tuple{A_i,e_i,x_i,x'_i} that allows the member to issue anonymous
+  and unlinkable group signatures. It holds, among other data, the
+  user's master key.
+\end{itemize}
+
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructors, cloners and destructors
+for the aforementioned abstract data types:
+\begin{code}
+dss_parms_t* dss_parms_t_new();
+dss_parms_t* dss_parms_t_clone(const dss_parms_t* o);
+void dss_parms_t_delete(dss_parms_t* p);
+
+dsa_pbkey_t* dsa_pbkey_t_new();
+dsa_pbkey_t* dsa_pbkey_t_clone(const dsa_pbkey_t* o);
+void dsa_pbkey_t_delete(dsa_pbkey_t* p);
+
+dsa_prkey_t* dsa_prkey_t_new();
+dsa_prkey_t* dsa_prkey_t_clone(const dsa_prkey_t* o);
+void dsa_prkey_t_delete(dsa_prkey_t* p);
+\end{code}
+%---------------------------------------
+\begin{code}
+dlogx_t* dlogx_t_new();
+dlogx_t* dlogx_t_clone(const dlogx_t* o);
+void dlogx_t_delete(dlogx_t* p);
+
+dlog_t* dlog_t_new();
+dlog_t* dlog_t_clone(const dlog_t* o);
+void dlog_t_delete(dlog_t* p);
+\end{code}
+%---------------------------------------
+\begin{code}
+ftmgs_join_prv_t* ftmgs_join_prv_t_new();
+ftmgs_join_prv_t* ftmgs_join_prv_t_clone(const ftmgs_join_prv_t* o);
+void ftmgs_join_prv_t_delete(ftmgs_join_prv_t* p);
+
+ftmgs_join_pbl_t* ftmgs_join_pbl_t_new();
+ftmgs_join_pbl_t* ftmgs_join_pbl_t_clone(const ftmgs_join_pbl_t* o);
+void ftmgs_join_pbl_t_delete(ftmgs_join_pbl_t* p);
+
+ftmgs_mbr_ref_t* ftmgs_mbr_ref_t_new();
+ftmgs_mbr_ref_t* ftmgs_mbr_ref_t_clone(const ftmgs_mbr_ref_t* o);
+void ftmgs_mbr_ref_t_delete(ftmgs_mbr_ref_t* p);
+
+ftmgs_mbr_prkey_t* ftmgs_mbr_prkey_t_new();
+ftmgs_mbr_prkey_t* ftmgs_mbr_prkey_t_clone(const ftmgs_mbr_prkey_t* o);
+void ftmgs_mbr_prkey_t_delete(ftmgs_mbr_prkey_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+The join process follows the sequence specified in the diagram in
+section~\ref{seqdia:join}.
+
+\begin{api}
+void extract_umk_from_dsa(dlogx_t* x, const dsa_prkey_t* dsa_sk);
+\end{api}
+\begin{quote}\footnotesize
+It is used to extract the \emph{user's master key} from a DSA private
+key that have been used (a DSA signature used as authentication
+method) when the user was authorized to join the group. This user's
+master key will be used in the joining process, and it will be
+embedded into the user's member private key.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void extract_uauth_from_dsa(dlog_t* uauth,
+                            const dsa_pbkey_t* dsa_pk,
+                            const dss_parms_t* dss_parms);
+\end{api}
+\begin{quote}\footnotesize
+It is used to extract the \emph{user's authentication} from a DSA
+public key that have been used (a DSA signature used as authentication
+method) when the user was authorized to join the group. This user's
+authentication will be used in the joining process, and it will be
+embedded into the member's reference with non-repudiation purposes.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void extract_umk_from_msk(dlogx_t* x, const ftmgs_mbr_prkey_t* msk);
+\end{api}
+\begin{quote}\footnotesize
+It is used to extract the \emph{user's master key} from a FTMGS group
+member's private key that have been used (a FTMGS signature used as
+authentication method) when the user was authorized to join the
+group. This user's master key will be used in the joining process, and
+it will be embedded into the user's member private key.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void extract_uauth_from_sg(dlog_t* uauth,
+                           const ftmgs_sign_t* sg,
+                           const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It is used to extract the \emph{user's authentication} from a FTMGS
+signature that have been used (a FTMGS signature used as
+authentication method) when the user was authorized to join the
+group. This user's authentication will be used in the joining process,
+and it will be embedded into the member's reference with
+non-repudiation purposes.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void extract_dsa_from_umk(dsa_prkey_t* dsa_sk, const dlogx_t* x);
+\end{api}
+\begin{quote}\footnotesize
+This function is used to extract (and create) a DSA private key from a
+\emph{user's master key} (which can also be extracted from a
+\emph{member's private key}), in this way it discourages the user from
+sharing her member's private keys with other users, since in this
+case, they will be able to recover her DSA private key and it will
+allow them to impersonate the user in a world-wide manner.
+\end{quote}
+%---------------------------------------
+\begin{apix}
+void extract_umk_from_rsa(dlogx_t* x, const rsa_prkey_t* sk);
+\end{apix}
+\begin{quote}\footnotesize
+It is used to extract the \emph{user's master key} from a RSA private
+key that have been used (a RSA signature used as authentication
+method) when the user was authorized to join the group. This user's
+master key will be used in the joining process, and it will be
+embedded into the user's member private key.
+
+$\diamond$ This function is not currently defined in the API. It will
+be included in a next version of this library.
+\end{quote}
+%---------------------------------------
+\begin{apix}
+void extract_uauth_from_rsa(dlog_t* uauth,
+                           const rsa_sign_t* sg,
+                           const rsa_pbkey_t* pk);
+\end{apix}
+\begin{quote}\footnotesize
+It is used to extract the \emph{user's authentication} from a RSA
+signature that have been used (a RSA signature used as
+authentication method) when the user was authorized to join the
+group. This user's authentication will be used in the joining process,
+and it will be embedded into the member's reference with
+non-repudiation purposes.
+
+$\diamond$ This function is not currently defined in the API. It will
+be included in a next version of this library.
+\end{quote}
+%---------------------------------------
+\begin{apix}
+void extract_rsa_from_umk(rsa_prkey_t* rsa_sk, const dlogx_t* x);
+\end{apix}
+\begin{quote}\footnotesize
+This function is used to extract (and create) a RSA private key from a
+\emph{user's master key} (which can also be extracted from a
+\emph{member's private key}), in this way it discourages the user from
+sharing her member's private keys with other users, since in this
+case, they will be able to recover her RSA private key and it will
+allow them to impersonate the user in a world-wide manner.
+
+$\diamond$ This function is not currently defined in the API. It will
+be included in a next version of this library.
+\end{quote}
+%---------------------------------------
+\begin{api}
+ftmgs_retcode_t ftmgs_join_usr(ftmgs_join_prv_t* prv,
+                               ftmgs_join_pbl_t* pbl,
+                               ftmgs_mbr_prkey_t* msk,
+                               const ftmgs_pbkey_t* gpk,
+                               const dlogx_t* umk,
+                               const dlog_t* u_auth,
+                               rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+This function belongs to an iterative protocol, at the user's side, to
+join a new member to a FTMGS group, and therefore it returns
+\verb|FTMGS_UNFINISHED| while the protocol is still unfinished. When
+the protocol is over, then either \verb|FTMGS_OK| or
+\verb|FTMGS_ERROR| is returned to indicate success or failure in the
+operation.
+
+The protocol follows the sequence specified in the diagram in
+section~\ref{seqdia:join}. The protocol starts at the user's side,
+then the private and public outcome (\verb|prv| and \verb|pbl|) are
+stored for the next iteration, and the public outcome (\verb|pbl|) is
+sent (usually its ASN.1 DER encoding) to the group manager, which
+plays its part or the protocol, then the public outcome (\verb|pbl|)
+is stored for the next iteration, and sent (usually its ASN.1 DER
+encoding) again to the user, which plays again this protocol till the
+end. Note that the user's side of the protocol is the starting and
+ending points of the protocol.
+
+As result, if everything was fine, the user gets her \emph{member's
+  private key} (\verb|msk|) that allows her to issue FTMGS group
+signatures, and therefore, being authenticated as a member of the
+group.
+
+If the user was authorized (and authenticated) to join the group by
+any external means, then the \emph{user's master key} (\verb|umk|) and
+\emph{user's authentication} (\verb|u_auth|) should be extracted from
+the external authentication, otherwise they should be
+\verb|NULL|. Note that both, user and group manager, should follow the
+same conventions for these cases in order to play a valid join protocol.
+
+Note that \verb|prv| and \verb|pbl| are used to temporarily hold
+respectively the private and public data between iterations while the
+iterative protocol is being carried out.
+\end{quote}
+%---------------------------------------
+\begin{api}
+ftmgs_retcode_t ftmgs_join_gm(ftmgs_join_pbl_t* pbl,
+                              ftmgs_mbr_ref_t* mr,
+                              const ftmgs_pbkey_t* gpk,
+                              const ftmgs_prkey_t* gsk,
+                              const dlog_t* u_auth,
+                              rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+This function belongs to an iterative protocol, at the group manager's
+side, to join a new member to a FTMGS group, and therefore it returns
+\verb|FTMGS_UNFINISHED| while the protocol is still unfinished. When
+the protocol is over, then either \verb|FTMGS_OK| or
+\verb|FTMGS_ERROR| is returned to indicate success or failure in the
+operation.
+
+The protocol follows the sequence specified in the diagram in
+section~\ref{seqdia:join}. The protocol starts at the user's side,
+then the private and public outcome (\verb|prv| and \verb|pbl|) are
+stored for the next iteration, and the public outcome (\verb|pbl|) is
+sent (usually its ASN.1 DER encoding) to the group manager, which
+plays its part or the protocol, then the public outcome (\verb|pbl|)
+is stored for the next iteration, and sent (usually its ASN.1 DER
+encoding) again to the user, which plays again this protocol till the
+end. Note that the user's side of the protocol is the starting and
+ending points of the protocol.
+
+As result, if everything was fine, the group manager gets the \emph{member's
+  reference} (\verb|mr|) that allows the Judge (with collaboration of
+GM and FAs) opening and reveal operations.
+
+If the user was authorized (and authenticated) to join the group by
+any external means, then the \emph{user's authentication}
+(\verb|u_auth|) should be extracted from the external authentication,
+otherwise it should be \verb|NULL|. Note that both, user and group
+manager, should follow the same conventions for these cases in order
+to play a valid join protocol.
+
+Note that \verb|pbl| is used to temporarily hold the public data
+between iterations while the iterative protocol is being carried out.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_join_log(const ftmgs_mbr_ref_t* mr,
+                           const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if the member's reference
+(\verb|mr|) is consistent and well formed, which means that the
+non-repudiable bindings and proofs still hold, and therefore the
+record has not been manipulated. It returns \verb|FALSE| (\verb|0|)
+otherwise.
+\end{quote} 
+%---------------------------------------
+
+%-------------------------------------------------------------------------------
+\subsection{Signing and Verifying}
+%-------------------------------------------------------------------------------
+
+The following values allow to choose the operation mode for the SHA
+hash engine:
+\begin{code}
+enum sha_mode_t \{
+    Sha1, Sha224, Sha256, Sha384, Sha512
+\};
+\end{code}
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|ftmgs_sign_t|: it holds a FTMGS signature
+  \tuple{T_1,\cdots,T_7,\sigma^{\wp}} issued by a member of the group.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructor, cloner and destructor
+for the aforementioned abstract data type:
+\begin{code}
+ftmgs_sign_t* ftmgs_sign_t_new();
+ftmgs_sign_t* ftmgs_sign_t_clone(const ftmgs_sign_t* o);
+void ftmgs_sign_t_delete(ftmgs_sign_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+The signing process follows the sequence specified in the diagram in
+section~\ref{seqdia:sign}.
+
+\begin{api}
+bool_t ftmgs_sign_dat(unsigned which_sha,
+                     ftmgs_sign_t* sg,
+                     const void* dat, unsigned datlen,
+                     const ftmgs_pbkey_t* gpk,
+                     const ftmgs_mbr_prkey_t* msk,
+                     rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It issues a FTMGS signature (\verb|sg|) for group public key
+(\verb|gpk|) with member's private key (\verb|msk|). The SHA engine,
+as selected by \verb|which_sha| from aforementioned values, is applied
+to some given data bytes (\verb|dat|) of length (\verb|datlen|).
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the signature, the \emph{digest} is
+calculated by applying the selected SHA engine to the user's data, and
+then the signature it is issued over this digest as specified in
+the next functions:\\
+{$\mathit{digest} = \mathrm{SHA}_w(\underbrace{\mathit{dat}}_{\mathit{datlen}})$}
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_dat(unsigned which_sha,
+                      const ftmgs_sign_t* sg,
+                      const void* dat, unsigned datlen,
+                      const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if a FTMGS signature (\verb|sg|) can
+be verified for group public key (\verb|gpk|), and returns
+\verb|FALSE| (\verb|0|) otherwise. The SHA engine, as selected by
+\verb|which_sha| from aforementioned values, is applied to some given
+data bytes (\verb|dat|) of length (\verb|datlen|).
+
+Compatibility note: when verifying a signature, the \emph{digest} is
+calculated by applying the selected SHA engine to the user's data, and
+then the verification it is applied over this digest as specified in
+the next functions:\\
+{$\mathit{digest} = \mathrm{SHA}_w(\underbrace{\mathit{dat}}_{\mathit{datlen}})$}
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_sign_dgst(ftmgs_sign_t* sg,
+                      const void* dat_digest,
+                      unsigned dat_digestlen,
+                      const ftmgs_pbkey_t* gpk,
+                      const ftmgs_mbr_prkey_t* msk,
+                      rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It issues a FTMGS signature (\verb|sg|) for group public key
+(\verb|gpk|) with member's private key (\verb|msk|). The signature is
+applied to some given data digest (\verb|dat_digest|) of length
+(\verb|dat_digestlen|) that has been generated by some hashing
+functions~\ref{hashing}.
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the signature, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c =
+  \mathrm{SHA}_k(\mathit{digest}||B_1||\cdots||B_6||\underbrace{n||\cdots||n}_6||g||h||T_2^{-1}||T_5||T_7||y||T_1^{-1}||a||b||a_0||T_3||T_4||T_6)$}
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_dgst(const ftmgs_sign_t* sg,
+                       const void* dat_digest,
+                       unsigned dat_digestlen,
+                       const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if a FTMGS signature (\verb|sg|) can
+be verified for group public key (\verb|gpk|) , and returns
+\verb|FALSE| (\verb|0|) otherwise. The verification is applied to some
+given data digest (\verb|dat_digest|) of length (\verb|dat_digestlen|)
+that has been generated by some hashing functions~\ref{hashing}.
+
+Compatibility note: when verifying a signature, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c' =
+  \mathrm{SHA}_k(\mathit{digest}||B_1||\cdots||B_6||\underbrace{n||\cdots||n}_6||g||h||T_2^{-1}||T_5||T_7||y||T_1^{-1}||a||b||a_0||T_3||T_4||T_6)$}
+\end{quote}
+%-------------------------------------------------------------------------------
+\subsection{Signature Opening}
+%-------------------------------------------------------------------------------
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|ftmgs_opensharej_t|: it holds a decryption share
+  \tuple{\hat{\omega}_{j\sigma},\hat{\omega}^{\wp}_{j\sigma}} of the
+  opening of a signature.
+\item \verb|ftmgs_openacc_t|: it holds the incremental product of the
+  opening decryption shares.
+\item \verb|ftmgs_open_t|: it holds the member's reference
+  \tuple{\omega_{\sigma}} result of opening a signature.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructors, cloners and destructors
+for the aforementioned abstract data types:
+\begin{code}
+ftmgs_opensharej_t* ftmgs_opensharej_t_new();
+ftmgs_opensharej_t* ftmgs_opensharej_t_clone(const ftmgs_opensharej_t* o);
+void ftmgs_opensharej_t_delete(ftmgs_opensharej_t* p);
+
+ftmgs_openacc_t* ftmgs_openacc_t_new();
+ftmgs_openacc_t* ftmgs_openacc_t_clone(const ftmgs_openacc_t* o);
+void ftmgs_openacc_t_delete(ftmgs_openacc_t* p);
+
+ftmgs_open_t* ftmgs_open_t_new();
+ftmgs_open_t* ftmgs_open_t_clone(const ftmgs_open_t* o);
+void ftmgs_open_t_delete(ftmgs_open_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+The opening process follows the sequence specified in the diagram in
+section~\ref{seqdia:open}.
+
+\begin{api}
+bool_t ftmgs_open_dshare_j(ftmgs_opensharej_t* osj,
+                         const ftmgs_sign_t* sg,
+                         const ftmgs_faj_gr_pbkey_share_t* faj_gpk,
+                         const ftmgs_faj_gr_prkey_t* faj_gsk,
+                         const ftmgs_pbkey_t* gpk,
+                         rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It is used by a fairness authority (with key-pair \verb|faj_gsk| and
+\verb|faj_gpk|) to generate a decryption share (\verb|osj|) of the
+opening of a FTMGS signature (\verb|sg|) for group public key
+\verb|gpk|.
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the proof of correctness, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c =
+  \mathrm{SHA}_k(\mathit{digest}||B_1||B_2||n||n||g||y_j||T_2||\hat{\omega}_{j\sigma})$}
+\\ where 
+$\mathit{digest} = \mathrm{SHA}_k(T_1||\cdots||T_7||c||s_x||s_{x'}||s_e||s_r||s_{h'})$
+\end{quote}
+%---------------------------------------
+\begin{api}
+ftmgs_retcode_t ftmgs_open_sign(ftmgs_open_t* op,
+                                ftmgs_openacc_t* osa,
+                                const ftmgs_sign_t* sg,
+                                const ftmgs_opensharej_t* osj,
+                                const ftmgs_faj_gr_pbkey_share_t* faj_gpk,
+                                const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+This function belongs to an iterative process to incrementally open a
+FTMGS signature (\verb|sg|) for all the fairness authority's opening
+decryption shares (\verb|osj|), and therefore it returns
+\verb|FTMGS_UNFINISHED| while the number of added decryption shares is
+lower that the amount of required fairness authorities. When the
+process is over, then either \verb|FTMGS_OK| or \verb|FTMGS_ERROR| is
+returned to indicate success or failure in the operation.
+
+In case of success, \verb|op| holds the outcome of the opening
+operation, and \verb|osa| is a temporary value that must be held while
+the iterative process is not finished. Note that if the decryption
+share is not properly constructed with respect to the fairness
+authority's public key (\verb|faj_gpk|) and group public key
+(\verb|gpk|), then the operation will fail.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_open_check(const ftmgs_open_t* op,
+                        const ftmgs_mbr_ref_t* mr,
+                        const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It checks if the outcome of the opening of a signature (\verb|op|)
+matches a given member's reference (\verb|mr|), and in such case, it
+also checks that this member's reference is consistent
+(\verb|ftmgs_vrfy_join_log()|).
+
+It returns \verb|TRUE| (\verb|1|) if both match, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+\end{quote}
+%---------------------------------------
+
+%-------------------------------------------------------------------------------
+\subsection{Member Tracing}
+%-------------------------------------------------------------------------------
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|ftmgs_mtkey_sharej_t|: it holds a decryption share
+  \tuple{\hat{\tau}_{ji},\hat{\tau}^{\wp}_{ji}} of the
+  revealing of a member's tracing key.
+\item \verb|ftmgs_mtkey_acc_t|: it holds the incremental product of the
+  revealing decryption shares.
+\item \verb|ftmgs_mtkey_t|: it holds the member's tracing key
+  \tuple{\tau_{i}} result of opening a signature.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructors, cloners and destructors
+for the aforementioned abstract data types:
+\begin{code}
+ftmgs_mtkey_sharej_t* ftmgs_mtkey_sharej_t_new();
+ftmgs_mtkey_sharej_t* ftmgs_mtkey_sharej_t_clone(const ftmgs_mtkey_sharej_t* o);
+void ftmgs_mtkey_sharej_t_delete(ftmgs_mtkey_sharej_t* p);
+
+ftmgs_mtkey_acc_t* ftmgs_mtkey_acc_t_new();
+ftmgs_mtkey_acc_t* ftmgs_mtkey_acc_t_clone(const ftmgs_mtkey_acc_t* o);
+void ftmgs_mtkey_acc_t_delete(ftmgs_mtkey_acc_t* p);
+
+ftmgs_mtkey_t* ftmgs_mtkey_t_new();
+ftmgs_mtkey_t* ftmgs_mtkey_t_clone(const ftmgs_mtkey_t* o);
+void ftmgs_mtkey_t_delete(ftmgs_mtkey_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+The reveal process follows the sequence specified in the diagram in
+section~\ref{seqdia:reveal}.
+
+\begin{api}
+bool_t ftmgs_reveal_dshare_j(ftmgs_mtkey_sharej_t* mtk_shj,
+                             const ftmgs_mbr_ref_t* mr,
+                             const ftmgs_faj_pbkey_share_t* faj_pk,
+                             const ftmgs_faj_prkey_t* faj_sk,
+                             const ftmgs_pbkey_t* gpk,
+                             rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It is used by a fairness authority (with key-pair \verb|faj_sk| and
+\verb|faj_pk|) to generate a decryption share (\verb|mtk_shj|) of the
+revealing the member's tracing key of a member's reference (\verb|mr|)
+for group public key \verb|gpk|. It also checks that this member's
+reference is consistent (\verb|ftmgs_vrfy_join_log()|).
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the proof of correctness, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c =
+  \mathrm{SHA}_k(\mathit{digest}||B_1||B_2||\hat{n}^2||\hat{n}^2||\hat{g}||\hat{y}_j||U_i||\hat{\tau}_{ji})$}
+\\ where 
+$\mathit{digest} = \mathrm{SHA}_k(A_i||e_i||C_i||X_i||U_i||V_i||g||y||n||c||s_{x'}||s_r||s_x)$
+\end{quote}
+%---------------------------------------
+\begin{api}
+ftmgs_retcode_t ftmgs_reveal_mtkey(ftmgs_mtkey_t* mtk,
+                                   ftmgs_mtkey_acc_t* mtka,
+                                   const ftmgs_mtkey_sharej_t* mtk_shj,
+                                   const ftmgs_mbr_ref_t* mr,
+                                   const ftmgs_faj_pbkey_share_t* faj_pk,
+                                   const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+This function belongs to an iterative process to incrementally reveal
+a member's tracing key for a given member's reference (\verb|mr|) for
+all the fairness authority's revealing decryption shares (\verb|mtk_shj|),
+and therefore it returns \verb|FTMGS_UNFINISHED| while the number of
+added decryption shares is lower that the amount of required fairness
+authorities. When the process is over, then either \verb|FTMGS_OK| or
+\verb|FTMGS_ERROR| is returned to indicate success or failure in the
+operation.
+
+In case of success, \verb|mtk| holds the outcome of the reveal
+operation, and \verb|mtka| is a temporary value that must be held while
+the iterative process is not finished. Note that if the decryption
+share is not properly constructed with respect to the fairness
+authority's public key (\verb|faj_pk|) and group public key
+(\verb|gpk|), then the operation will fail.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_trace(const ftmgs_sign_t* sg, const ftmgs_mtkey_t* mtk);
+\end{api}
+\begin{quote}\footnotesize
+It checks if the outcome of revealing a member's tracing key (\verb|mtk|)
+matches a given group signature (\verb|sg|).
+
+It returns \verb|TRUE| (\verb|1|) if both match, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+\end{quote}
+%---------------------------------------
+
+%-------------------------------------------------------------------------------
+\subsection{Claiming Authorship}
+%-------------------------------------------------------------------------------
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|ftmgs_claim_t|: it holds the proof \tuple{\pi^{\wp}} of
+  the claiming of a signature authorship.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructor, cloner and destructor
+for the aforementioned abstract data type:
+\begin{code}
+ftmgs_claim_t* ftmgs_claim_t_new();
+ftmgs_claim_t* ftmgs_claim_t_clone(const ftmgs_claim_t* o);
+void ftmgs_claim_t_delete(ftmgs_claim_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_claim_dat(unsigned which_sha,
+                       ftmgs_claim_t* clm,
+                       const ftmgs_sign_t* sg,
+                       const void* dat,
+                       unsigned datlen,
+                       const ftmgs_pbkey_t* gpk,
+                       const ftmgs_mbr_prkey_t* msk,
+                       rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It issues a FTMGS claim (\verb|clm|) for group public key (\verb|gpk|)
+with member's private key (\verb|msk|) for a signature
+(\verb|sg|). The SHA engine, as selected by \verb|which_sha| from
+aforementioned values, is applied to some given data bytes
+(\verb|dat|) of length (\verb|datlen|).
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the claim, the \emph{digest} is
+calculated by applying the selected SHA engine to the user's data, and
+then the claim it is issued over this digest as specified in
+the next functions:\\
+{$\mathit{digest} = \mathrm{SHA}_w(\underbrace{\mathit{dat}}_{\mathit{datlen}})$}
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_claim_dat(unsigned which_sha,
+                            const ftmgs_claim_t* clm,
+                            const ftmgs_sign_t* sg,
+                            const void* dat,
+                            unsigned datlen,
+                            const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if a FTMGS claim (\verb|clm|) can be
+verified for signature (\verb|sg|) and group public key (\verb|gpk|),
+and returns \verb|FALSE| (\verb|0|) otherwise. The SHA engine, as
+selected by \verb|which_sha| from aforementioned values, is applied to
+some given data bytes (\verb|dat|) of length (\verb|datlen|).
+
+Compatibility note: when verifying a claim, the \emph{digest} is
+calculated by applying the selected SHA engine to the user's data, and
+then the verification it is applied over this digest as specified in
+the next functions:\\
+{$\mathit{digest} = \mathrm{SHA}_w(\underbrace{\mathit{dat}}_{\mathit{datlen}})$}
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_claim_dgst(ftmgs_claim_t* clm,
+                        const ftmgs_sign_t* sg,
+                        const void* dat_digest,
+                        unsigned dat_digestlen,
+                        const ftmgs_pbkey_t* gpk,
+                        const ftmgs_mbr_prkey_t* msk,
+                        rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It issues a FTMGS claim (\verb|clm|) for group public key (\verb|gpk|)
+with member's private key (\verb|msk|) for a signature (\verb|sg|).
+The claim is applied to some given data digest (\verb|dat_digest|) of
+length (\verb|dat_digestlen|) that has been generated by some hashing
+functions~\ref{hashing}.
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the claim, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c =
+  \mathrm{SHA}_k(\mathit{dgst}||B_1||n||T_7||T_6)$}
+\\ where 
+$\mathit{dgst} = \mathrm{SHA}_k(\mathit{digest}||T_1||\cdots||T_7||c||s_x||s_{x'}||s_e||s_r||s_{h'})$
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_claim_dgst(const ftmgs_claim_t* clm,
+                             const ftmgs_sign_t* sg,
+                             const void* dat_digest,
+                             unsigned dat_digestlen,
+                             const ftmgs_pbkey_t* gpk);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if a FTMGS claim (\verb|clm|) can be
+verified for signature (\verb|sg|) and group public key (\verb|gpk|),
+and returns \verb|FALSE| (\verb|0|) otherwise.  The verification is
+applied to some given data digest (\verb|dat_digest|) of length
+(\verb|dat_digestlen|) that has been generated by some hashing
+functions~\ref{hashing}.
+
+Compatibility note: when verifying the claim, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c =
+  \mathrm{SHA}_k(\mathit{dgst}||B_1||n||T_7||T_6)$}
+\\ where 
+$\mathit{dgst} = \mathrm{SHA}_k(\mathit{digest}||T_1||\cdots||T_7||c||s_x||s_{x'}||s_e||s_r||s_{h'})$
+\end{quote}
+
+%-------------------------------------------------------------------------------
+\subsection{Linking Signatures}
+%-------------------------------------------------------------------------------
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|ftmgs_link_t|: it holds the proof \tuple{\lambda^{\wp}} of
+  the linking of several FTMGS signatures.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructor, cloner and destructor
+for the aforementioned abstract data type:
+\begin{code}
+ftmgs_link_t* ftmgs_link_t_new();
+ftmgs_link_t* ftmgs_link_t_clone(const ftmgs_link_t* o);
+void ftmgs_link_t_delete(ftmgs_link_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_link_dat(unsigned which_sha,
+                      ftmgs_link_t* lnk,
+                      const void* dat, unsigned datlen,
+                      const ftmgs_sign_t* sg0,
+                      const ftmgs_pbkey_t* gpk0,
+                      const ftmgs_sign_t* sg1,
+                      const ftmgs_pbkey_t* gpk1,
+                      const ftmgs_mbr_prkey_t* msk,
+                      rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It issues a FTMGS link (\verb|lnk|) with member's private key
+(\verb|msk|) for two signatures (\verb|sg0|, \verb|sg1|) for group public keys
+(\verb|gpk0|, \verb|gpk1|). The SHA engine, as selected by
+\verb|which_sha| from aforementioned values, is applied to some given
+data bytes (\verb|dat|) of length (\verb|datlen|).
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the link, the \emph{digest} is
+calculated by applying the selected SHA engine to the user's data, and
+then the link it is issued over this digest as specified in
+the next functions:\\
+{$\mathit{digest} = \mathrm{SHA}_w(\underbrace{\mathit{dat}}_{\mathit{datlen}})$}
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_link_dat(unsigned which_sha,
+                           const ftmgs_link_t* lnk,
+                           const void* dat, unsigned datlen,
+                           const ftmgs_sign_t* sg0,
+                           const ftmgs_pbkey_t* gpk0,
+                           const ftmgs_sign_t* sg1,
+                           const ftmgs_pbkey_t* gpk1);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if a FTMGS link (\verb|lnk|) can be
+verified for signatures (\verb|sg0|, \verb|sg1|) and group public keys
+(\verb|gpk0|, \verb|gpk1|), and returns \verb|FALSE| (\verb|0|)
+otherwise. The SHA engine, as selected by \verb|which_sha| from
+aforementioned values, is applied to some given data bytes
+(\verb|dat|) of length (\verb|datlen|).
+
+Compatibility note: when verifying a link, the \emph{digest} is
+calculated by applying the selected SHA engine to the user's data, and
+then the verification it is applied over this digest as specified in
+the next functions:\\
+{$\mathit{digest} = \mathrm{SHA}_w(\underbrace{\mathit{dat}}_{\mathit{datlen}})$}
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_link_m_dat(unsigned which_sha,
+                        ftmgs_link_t* lnk,
+                        const void* dat,
+                        unsigned datlen,
+                        unsigned nsg,
+                        const ftmgs_sign_t* sg[],
+                        const ftmgs_pbkey_t* gpk[],
+                        const ftmgs_mbr_prkey_t* msk,
+                        rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It is the same as previous \verb|ftmgs_link_dat()|, but applied to an
+array of signatures.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_link_m_dat(unsigned which_sha,
+                             const ftmgs_link_t* lnk,
+                             const void* dat,
+                             unsigned datlen,
+                             unsigned nsg,
+                             const ftmgs_sign_t* sg[],
+                             const ftmgs_pbkey_t* gpk[]);
+\end{api}
+\begin{quote}\footnotesize
+It is the same as previous \verb|ftmgs_vrfy_link_dat()|, but applied to an
+array of signatures.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_link_dgst(ftmgs_link_t* lnk,
+                       const void* dat_digest,
+                       unsigned dat_digestlen,
+                       const ftmgs_sign_t* sg0,
+                       const ftmgs_pbkey_t* gpk0,
+                       const ftmgs_sign_t* sg1,
+                       const ftmgs_pbkey_t* gpk1,
+                       const ftmgs_mbr_prkey_t* msk,
+                       rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It issues a FTMGS link (\verb|lnk|) with member's private key
+(\verb|msk|) for two signatures (\verb|sg0|, \verb|sg1|) for group
+public keys (\verb|gpk0|, \verb|gpk1|). The link is applied to some
+given data digest (\verb|dat_digest|) of length (\verb|dat_digestlen|)
+that has been generated by some hashing functions~\ref{hashing}.
+
+It returns \verb|TRUE| (\verb|1|) if everything was fine, and returns
+\verb|FALSE| (\verb|0|) otherwise.
+
+Compatibility note: when issuing the link, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c =
+  \mathrm{SHA}_k(\mathit{dgst}||B_1||B_2||n_1||n_2||T_{17}||T_{16}||T_{27}||T_{26})$}
+\\ where 
+$\mathit{dgst} = \mathrm{SHA}_k(\mathit{digest}||T_{11}||\cdots||T_{17}||c_1||s_{1x}||s_{1x'}||s_{1e}||s_{1r}||s_{1h'}||T_{21}||\cdots||T_{27}||c_2||s_{2x}||s_{2x'}||s_{2e}||s_{2r}||s_{2h'})$
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_link_dgst(const ftmgs_link_t* lnk,
+                            const void* dat_digest,
+                            unsigned dat_digestlen,
+                            const ftmgs_sign_t* sg0,
+                            const ftmgs_pbkey_t* gpk0,
+                            const ftmgs_sign_t* sg1,
+                            const ftmgs_pbkey_t* gpk1);
+\end{api}
+\begin{quote}\footnotesize
+It returns \verb|TRUE| (\verb|1|) if a FTMGS link (\verb|lnk|) can be
+verified for signatures (\verb|sg0|, \verb|sg1|) and group public keys
+(\verb|gpk0|, \verb|gpk1|), and returns \verb|FALSE| (\verb|0|)
+otherwise. The verification is applied to some given data digest
+(\verb|dat_digest|) of length (\verb|dat_digestlen|) that has been
+generated by some hashing functions~\ref{hashing}.
+
+Compatibility note: when verifying the link, the SHA hash
+(truncated to security parameter $k$ bits) is applied to the following
+data in the same order as specified (numbers are represented as a
+\emph{big-endian} byte sequence):\\ {$c =
+  \mathrm{SHA}_k(\mathit{dgst}||B_1||B_2||n_1||n_2||T_{17}||T_{16}||T_{27}||T_{26})$}
+\\ where 
+$\mathit{dgst} = \mathrm{SHA}_k(\mathit{digest}||T_{11}||\cdots||T_{17}||c_1||s_{1x}||s_{1x'}||s_{1e}||s_{1r}||s_{1h'}||T_{21}||\cdots||T_{27}||c_2||s_{2x}||s_{2x'}||s_{2e}||s_{2r}||s_{2h'})$
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_link_m_dgst(ftmgs_link_t* lnk,
+                         const void* dat_digest,
+                         unsigned dat_digestlen,
+                         unsigned nsg,
+                         const ftmgs_sign_t* sg[],
+                         const ftmgs_pbkey_t* gpk[],
+                         const ftmgs_mbr_prkey_t* msk,
+                         rndctx_t* rnd_ctx);
+\end{api}
+\begin{quote}\footnotesize
+It is the same as previous \verb|ftmgs_link_m_dgst()|, but applied to an
+array of signatures.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t ftmgs_vrfy_link_m_dgst(const ftmgs_link_t* lnk,
+                              const void* dat_digest,
+                              unsigned dat_digestlen,
+                              unsigned nsg,
+                              const ftmgs_sign_t* sg[],
+                              const ftmgs_pbkey_t* gpk[]);
+\end{api}
+\begin{quote}\footnotesize
+It is the same as previous \verb|ftmgs_vrfy_link_m_dgst()|, but applied to an
+array of signatures.
+\end{quote}
+
+%-------------------------------------------------------------------------------
+\subsection{Hashing}\label{hashing}
+%-------------------------------------------------------------------------------
+
+The hash API may be used to create the digest of some data that is not
+directly available as an array of contiguous data bytes.
+
+The following values allow to choose the operation mode for the SHA
+hash engine, as well as the length (in bytes) of the hash digest:
+\begin{code}
+enum sha_mode_t \{
+    Sha1, Sha224, Sha256, Sha384, Sha512
+\};
+enum sha_size_t \{
+    Sha1Size = 20, Sha224Size = 28, Sha256Size = 32,
+    Sha384Size = 48, Sha512Size = 64, ShaMaxSize = Sha512Size
+\};
+\end{code}
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|shactx_t|: it is used to hold the internal context of the
+  SHA engine.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructor, cloner and destructor
+for the aforementioned abstract data type:
+\begin{code}
+shactx_t* shactx_t_new();
+shactx_t* shactx_t_clone(const shactx_t* o);
+void shactx_t_delete(shactx_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+\begin{api}
+bool_t sha_reset(shactx_t* sha_ctx, unsigned sha_mode);
+\end{api}
+\begin{quote}\footnotesize
+It resets the context for the SHA engine, as selected by
+\verb|sha_mode| from the aforementioned values.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t sha_input(shactx_t* sha_ctx, const void* dat, unsigned datlen);
+\end{api}
+\begin{quote}\footnotesize
+It incrementally incorporates a sequence of \verb|datlen| bytes stored
+in \verb|dat| to the SHA context.
+\end{quote}
+%---------------------------------------
+\begin{api}
+bool_t sha_result(shactx_t* sha_ctx, void* dat_digest, unsigned* digestlen);
+\end{api}
+\begin{quote}\footnotesize
+It generates a \emph{digest} of the data previously incorporated into
+the SHA context. This digest is stored into \verb|dat_digest|, which
+should have enough allocated memory to hold the result, which is
+specified by \verb|digestlen| (a maximum value requests the length
+specified for the previously selected SHA engine, see aforementioned
+values for sha sizes). As result, \verb|digestlen| also holds the
+length of the generated digest.
+\end{quote}
+
+%-------------------------------------------------------------------------------
+\subsection{Data Buffer}
+%-------------------------------------------------------------------------------
+
+The data buffer is used to hold a buffer of bytes representing the
+ASN.1 DER encoding of some abstract data type.
+
+%---------------------------------------
+\subsubsection*{Abstract Data Types}
+%---------------------------------------
+\begin{itemize}\small
+\item \verb|buffer_t|: it holds a buffer of bytes dynamically
+  allocated in the heap. It holds \emph{data} in a memory with a
+  \emph{maxsize} that can be expanded or shrinked as required, as well
+  as the \emph{size} of the data currently stored in the buffer.
+\end{itemize}
+%---------------------------------------
+\subsubsection*{Construction, Copy and Destruction}
+%---------------------------------------
+The following functions declare the constructor, cloner and destructor
+for the aforementioned abstract data type:
+\begin{code}
+buffer_t* buffer_t_new();
+buffer_t* buffer_t_clone(const buffer_t* o);
+void buffer_t_delete(buffer_t* p);
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+\begin{api}
+char* buffer_data(const buffer_t* buff);
+\end{api}
+\begin{quote}\footnotesize
+It returns a pointer to the data bytes stored in the buffer.
+\end{quote}
+%---------------------------------------
+\begin{api}
+unsigned buffer_size(const buffer_t* buff);
+\end{api}
+\begin{quote}\footnotesize
+It returns the size of the data bytes stored in the buffer.
+\end{quote}
+%---------------------------------------
+\begin{api}
+unsigned buffer_maxsize(const buffer_t* buff);
+\end{api}
+\begin{quote}\footnotesize
+It returns the size of the memory already allocated in the buffer to
+hold the data bytes.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_reserve(buffer_t* buff, unsigned maxsz);
+\end{api}
+\begin{quote}\footnotesize
+If \verb|maxsz > buffer_maxsize(buff)|, then it increments the size of the
+memory already allocated in the buffer to the value of \verb|maxsz|.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_shrink(buffer_t* buff);
+\end{api}
+\begin{quote}\footnotesize
+If \verb|maxsz > buffer_size(buff)+1|, then it shrinks the size of the
+memory already allocated in the buffer to the value of \verb|buffer_size(buff)+1|.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_reset(buffer_t* buff);
+\end{api}
+\begin{quote}\footnotesize
+It resets the size and maxsize of the buffer to zero, as well as
+deallocates the reserved memory.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_clear(buffer_t* buff);
+\end{api}
+\begin{quote}\footnotesize
+It resets the size and maxsize of the buffer to zero.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_resize(buffer_t* buff, unsigned newsz);
+\end{api}
+\begin{quote}\footnotesize
+It increments the size of the data bytes already stored in the buffer.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_push(buffer_t* buff, const void* dat, unsigned datlen);
+\end{api}
+\begin{quote}\footnotesize
+It appends \verb|datlen| bytes of data pointed to by \verb|dat| to the
+currently stored data in the buffer.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_push_str(buffer_t* buff, const char* str);
+\end{api}
+\begin{quote}\footnotesize
+It appends the bytes of a null terminated string of chars pointed to
+by \verb|str| to the currently stored data in the buffer, as well as
+it also puts the null termination char (\verb|'\0'|), but it is not
+included in the count of stored data.
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_push_buf(buffer_t* buff, const buffer_t* b);  /* MACRO */
+\end{api}
+\begin{quote}\footnotesize
+\begin{code}
+buffer_push(buff, buffer_data(b), buffer_size(b));
+\end{code}
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_resize_add(buffer_t* buff, unsigned sz);      /* MACRO */
+\end{api}
+\begin{quote}\footnotesize
+\begin{code}
+buffer_resize(buff, buffer_size(buffer)+sz);
+\end{code}
+\end{quote}
+%---------------------------------------
+\begin{api}
+void buffer_reserve_add(buffer_t* buff, unsigned sz);     /* MACRO */
+\end{api}
+\begin{quote}\footnotesize
+\begin{code}
+buffer_reserve(buff, buffer_size(buffer)+sz+1);
+\end{code}
+\end{quote}
+%---------------------------------------
+
+%-------------------------------------------------------------------------------
+\subsection{ASN.1 Conversion of Data Structures}
+%-------------------------------------------------------------------------------
+The following values define the return codes from the ASN.1 conversion functions:
+\begin{code}
+typedef enum asn1_retcode_t \{
+    ASN1_Success,
+    ASN1_File_Not_Found,
+    ASN1_Element_Not_Found,
+    ASN1_Identifier_Not_Found,
+    ASN1_Der_Error,
+    ASN1_Value_Not_Found,
+    ASN1_Generic_Error,
+    ASN1_Value_Not_Valid,
+    ASN1_Tag_Error,
+    ASN1_Tag_Implicit,
+    ASN1_Error_Type_Any,
+    ASN1_Syntax_Error,
+    ASN1_Mem_Error,
+    ASN1_Mem_Alloc_Error,
+    ASN1_Der_Overflow,
+    ASN1_Name_Too_Long,
+    ASN1_Array_Error,
+    ASN1_Element_Not_Empty
+\} asn1_retcode_t;
+\end{code}
+%---------------------------------------
+\subsubsection*{API}
+%---------------------------------------
+The following functions allow to encode in ASN.1 DER each of the
+aforementioned abstract data types, storing the result in the
+aforementioned \verb|buffer_t| buffer of bytes. They also allow to
+decode from a buffer of bytes in ASN.1 DER to any of the
+aforementioned abstract data types:
+\begin{code}
+asn1_retcode_t asn1_enc_dssparms(buffer_t* buff, const dss_parms_t* p);
+asn1_retcode_t asn1_dec_dssparms(dss_parms_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_dsapbkey(buffer_t* buff, const dsa_pbkey_t* p);
+asn1_retcode_t asn1_dec_dsapbkey(dsa_pbkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_dsaprkey(buffer_t* buff, const dsa_prkey_t* p);
+asn1_retcode_t asn1_dec_dsaprkey(dsa_prkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_fapbkey(buffer_t* buff, const ftmgs_fa_pbkey_t* p);
+asn1_retcode_t asn1_dec_fapbkey(ftmgs_fa_pbkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_grpbkey(buffer_t* buff, const ftmgs_pbkey_t* p);
+asn1_retcode_t asn1_dec_grpbkey(ftmgs_pbkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_grprkey(buffer_t* buff, const ftmgs_prkey_t* p);
+asn1_retcode_t asn1_dec_grprkey(ftmgs_prkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_fapbkeysh(buffer_t* buff, const ftmgs_faj_pbkey_share_t* p);
+asn1_retcode_t asn1_dec_fapbkeysh(ftmgs_faj_pbkey_share_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_faprkey(buffer_t* buff, const ftmgs_faj_prkey_t* p);
+asn1_retcode_t asn1_dec_faprkey(ftmgs_faj_prkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_fagrpbkeysh(buffer_t* buff, const ftmgs_faj_gr_pbkey_share_t* p);
+asn1_retcode_t asn1_dec_fagrpbkeysh(ftmgs_faj_gr_pbkey_share_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_fagrprkey(buffer_t* buff, const ftmgs_faj_gr_prkey_t* p);
+asn1_retcode_t asn1_dec_fagrprkey(ftmgs_faj_gr_prkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_dlog(buffer_t* buff, const dlog_t* p);
+asn1_retcode_t asn1_dec_dlog(dlog_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_dlogx(buffer_t* buff, const dlogx_t* p);
+asn1_retcode_t asn1_dec_dlogx(dlogx_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_joinpbl(buffer_t* buff, const ftmgs_join_pbl_t* p);
+asn1_retcode_t asn1_dec_joinpbl(ftmgs_join_pbl_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_joinprv(buffer_t* buff, const ftmgs_join_prv_t* p);
+asn1_retcode_t asn1_dec_joinprv(ftmgs_join_prv_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_mbrref(buffer_t* buff, const ftmgs_mbr_ref_t* p);
+asn1_retcode_t asn1_dec_mbrref(ftmgs_mbr_ref_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_mbrprkey(buffer_t* buff, const ftmgs_mbr_prkey_t* p);
+asn1_retcode_t asn1_dec_mbrprkey(ftmgs_mbr_prkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_sign(buffer_t* buff, const ftmgs_sign_t* p);
+asn1_retcode_t asn1_dec_sign(ftmgs_sign_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_openshare(buffer_t* buff, const ftmgs_opensharej_t* p);
+asn1_retcode_t asn1_dec_openshare(ftmgs_opensharej_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_openacc(buffer_t* buff, const ftmgs_openacc_t* p);
+asn1_retcode_t asn1_dec_openacc(ftmgs_openacc_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_open(buffer_t* buff, const ftmgs_open_t* p);
+asn1_retcode_t asn1_dec_open(ftmgs_open_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_mtkeyshare(buffer_t* buff, const ftmgs_mtkey_sharej_t* p);
+asn1_retcode_t asn1_dec_mtkeyshare(ftmgs_mtkey_sharej_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_mtkeyacc(buffer_t* buff, const ftmgs_mtkey_acc_t* p);
+asn1_retcode_t asn1_dec_mtkeyacc(ftmgs_mtkey_acc_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_mtkey(buffer_t* buff, const ftmgs_mtkey_t* p);
+asn1_retcode_t asn1_dec_mtkey(ftmgs_mtkey_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_claim(buffer_t* buff, const ftmgs_claim_t* p);
+asn1_retcode_t asn1_dec_claim(ftmgs_claim_t* p, const void* buff, int len);
+
+asn1_retcode_t asn1_enc_link(buffer_t* buff, const ftmgs_link_t* p);
+asn1_retcode_t asn1_dec_link(ftmgs_link_t* p, const void* buff, int len);
+\end{code}
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\section{ASN.1 Definition of FTMGS Data Structures}
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\subsection{Size of ASN.1 DER Encoding of FTMGS Data Structures}
+%-------------------------------------------------------------------------------
+\newcommand{\tpsz}[2]{\begin{tabular}{c}\texttt{#1}\\#2\end{tabular}}
+
+Size (in bytes) of the ASN.1 DER encoding of FTMGS data structures for
+the following security parameters [Nu: 1024, K: 128].
+
+\subsubsection*{Group Setup}
+{\noindent\footnotesize
+\tpsz{ftmgs\_fa\_pbkey\_t}{412}
+\tpsz{ftmgs\_pbkey\_t}{1607}
+\tpsz{ftmgs\_prkey\_t}{137}
+\tpsz{ftmgs\_faj\_pbkey\_share\_t}{264}
+\tpsz{ftmgs\_faj\_prkey\_t}{264}
+\tpsz{ftmgs\_faj\_gr\_pbkey\_share\_t}{266}
+\tpsz{ftmgs\_faj\_gr\_prkey\_t}{68}
+}
+
+\subsubsection*{Join New Member (without User's Authentication)}
+{\noindent\footnotesize
+\tpsz{ftmgs\_join\_prv\_t:u1}{352}
+\tpsz{ftmgs\_join\_pbl\_t:u1}{751}
+\tpsz{ftmgs\_join\_pbl\_t:gm2}{54}
+\tpsz{ftmgs\_join\_prv\_t:u3}{207}
+\tpsz{ftmgs\_join\_pbl\_t:u3}{1326}
+\tpsz{ftmgs\_join\_pbl\_t:gm4}{240}
+\tpsz{ftmgs\_mbr\_ref\_t}{1282}
+\tpsz{ftmgs\_mbr\_prkey\_t}{336}
+}
+
+\subsubsection*{Join New Member (with User's DSA Authentication)}
+{\noindent\footnotesize
+\tpsz{dss\_parms\_t}{290}
+\tpsz{dsa\_pbkey\_t}{132}
+\tpsz{dsa\_prkey\_t}{22}
+\tpsz{dlogx\_t}{24}
+\tpsz{dlog\_t}{399}
+}
+
+{\noindent\footnotesize
+\tpsz{ftmgs\_join\_prv\_t:u1}{340}
+\tpsz{ftmgs\_join\_pbl\_t:u1}{750}
+\tpsz{ftmgs\_join\_pbl\_t:gm2}{54}
+\tpsz{ftmgs\_join\_prv\_t:u3}{207}
+\tpsz{ftmgs\_join\_pbl\_t:u3}{1345}
+\tpsz{ftmgs\_join\_pbl\_t:gm4}{240}
+\tpsz{ftmgs\_mbr\_ref\_t}{1688}
+\tpsz{ftmgs\_mbr\_prkey\_t}{324}
+}
+
+\subsubsection*{Sign / Verify}
+{\noindent\footnotesize
+\tpsz{ftmgs\_sign\_t}{1308}
+\tpsz{ftmgs\_sign\_t}{(with user's auth)\\1326}
+}
+
+\subsubsection*{Open / Check}
+{\noindent\footnotesize
+\tpsz{ftmgs\_opensharej\_t}{218}
+\tpsz{ftmgs\_openacc\_t}{137}
+\tpsz{ftmgs\_open\_t}{134}
+}
+
+\subsubsection*{Reveal / Trace}
+{\noindent\footnotesize
+\tpsz{ftmgs\_mtkey\_sharej\_t}{542}
+\tpsz{ftmgs\_mtkey\_acc\_t}{267}
+\tpsz{ftmgs\_mtkey\_t}{201}
+}
+
+\subsubsection*{Claim}
+{\noindent\footnotesize
+\tpsz{ftmgs\_claim\_t}{55}
+\tpsz{ftmgs\_claim\_t}{(with user's auth)\\73}
+}
+
+\subsubsection*{Link}
+{\noindent\footnotesize
+\tpsz{ftmgs\_link\_t}{55}
+\tpsz{ftmgs\_link\_t}{(with user's auth)\\73}
+}
+
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\subsection{ASN.1 Definition of FTMGS Data Structures}
+%-------------------------------------------------------------------------------
+\begin{quote}\footnotesize
+\begin{verbatim}
+Ftmgs { 1 2 3 4 }   -- DUMMY OID
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+
+-- DSA
+id-dsa-base OBJECT IDENTIFIER ::= {
+    iso(1) member-body(2) us(840) x9-57(10040) x9cm(4) 
+}
+
+id-dsa OBJECT IDENTIFIER ::= {
+    id-dsa-base 1 
+}
+
+id-dsa-with-sha1 OBJECT IDENTIFIER ::=  {
+    id-dsa-base 3
+}
+
+-- RFC-3279
+Dss-Parms ::= SEQUENCE  {
+    p       INTEGER,
+    q       INTEGER,
+    g       INTEGER  
+}
+
+-- RFC-3279
+DSAPublicKey ::= INTEGER -- public key, Y 
+
+-- RFC-5958 pg.5
+DSAPrivateKey ::= INTEGER -- private key, x
+
+-- RFC-3279
+Dss-Sig-Value ::=  SEQUENCE  {
+    r       INTEGER,
+    s       INTEGER  
+}
+
+-- Object Identifiers
+id-ftmgs-base OBJECT IDENTIFIER ::= {
+    1 2 3 4   -- some arcs to be registered DUMMY OID
+}
+
+id-ftmgs OBJECT IDENTIFIER ::= {
+    id-ftmgs-base 1 
+}
+
+id-ftmgs-with-sha1 OBJECT IDENTIFIER ::=  {
+    id-ftmgs-base 3 
+}
+
+id-ftmgs-with-sha256 OBJECT IDENTIFIER ::=  {
+    id-ftmgs-base 5 
+}
+
+id-ftmgs-with-sha512 OBJECT IDENTIFIER ::=  {
+    id-ftmgs-base 7 
+}
+
+-- Unsigned Small Integer (16 bits)
+UInt16 ::= INTEGER (0..65535)
+
+-- Syspar Structure Definition
+SysPar ::= SEQUENCE {
+    nu  UInt16,
+    k   UInt16
+}
+
+-- Fairness Authorities' Public Key
+FAPbKey ::= SEQUENCE {
+    sp      SysPar,
+    nkeys   UInt16,
+    n       INTEGER,
+    g       INTEGER,
+    y       INTEGER
+}
+
+-- Fairness Authorities' Group Public Key
+FAGrPbKey ::= SEQUENCE {
+    sp      SysPar,
+    nkeys   UInt16,
+    n       INTEGER,
+    g       INTEGER,
+    y       INTEGER
+}
+
+-- Group Public Key
+GrPbKey ::= SEQUENCE {
+    gmpk    FAGrPbKey,
+    a0      INTEGER,
+    a       INTEGER,
+    b       INTEGER,
+    h       INTEGER,
+    fapk    FAPbKey
+}
+
+-- Group Manager's Private Key [JOIN]
+GrPrKey ::= SEQUENCE {
+    p   INTEGER,
+    q   INTEGER
+}
+
+-- Fairness Authority's Public Key
+FAPbKeyShare ::= SEQUENCE {
+    yj      INTEGER
+}
+
+-- Fairness Authority's Private Key [REVEAL]
+FAPrKey ::= SEQUENCE {
+    xj      INTEGER
+}
+
+-- Fairness Authority's Group Public Key
+FAGrPbKeyShare ::= SEQUENCE {
+    yj      INTEGER,
+    hj      INTEGER
+}
+
+-- Fairness Authority's Group Private Key [OPEN]
+FAGrPrKey ::= SEQUENCE {
+    xj      INTEGER
+}
+
+-- User's Master Public Key (from DSA or FTMGS-Signature)
+DLog ::= SEQUENCE {
+    n           INTEGER,
+    g           INTEGER,
+    y           INTEGER
+}
+
+-- User's Master Private Key (from DSA o FTMGS-Signature)
+DLogX ::= SEQUENCE {
+    x           INTEGER
+}
+
+-- Join Proof
+JoinProof ::= SEQUENCE {
+    c           INTEGER,
+    sx1         INTEGER,
+    sr          INTEGER,
+    sx          INTEGER
+}
+
+JoinU1Prv ::= SEQUENCE {
+    nadrp-xx    INTEGER,
+    nadrp-rr    INTEGER,
+    x1i         INTEGER
+}
+
+JoinU1Pbl ::= SEQUENCE {
+    nadrp-C1    INTEGER,
+    nadrp-C2    INTEGER,
+    nadrp-c     INTEGER,
+    nadrp-sx    INTEGER,
+    nadrp-sr    INTEGER,
+    ci          INTEGER
+}
+
+JoinGM2Pbl ::= SEQUENCE {
+    nadrp-yy    INTEGER
+}
+
+JoinU3Prv ::= SEQUENCE {
+    nadrp-x     INTEGER,
+    xi          INTEGER
+}
+
+JoinU3Pbl ::= SEQUENCE {
+    nadrp-C3    INTEGER,
+    nadrp-c     INTEGER,
+    nadrp-sx    INTEGER,
+    nadrp-sz    INTEGER,
+    nadrp-sr    INTEGER,
+    ui          INTEGER,
+    vi          INTEGER,
+    eiproof     JoinProof
+}
+
+JoinGM4Pbl ::= SEQUENCE {
+    ai          INTEGER,
+    ei          INTEGER
+}
+
+JoinPbl ::= SEQUENCE {
+    status  UInt16,
+    data CHOICE {
+        u1      [0] JoinU1Pbl,
+        gm2     [1] JoinGM2Pbl,
+        u3      [2] JoinU3Pbl,
+        gm4     [3] JoinGM4Pbl,
+        error   [4] NULL
+    }
+}
+
+JoinPrv ::= SEQUENCE {
+    status  UInt16,
+    data CHOICE {
+        u1      [0] JoinU1Prv,
+        u3      [1] JoinU3Prv,
+        error   [2] NULL
+    }
+}
+
+-- Member's Reference
+MbrRef ::= SEQUENCE {
+    ai          INTEGER,
+    ei          INTEGER,
+    ci          INTEGER,
+    xi          INTEGER,
+    ui          INTEGER,
+    vi          INTEGER,
+    uauth   [0] DLog        OPTIONAL,
+    eiproof     JoinProof
+}
+
+-- Member's Private Key
+MbrPrKey ::= SEQUENCE {
+    ai          INTEGER,
+    ei          INTEGER,
+    xi          INTEGER,
+    x1i         INTEGER
+}
+
+-- Sign
+Sign ::= SEQUENCE {
+    t1          INTEGER,
+    t2          INTEGER,
+    t3          INTEGER,
+    t4          INTEGER,
+    t5          INTEGER,
+    t6          INTEGER,
+    t7          INTEGER,
+    c           INTEGER,
+    sx          INTEGER,
+    sx1         INTEGER,
+    se          INTEGER,
+    sr          INTEGER,
+    sh1         INTEGER
+}
+
+-- Open
+Open ::= SEQUENCE {
+    a           INTEGER
+}
+
+OpenShare ::= SEQUENCE {
+    alphax      INTEGER,
+    c           INTEGER,
+    sx          INTEGER
+}
+
+OpenAcc ::= SEQUENCE {
+    nshares     UInt16,
+    a           INTEGER
+}
+
+-- Reveal&Trace
+MTKey ::= SEQUENCE {
+    n           INTEGER,
+    x           INTEGER
+}
+
+MTKeyShare ::= SEQUENCE {
+    alphax      INTEGER,
+    c           INTEGER,
+    sx          INTEGER
+}
+
+MTKeyAcc ::= SEQUENCE {
+    nshares     UInt16,
+    a           INTEGER
+}
+
+-- Claim
+Claim ::= SEQUENCE {
+    c           INTEGER,
+    sx          INTEGER
+}
+
+-- Link
+Link ::= SEQUENCE {
+    c           INTEGER,
+    sx          INTEGER
+}
+
+END
+\end{verbatim}
+\end{quote}
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\section{Usage Example}
+%-------------------------------------------------------------------------------
+The attached file \verb|test.c|, licensed under GNU GPLv2, is an
+example of using the FTMGS library public API.
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\begin{thebibliography}{10}
+
+\bibitem{bcly:2008:ftmgs}
+V.~Benjumea, S.~G. Choi, J.~Lopez, and M.~Yung.
+\newblock {F}air {T}raceable {M}ulti-{G}roup {S}ignatures.
+\newblock In G.~Tsudik, editor, {\em {FC}'08: 12th. Intl. Conf. on Financial
+  Cryptography and Data Security}, volume 5143 of {\em Lecture Notes in
+  Computer Science}, pages 231--246. Springer-Verlag, Jan. 2008.
+  Full Version: \texttt{http://eprint.iacr.org/2008/047}.
+
+\bibitem{CM99}
+J.~Camenisch and M.~Michels.
+\newblock  Proving in zero-knowledge that a number is the product of
+    two safe primes. 
+\newblock In {\em EUROCRYPT'99}, vol. 1592 of {LNCS}, pp. 107--122,
+    Springer-Verlag, 1999 
+
+\bibitem{CS00}
+R.~Cramer and V.~Shoup.
+\newblock {S}ignature {S}chemes {B}ased on the {S}trong {RSA} {A}ssumption.
+\newblock In {\em 6th ACM Conf on Computer and Communication Security}, 1999
+  {\em ACM Transactions on Information and System Security}, May 9, 2000.
+
+\bibitem{KTY04}
+A.~Kiayias, Y.~Tsiounis, and M.~Yung.
+\newblock {T}raceable {S}ignatures.
+\newblock In {\em EUROCRYPT'04}, pages 571--589, 2004.
+\newblock Full Version: \texttt{http://eprint.iacr.org/2004/007}.
+
+\bibitem{FS01}
+P.~Fouque and J.~Stern.
+\newblock Fully distributed threshold {RSA} under standard assumptions.
+\newblock In {\em ASIACRYPT}, 2001.
+
+\end{thebibliography}
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
+\end{document}
+%-------------------------------------------------------------------------------

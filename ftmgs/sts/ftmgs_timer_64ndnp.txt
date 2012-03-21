@@ -1,0 +1,282 @@
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Linux	Intel64
+	model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+	cpu MHz		: 3192.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 1
+-Random-Numbers-----------------
+N: 35233078	X: 0xe7910ef3	Y: 0x86843c3d
+N: 348610118	X: 0x4b23bbbd	Y: 0xc4313cea
+N: 1611768975	X: 0x58f577fd	Y: 0x4f2702f9
+N: 406606625	X: 0x2a87e6e8	Y: 0x12ab56fc
+-Create-Group-------------------
+	GroupSetup Time: 3.02000000 seconds
+-Join-New-Member----------------
+	Join Time: 0.07000000 seconds
+	VrfyJoinLog Time: 0.01000000 seconds
+-Join-New-Member----------------
+	Join Time: 0.08000000 seconds
+	VrfyJoinLog Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	Verify Time: 0.02000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	Verify Time: 0.02000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	Verify Time: 0.02000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	Verify Time: 0.02000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Open-Check---------------------
+	Open Time: 0.00000000 seconds
+	Check Time: 0.02000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Open-Check---------------------
+	Open Time: 0.00000000 seconds
+	Check Time: 0.02000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Open-Check---------------------
+	Open Time: 0.00000000 seconds
+	Check Time: 0.02000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Open-Check---------------------
+	Open Time: 0.00000000 seconds
+	Check Time: 0.02000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.08000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.08000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.09000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.09000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.07000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.07000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.08000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.08000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.01000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	Verify Time: 0.01000000 seconds
+	LinkVerify Time: 0.01000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Linux	Intel64
+	model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+	cpu MHz		: 3192.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 4
+-Random-Numbers-----------------
+N: 3250348189	X: 0xb6eaf59a	Y: 0x8fd1a63c
+N: 3026421293	X: 0xb937e8e0	Y: 0xcd1ef378
+N: 3965372667	X: 0xe1966aca	Y: 0xc042ea5a
+N: 3764110549	X: 0x85ff2ab7	Y: 0x5d7117f9
+-Create-Group-------------------
+	GroupSetup Time: 2.23000000 seconds
+-Join-New-Member----------------
+	Join Time: 0.07000000 seconds
+	VrfyJoinLog Time: 0.02000000 seconds
+-Join-New-Member----------------
+	Join Time: 0.07000000 seconds
+	VrfyJoinLog Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.00000000 seconds
+	Verify Time: 0.02000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Open-Check---------------------
+	Open Time: 0.01000000 seconds
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.02000000 seconds
+-Open-Check---------------------
+	Open Time: 0.02000000 seconds
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.03000000 seconds
+-Open-Check---------------------
+	Open Time: 0.01000000 seconds
+	Check Time: 0.02000000 seconds
+	OpenCheck Time: 0.03000000 seconds
+-Open-Check---------------------
+	Open Time: 0.01000000 seconds
+	Check Time: 0.02000000 seconds
+	OpenCheck Time: 0.03000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.24000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.24000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.24000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.24000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.24000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.24000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.25000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.25000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Linux	Intel64
+	model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+model name	: Intel(R) Core(TM) i5 CPU         650  @ 3.20GHz
+	cpu MHz		: 3192.000
+cpu MHz		: 3193.000
+cpu MHz		: 1197.000
+cpu MHz		: 1197.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 8
+-Random-Numbers-----------------
+N: 3105963521	X: 0x6bf4e8da	Y: 0x34c96b30
+N: 4219074914	X: 0x18c384ed	Y: 0x2931d4f1
+N: 2974952991	X: 0xc2f9e1a6	Y: 0xaa1a3a12
+N: 1245722089	X: 0xd7cef8d2	Y: 0x69b37e2c
+-Create-Group-------------------
+	GroupSetup Time: 7.97000000 seconds
+-Join-New-Member----------------
+	Join Time: 0.06000000 seconds
+	VrfyJoinLog Time: 0.02000000 seconds
+-Join-New-Member----------------
+	Join Time: 0.06000000 seconds
+	VrfyJoinLog Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	SignVerify Time: 0.02000000 seconds
+-Open-Check---------------------
+	Open Time: 0.03000000 seconds
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.04000000 seconds
+-Open-Check---------------------
+	Open Time: 0.03000000 seconds
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.04000000 seconds
+-Open-Check---------------------
+	Open Time: 0.03000000 seconds
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.04000000 seconds
+-Open-Check---------------------
+	Open Time: 0.03000000 seconds
+	Check Time: 0.01000000 seconds
+	OpenCheck Time: 0.04000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.46000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.46000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.50000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.50000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.47000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.47000000 seconds
+-Reveal-Trace-------------------
+	Reveal Time: 0.48000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 0.48000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.01000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.00000000 seconds
+	Verify Time: 0.00000000 seconds
+	LinkVerify Time: 0.00000000 seconds
+--------------------------------

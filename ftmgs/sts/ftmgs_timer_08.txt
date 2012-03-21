@@ -1,0 +1,439 @@
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Precomputations	Linux	Intel386
+	model name	: Intel(R) Pentium(R) M processor 2.00GHz
+	cpu MHz		: 800.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 1
+-Random-Numbers-----------------
+N: 564	X: 0x2251c8d1	Y: 0x25c825ea
+N: 157	X: 0xc7e6a0e1	Y: 0x3a74a01b
+N: 587	X: 0x651915f7	Y: 0xfb1be6f9
+N: 637	X: 0x67e341e2	Y: 0x39f8985c
+-Create-Group-------------------
+	SGPrime Time: 2.58000000 seconds
+	SGPrime Time: 0.93000000 seconds
+	Prime_LUB Time: 16.47000000 seconds
+	SGPrime Time: 3.27000000 seconds
+	SGPrime Time: 3.45000000 seconds
+	Prime_NB Time: 0.24000000 seconds
+	Prime_LUB Time: 0.04000000 seconds
+	GroupSetup Time: 27.50000000 seconds
+-Join-New-Member----------------
+	Join1 Time: 0.12000000 seconds
+	Join2 Time: 0.07000000 seconds
+	Join3 Time: 0.36000000 seconds
+	Prime_LUB Time: 0.17000000 seconds
+	Join4 Time: 0.44000000 seconds
+	Join5 Time: 0.01000000 seconds
+	Join Time: 1.00000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds
+	Join2 Time: 0.07000000 seconds
+	Join3 Time: 0.37000000 seconds
+	Prime_LUB Time: 0.09000000 seconds
+	Join4 Time: 0.37000000 seconds
+	Join5 Time: 0.02000000 seconds
+	Join Time: 0.96000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.13000000 seconds
+	SignVerify Time: 0.28000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.13000000 seconds
+	SignVerify Time: 0.27000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.14000000 seconds
+	SignVerify Time: 0.28000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds
+	Verify Time: 0.14000000 seconds
+	SignVerify Time: 0.29000000 seconds
+-Open-Check---------------------
+	Open Time: 0.06000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Check Time: 0.17000000 seconds
+	OpenCheck Time: 0.23000000 seconds
+-Open-Check---------------------
+	Open Time: 0.05000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Check Time: 0.17000000 seconds
+	OpenCheck Time: 0.22000000 seconds
+-Open-Check---------------------
+	Open Time: 0.06000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Check Time: 0.18000000 seconds
+	OpenCheck Time: 0.24000000 seconds
+-Open-Check---------------------
+	Open Time: 0.06000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Check Time: 0.18000000 seconds
+	OpenCheck Time: 0.24000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.16000000 seconds
+	Reveal Time: 1.07000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 1.08000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Reveal Time: 1.07000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 1.08000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	Reveal Time: 1.10000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 1.11000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Reveal Time: 1.11000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 1.11000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.00000000 seconds
+	ClaimVerify Time: 0.01000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.01000000 seconds
+	Verify Time: 0.02000000 seconds
+	LinkVerify Time: 0.03000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds
+	Verify Time: 0.02000000 seconds
+	LinkVerify Time: 0.04000000 seconds
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Precomputations	Linux	Intel386
+	model name	: Intel(R) Pentium(R) M processor 2.00GHz
+	cpu MHz		: 800.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 4
+-Random-Numbers-----------------
+N: 850	X: 0x181b798e	Y: 0x3a6e3edf
+N: 318	X: 0xfc2480de	Y: 0x2e99f485
+N: 766	X: 0x97157a92	Y: 0x21fd9077
+N: 747	X: 0xd8bf31e1	Y: 0x02b1ab54
+-Create-Group-------------------
+	SGPrime Time: 4.16000000 seconds
+	SGPrime Time: 2.75000000 seconds
+	Prime_LUB Time: 1.66000000 seconds
+	Prime_LUB Time: 33.15000000 seconds
+	Prime_LUB Time: 3.34000000 seconds
+	Prime_LUB Time: 2.54000000 seconds
+	SGPrime Time: 0.22000000 seconds
+	SGPrime Time: 0.66000000 seconds
+	Prime_NB Time: 0.21000000 seconds
+	Prime_LUB Time: 0.14000000 seconds
+	Prime_NB Time: 0.12000000 seconds
+	Prime_LUB Time: 0.06000000 seconds
+	Prime_NB Time: 0.14000000 seconds
+	Prime_LUB Time: 0.04000000 seconds
+	Prime_NB Time: 0.12000000 seconds
+	Prime_LUB Time: 0.02000000 seconds
+	GroupSetup Time: 50.16000000 seconds
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds
+	Join2 Time: 0.06000000 seconds
+	Join3 Time: 0.36000000 seconds
+	Prime_LUB Time: 0.07000000 seconds
+	Join4 Time: 0.34000000 seconds
+	Join5 Time: 0.02000000 seconds
+	Join Time: 0.91000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds
+	Join2 Time: 0.07000000 seconds
+	Join3 Time: 0.37000000 seconds
+	Prime_LUB Time: 0.31000000 seconds
+	Join4 Time: 0.59000000 seconds
+	Join5 Time: 0.01000000 seconds
+	Join Time: 1.17000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.13000000 seconds
+	SignVerify Time: 0.27000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds
+	Verify Time: 0.13000000 seconds
+	SignVerify Time: 0.28000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.14000000 seconds
+	SignVerify Time: 0.28000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.13000000 seconds
+	SignVerify Time: 0.27000000 seconds
+-Open-Check---------------------
+	Open Time: 0.22000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Check Time: 0.17000000 seconds
+	OpenCheck Time: 0.39000000 seconds
+-Open-Check---------------------
+	Open Time: 0.21000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Check Time: 0.18000000 seconds
+	OpenCheck Time: 0.39000000 seconds
+-Open-Check---------------------
+	Open Time: 0.21000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	Check Time: 0.19000000 seconds
+	OpenCheck Time: 0.40000000 seconds
+-Open-Check---------------------
+	Open Time: 0.21000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	Check Time: 0.19000000 seconds
+	OpenCheck Time: 0.40000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Reveal Time: 3.64000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 3.65000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.16000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Reveal Time: 3.64000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 3.64000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Reveal Time: 3.70000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 3.71000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Reveal Time: 3.72000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 3.72000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.02000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.01000000 seconds
+	Verify Time: 0.02000000 seconds
+	LinkVerify Time: 0.03000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.01000000 seconds
+	Verify Time: 0.03000000 seconds
+	LinkVerify Time: 0.04000000 seconds
+--------------------------------
+--------------------------------
+	FTMGS	GMP	Optimized-Mode	Precomputations	Linux	Intel386
+	model name	: Intel(R) Pentium(R) M processor 2.00GHz
+	cpu MHz		: 800.000
+	SecPar (Nu): 1024
+	Number of Fairness-Authorities: 8
+-Random-Numbers-----------------
+N: 913	X: 0x7ead00a6	Y: 0x58350178
+N: 0	X: 0xf76964f1	Y: 0x3d20f181
+N: 566	X: 0x512dc2e5	Y: 0xb00848f4
+N: 217	X: 0x4779c9ca	Y: 0x45326d5c
+-Create-Group-------------------
+	SGPrime Time: 0.68000000 seconds
+	SGPrime Time: 0.64000000 seconds
+	Prime_LUB Time: 0.49000000 seconds
+	Prime_LUB Time: 11.53000000 seconds
+	Prime_LUB Time: 21.13000000 seconds
+	Prime_LUB Time: 4.01000000 seconds
+	Prime_LUB Time: 3.55000000 seconds
+	Prime_LUB Time: 21.26000000 seconds
+	Prime_LUB Time: 2.54000000 seconds
+	Prime_LUB Time: 1.17000000 seconds
+	SGPrime Time: 1.21000000 seconds
+	SGPrime Time: 0.49000000 seconds
+	Prime_NB Time: 0.05000000 seconds
+	Prime_LUB Time: 0.04000000 seconds
+	Prime_NB Time: 0.04000000 seconds
+	Prime_LUB Time: 0.05000000 seconds
+	Prime_NB Time: 0.07000000 seconds
+	Prime_LUB Time: 0.06000000 seconds
+	Prime_NB Time: 0.08000000 seconds
+	Prime_LUB Time: 0.09000000 seconds
+	Prime_NB Time: 0.08000000 seconds
+	Prime_LUB Time: 0.02000000 seconds
+	Prime_NB Time: 0.01000000 seconds
+	Prime_LUB Time: 0.09000000 seconds
+	Prime_NB Time: 0.05000000 seconds
+	Prime_LUB Time: 0.01000000 seconds
+	Prime_NB Time: 0.16000000 seconds
+	Prime_LUB Time: 0.03000000 seconds
+	GroupSetup Time: 70.93000000 seconds
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds
+	Join2 Time: 0.07000000 seconds
+	Join3 Time: 0.36000000 seconds
+	Prime_LUB Time: 0.51000000 seconds
+	Join4 Time: 0.78000000 seconds
+	Join5 Time: 0.01000000 seconds
+	Join Time: 1.35000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+-Join-New-Member----------------
+	Join1 Time: 0.13000000 seconds
+	Join2 Time: 0.07000000 seconds
+	Join3 Time: 0.36000000 seconds
+	Prime_LUB Time: 0.65000000 seconds
+	Join4 Time: 0.94000000 seconds
+	Join5 Time: 0.01000000 seconds
+	Join Time: 1.51000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds
+	Verify Time: 0.12000000 seconds
+	SignVerify Time: 0.27000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.13000000 seconds
+	SignVerify Time: 0.27000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.15000000 seconds
+	Verify Time: 0.13000000 seconds
+	SignVerify Time: 0.28000000 seconds
+-Sign-Verify--------------------
+	Sign Time: 0.14000000 seconds
+	Verify Time: 0.14000000 seconds
+	SignVerify Time: 0.28000000 seconds
+-Open-Check---------------------
+	Open Time: 0.43000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Check Time: 0.17000000 seconds
+	OpenCheck Time: 0.60000000 seconds
+-Open-Check---------------------
+	Open Time: 0.43000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Check Time: 0.17000000 seconds
+	OpenCheck Time: 0.60000000 seconds
+-Open-Check---------------------
+	Open Time: 0.44000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Check Time: 0.18000000 seconds
+	OpenCheck Time: 0.62000000 seconds
+-Open-Check---------------------
+	Open Time: 0.43000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Check Time: 0.18000000 seconds
+	OpenCheck Time: 0.61000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.16000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.16000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	Reveal Time: 7.03000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 7.04000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.16000000 seconds
+	VrfyJoinLog Time: 0.16000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.17000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	Reveal Time: 7.03000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 7.04000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	Reveal Time: 7.17000000 seconds
+	Trace Time: 0.00000000 seconds
+	RevTrace Time: 7.17000000 seconds
+-Reveal-Trace-------------------
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	VrfyJoinLog Time: 0.18000000 seconds
+	VrfyJoinLog Time: 0.19000000 seconds
+	Reveal Time: 7.17000000 seconds
+	Trace Time: 0.01000000 seconds
+	RevTrace Time: 7.18000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.00000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.01000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Claim-Verify-------------------
+	Claim Time: 0.01000000 seconds
+	Verify Time: 0.01000000 seconds
+	ClaimVerify Time: 0.02000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.01000000 seconds
+	Verify Time: 0.02000000 seconds
+	LinkVerify Time: 0.03000000 seconds
+-Link-Verify--------------------
+	Link Time: 0.02000000 seconds
+	Verify Time: 0.02000000 seconds
+	LinkVerify Time: 0.04000000 seconds
+--------------------------------

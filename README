@@ -1,0 +1,63 @@
+
+This FTMGS library implements the FTMGS (Fair Traceable Multi-Group
+Signatures) digital signature scheme. More information on it can be
+found in the included manual (ftmgs_man.pdf).
+
+This library has been compiled with
+  * gcc (Debian 4.4.5-8) 4.4.5 on 686 GNU/Linux 2.6.32-5-686      (32 bits)
+  * gcc (Debian 4.4.5-8) 4.4.5 on x86_64 GNU/Linux 2.6.32-5-amd64 (64 bits)
+
+The library is released under the LGPLv2.1 license, and demonstration
+programs under the GPLv2 license. See the "COPYING" files to
+fetch the contents of the licenses.
+
+It requires both GMP and LIBTASN1 (LGPL) be installed in your system
+
+System dependent code is in files "system.c" and "system.h" where
+required.
+
+The library uses code from IEEE IETF for SHA from RFC 6234. See the
+"COPYING_SHA" file to access the contents of the license
+
+Library Installation:
+
+    Change working directory to 'ftmgs'
+
+    $ cd ftmgs
+
+    To cleanup the library
+
+    $ make cleanup
+
+    To compile the library
+
+    $ make
+
+    To install the library (as root)
+
+    # make install
+
+	To compile the test program
+
+    $ gcc -o test test.c -lftmgs
+
+    To run the test program
+
+	$ ./test
+
+    To uninstall the library (as root)
+
+    # make uninstall
+
+Please, send bug reports to: Vicente Benjumea <vicente@lcc.uma.es>
+
+Project Home Page: http://www.lcc.uma.es/~vicente/swprj/index.html#libftmgs
+
+Development Repository: ???
+
+---------------------------------------
+AUTHORS
+---------------------------------------
+Vicente Benjumea <vicente@lcc.uma.es>, University of Malaga, Spain
+Seung Geol Choi <sgchoi@cs.umd.edu>, University of Maryland, USA
+---------------------------------------

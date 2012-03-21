@@ -1,0 +1,20 @@
+#---------------------------------------
+#-- Ignore objects, archives and shared objects.
+*.[oa]
+*.so
+*.so.*
+#-- Ignore backups.
+*~
+*.bak
+#-- Ignore temporary files in 'tmp' directories.
+tmp/
+#-- Ignore 'lib' and 'include' directories.
+lib/
+include/
+#-- Ignore 'test' executable files.
+test
+#-- Ignore user's manual generated files (except LaTeX source)
+ftmgs_man.*
+git_workflow.*
+!*.tex
+#---------------------------------------
