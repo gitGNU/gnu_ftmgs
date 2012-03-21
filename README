@@ -51,9 +51,14 @@ Library Installation:
 
 Please, send bug reports to: Vicente Benjumea <vicente@lcc.uma.es>
 
-Project Home Page: http://www.lcc.uma.es/~vicente/swprj/index.html#libftmgs
+Project Home Page: 
+    http://www.lcc.uma.es/~vicente/swprj/index.html#libftmgs
 
-Development Repository: ???
+Development Repository:
+    https://savannah.nongnu.org/projects/ftmgs/
+
+Source Code Manager: Git Repository:
+    https://savannah.nongnu.org/git/?group=ftmgs
 
 ---------------------------------------
 AUTHORS

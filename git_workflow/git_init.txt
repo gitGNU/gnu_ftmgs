@@ -11,13 +11,13 @@ $ git branch unstable
 
 $ ssh-keygen
 
-# copy /home/vicente/.ssh/id_rsa.pub to 
+# copy ~/.ssh/id_rsa.pub to 
 #      https://savannah.nongnu.org/my/admin/editsshkeys.php
 
-$ git push --all vbg@git.savannah.nongnu.org:/srv/git/ftmgs.git
+$ git push --all login@git.savannah.nongnu.org:/srv/git/ftmgs.git
 
 $ cd .. && rm -rf ftmgs
 
-$ git clone vbg@git.savannah.nongnu.org:/srv/git/ftmgs.git
+$ git clone login@git.savannah.nongnu.org:/srv/git/ftmgs.git
 
 #-------------------------------------------------------------------------------
