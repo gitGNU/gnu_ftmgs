@@ -1,0 +1,23 @@
+#-------------------------------------------------------------------------------
+# Initial steps to create and publish a project
+#-------------------------------------------------------------------------------
+$ edit .gitignore
+$ git init
+$ git add .
+$ git commit -m 'FTMGS v0.1.0 initial pre-release'
+$ git tag -a v0.1.0
+$ git branch maint
+$ git branch unstable
+
+$ ssh-keygen
+
+# copy /home/vicente/.ssh/id_rsa.pub to 
+#      https://savannah.nongnu.org/my/admin/editsshkeys.php
+
+$ git push --all vbg@git.savannah.nongnu.org:/srv/git/ftmgs.git
+
+$ cd .. && rm -rf ftmgs
+
+$ git clone vbg@git.savannah.nongnu.org:/srv/git/ftmgs.git
+
+#-------------------------------------------------------------------------------
