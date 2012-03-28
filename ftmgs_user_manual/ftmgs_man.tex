@@ -2216,9 +2216,12 @@ ASN.1 DER encoding of some abstract data type.
 %---------------------------------------
 \begin{itemize}\small
 \item \verb|buffer_t|: it holds a buffer of bytes dynamically
-  allocated in the heap. It holds \emph{data} in a memory with a
-  \emph{maxsize} that can be expanded or shrinked as required, as well
+  allocated in the heap. It holds the \emph{data} in memory, as well
   as the \emph{size} of the data currently stored in the buffer.
+% \item \verb|buffer_t|: it holds a buffer of bytes dynamically
+%   allocated in the heap. It holds \emph{data} in a memory with a
+%   \emph{maxsize} that can be expanded or shrinked as required, as well
+%   as the \emph{size} of the data currently stored in the buffer.
 \end{itemize}
 %---------------------------------------
 \subsubsection*{Construction, Copy and Destruction}
@@ -2247,96 +2250,96 @@ unsigned buffer_size(const buffer_t* buff);
 It returns the size of the data bytes stored in the buffer.
 \end{quote}
 %---------------------------------------
-\begin{api}
-unsigned buffer_maxsize(const buffer_t* buff);
-\end{api}
-\begin{quote}\footnotesize
-It returns the size of the memory already allocated in the buffer to
-hold the data bytes.
-\end{quote}
+% \begin{api}
+% unsigned buffer_maxsize(const buffer_t* buff);
+% \end{api}
+% \begin{quote}\footnotesize
+% It returns the size of the memory already allocated in the buffer to
+% hold the data bytes.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_reserve(buffer_t* buff, unsigned maxsz);
-\end{api}
-\begin{quote}\footnotesize
-If \verb|maxsz > buffer_maxsize(buff)|, then it increments the size of the
-memory already allocated in the buffer to the value of \verb|maxsz|.
-\end{quote}
+% \begin{api}
+% void buffer_reserve(buffer_t* buff, unsigned maxsz);
+% \end{api}
+% \begin{quote}\footnotesize
+% If \verb|maxsz > buffer_maxsize(buff)|, then it increments the size of the
+% memory already allocated in the buffer to the value of \verb|maxsz|.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_shrink(buffer_t* buff);
-\end{api}
-\begin{quote}\footnotesize
-If \verb|maxsz > buffer_size(buff)+1|, then it shrinks the size of the
-memory already allocated in the buffer to the value of \verb|buffer_size(buff)+1|.
-\end{quote}
+% \begin{api}
+% void buffer_shrink(buffer_t* buff);
+% \end{api}
+% \begin{quote}\footnotesize
+% If \verb|maxsz > buffer_size(buff)+1|, then it shrinks the size of the
+% memory already allocated in the buffer to the value of \verb|buffer_size(buff)+1|.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_reset(buffer_t* buff);
-\end{api}
-\begin{quote}\footnotesize
-It resets the size and maxsize of the buffer to zero, as well as
-deallocates the reserved memory.
-\end{quote}
+% \begin{api}
+% void buffer_reset(buffer_t* buff);
+% \end{api}
+% \begin{quote}\footnotesize
+% It resets the size and maxsize of the buffer to zero, as well as
+% deallocates the reserved memory.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_clear(buffer_t* buff);
-\end{api}
-\begin{quote}\footnotesize
-It resets the size and maxsize of the buffer to zero.
-\end{quote}
+% \begin{api}
+% void buffer_clear(buffer_t* buff);
+% \end{api}
+% \begin{quote}\footnotesize
+% It resets the size and maxsize of the buffer to zero.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_resize(buffer_t* buff, unsigned newsz);
-\end{api}
-\begin{quote}\footnotesize
-It increments the size of the data bytes already stored in the buffer.
-\end{quote}
+% \begin{api}
+% void buffer_resize(buffer_t* buff, unsigned newsz);
+% \end{api}
+% \begin{quote}\footnotesize
+% It increments the size of the data bytes already stored in the buffer.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_push(buffer_t* buff, const void* dat, unsigned datlen);
-\end{api}
-\begin{quote}\footnotesize
-It appends \verb|datlen| bytes of data pointed to by \verb|dat| to the
-currently stored data in the buffer.
-\end{quote}
+% \begin{api}
+% void buffer_push(buffer_t* buff, const void* dat, unsigned datlen);
+% \end{api}
+% \begin{quote}\footnotesize
+% It appends \verb|datlen| bytes of data pointed to by \verb|dat| to the
+% currently stored data in the buffer.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_push_str(buffer_t* buff, const char* str);
-\end{api}
-\begin{quote}\footnotesize
-It appends the bytes of a null terminated string of chars pointed to
-by \verb|str| to the currently stored data in the buffer, as well as
-it also puts the null termination char (\verb|'\0'|), but it is not
-included in the count of stored data.
-\end{quote}
+% \begin{api}
+% void buffer_push_str(buffer_t* buff, const char* str);
+% \end{api}
+% \begin{quote}\footnotesize
+% It appends the bytes of a null terminated string of chars pointed to
+% by \verb|str| to the currently stored data in the buffer, as well as
+% it also puts the null termination char (\verb|'\0'|), but it is not
+% included in the count of stored data.
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_push_buf(buffer_t* buff, const buffer_t* b);  /* MACRO */
-\end{api}
-\begin{quote}\footnotesize
-\begin{code}
-buffer_push(buff, buffer_data(b), buffer_size(b));
-\end{code}
-\end{quote}
+% \begin{api}
+% void buffer_push_buf(buffer_t* buff, const buffer_t* b);  /* MACRO */
+% \end{api}
+% \begin{quote}\footnotesize
+% \begin{code}
+% buffer_push(buff, buffer_data(b), buffer_size(b));
+% \end{code}
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_resize_add(buffer_t* buff, unsigned sz);      /* MACRO */
-\end{api}
-\begin{quote}\footnotesize
-\begin{code}
-buffer_resize(buff, buffer_size(buffer)+sz);
-\end{code}
-\end{quote}
+% \begin{api}
+% void buffer_resize_add(buffer_t* buff, unsigned sz);      /* MACRO */
+% \end{api}
+% \begin{quote}\footnotesize
+% \begin{code}
+% buffer_resize(buff, buffer_size(buffer)+sz);
+% \end{code}
+% \end{quote}
 %---------------------------------------
-\begin{api}
-void buffer_reserve_add(buffer_t* buff, unsigned sz);     /* MACRO */
-\end{api}
-\begin{quote}\footnotesize
-\begin{code}
-buffer_reserve(buff, buffer_size(buffer)+sz+1);
-\end{code}
-\end{quote}
+% \begin{api}
+% void buffer_reserve_add(buffer_t* buff, unsigned sz);     /* MACRO */
+% \end{api}
+% \begin{quote}\footnotesize
+% \begin{code}
+% buffer_reserve(buff, buffer_size(buffer)+sz+1);
+% \end{code}
+% \end{quote}
 %---------------------------------------
 
 %-------------------------------------------------------------------------------
