@@ -24,13 +24,14 @@
 extern "C" {
 #endif
 /*-------------------------------------------------------------*/
-/*
- * Do Not change the asigned values (the order)
- *	[ it must mach with another definition ]
+/**
+ * Entropy source:
+ * - TrueEntropy	it blocks until there are enough real random bits 
+ * - PseudoEntropy	real entropy, if not enough bits, then pseudo entropy
+ * - NoEntropy		no entropy, always start with the same seed
  *
- * TrueEntropy		it blocks until there are enough real random bits 
- * PseudoEntropy	real entropy, if not enough bits, then pseudo 
- * NoEntropy		no entropy, always start with the same seed
+ * Do Not change the asigned values (the order)
+ *	[ it must match with another definition ]
  */
 typedef enum Entropy_src_t {
 	TRUE_ENTROPY, PSEUDO_ENTROPY, NO_ENTROPY
@@ -47,19 +48,57 @@ typedef struct rndctx_t {
 	unsigned counter;
 } rnd_ctx_t;
 /*-------------------------------------------------------------*/
+/**
+ * Random Context ADT: Constructor, Destructor, Asignment, New, Clone, Delete
+ * @{
+ */
 void rndctx_t_ctor(struct rndctx_t* p);
 void rndctx_t_dtor(struct rndctx_t* p);
 void rndctx_t_asg(struct rndctx_t* d, const struct rndctx_t* o);
 struct rndctx_t* rndctx_t_new();
 struct rndctx_t* rndctx_t_clone(const struct rndctx_t* o);
 void rndctx_t_delete(struct rndctx_t* p);
+/** @} */
 /*-------------------------------------------------------------*/
+/**
+ * Seeds the random number generator
+ * 
+ * @param  rnd_ctx      Random number generator context
+ * @param  entropy_src  Entropy source: TRUE_ENTROPY, PSEUDO_ENTROPY, NO_ENTROPY
+ * @return length (in bytes) of entropy and nonce bytes used for seeding
+ * @pre    Already constructed ADT (@a rnd_ctx)
+ */
 unsigned random_seed(rnd_ctx_t* rnd_ctx, unsigned entropy_src);
+/*-------------------------------------------------------------*/
+/**
+ * Reseeds the random number generator
+ * 
+ * @param  rnd_ctx      Random number generator context
+ * @param  entropy_src  Entropy source: TRUE_ENTROPY, PSEUDO_ENTROPY, NO_ENTROPY
+ * @return length (in bytes) of entropy and nonce bytes used for seeding
+ * @pre    Already constructed ADT (@a rnd_ctx)
+ */
 unsigned random_reseed(rnd_ctx_t* rnd_ctx, unsigned entropy_src);
 /*-------------------------------------------------------------*/
+/**
+ * Generates random bytes
+ * 
+ * @param[out]     data     output data buffer to hold the random bytes
+ * @param[in]      nbytes   requested number of random bytes
+ * @param[in,out]  rnd_ctx  random number generator context
+ * @return void
+ * @pre    Already constructed ADT (@a rnd_ctx)
+ */
 void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx);
 /*------------------------------------*/
-/* r rnd such that 0 <= r < max */
+/**
+ * Generates a random unsigned number less than @a max (0 <= r < max)
+ * 
+ * @param[in]      max      outer limit for the generated random number
+ * @param[in,out]  rnd_ctx  random number generator context
+ * @return a random unsigned number less than @a max (0 <= r < max)
+ * @pre    Already constructed ADT (@a rnd_ctx)
+ */
 unsigned random_uint(unsigned max, rnd_ctx_t* rnd_ctx);
 /*-------------------------------------------------------------*/
 #ifdef __cplusplus

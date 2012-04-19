@@ -24,17 +24,60 @@
 extern "C" {
 #endif
 	/*------------------------------------------------------------------------*/
+	/** 
+	 * Data data type
+	 *   - size:     number of bytes actually stored in the buffer
+	 *   - data_:    data buffer
+	 */
 	typedef struct data_t {
 		unsigned size;
 		char* data_;	/* size */
 	} data_t;
 	/*------------------------------------------------------------------------*/
+	/**
+	 * Allocates space for @a sz bytes in the data buffer
+	 * 
+	 * @param  buff  actual data structure
+	 * @param  sz    size of allocated space
+	 * @return void
+	 * @pre    already constructed ADT data (@a buff)
+	 */
 	void data_reserve(data_t* buff, unsigned sz);
+	/*------------------------------------------------------------------------*/
+	/**
+	 * Resets the data structure, removes stored data and deallocates
+	 * data memory
+	 * 
+	 * @param  buff  actual data structure
+	 * @return void
+	 * @pre    already constructed ADT data (@a buff)
+	 */
 	void data_reset(data_t* buff);
+	/*------------------------------------------------------------------------*/
+	/**
+	 * Allocates space and copy @a datlen bytes from @a dat into data buffer
+	 * 
+	 * @param  buff   actual data structure
+	 * @param  dat    input data to be copied
+	 * @param  datlen length of input data
+	 * @return void
+	 * @pre    already constructed ADT data (@a buff)
+	 */
 	void data_copy(data_t* buff, void* dat, unsigned datlen);
 	/*------------------------------------------------------------------------*/
+	/**
+	 * Allocates space and copy bytes from a data buffer
+	 * 
+	 * @param  data   actual data structure
+	 * @param  b      input buffer to be copied
+	 * @return void
+	 * @pre    already constructed ADT data (@a data)
+	 */
 #define data_copy_buf(data, b)	data_copy(data, (b)->data_, (b)->size)
 	/*------------------------------------------------------------------------*/
+	/* 
+	 * Data ADT: Constructor, Destructor, Asignment, New, Clone, Delete, Swap
+	 */
 	void data_t_swap(struct data_t* p, struct data_t* o);
 	void data_t_ctor(struct data_t* p);
 	void data_t_dtor(struct data_t* p);

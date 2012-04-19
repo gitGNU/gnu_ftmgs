@@ -21,8 +21,8 @@
 #- Makefile --------------------------------------------------------
 SRCS=test.c
 SRCSLIB=random.c system_rnd.c
-HDRS=random.h system_rnd.h
-PRIVHDRS=
+HDRS=random.h
+PRIVHDRS=system_rnd.h
 AUXS=Makefile
 LIBS=-lsha
 #----------------------------------
