@@ -18,6 +18,7 @@
 /* Public License along with this library. If not, see                        */
 /* <http://www.gnu.org/licenses/>.                                            */
 /*----------------------------------------------------------------------------*/
+/** @file */
 #ifndef umalccvbg_buffer_h__
 #define umalccvbg_buffer_h__	1
 #ifdef __cplusplus
@@ -172,6 +173,7 @@ extern "C" {
 #endif
 	/*------------------------------------------------------------------------*/
 	/**
+	 * @defgroup buff_adt
 	 * Buffer ADT: Constructor, Destructor, Asignment, New, Clone, Delete, Swap
 	 * @{
 	 */

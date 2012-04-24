@@ -18,13 +18,14 @@
 /* Public License along with this library. If not, see                        */
 /* <http://www.gnu.org/licenses/>.                                            */
 /*----------------------------------------------------------------------------*/
+/** @file */
 #ifndef umalccvbg_data_h__
 #define umalccvbg_data_h__	1
 #ifdef __cplusplus
 extern "C" {
 #endif
 	/*------------------------------------------------------------------------*/
-	/** 
+	/**
 	 * Data data type
 	 *   - size:     number of bytes actually stored in the buffer
 	 *   - data_:    data buffer
@@ -75,8 +76,10 @@ extern "C" {
 	 */
 #define data_copy_buf(data, b)	data_copy(data, (b)->data_, (b)->size)
 	/*------------------------------------------------------------------------*/
-	/* 
+	/**
+	 * @defgroup data_adt
 	 * Data ADT: Constructor, Destructor, Asignment, New, Clone, Delete, Swap
+	 * @{
 	 */
 	void data_t_swap(struct data_t* p, struct data_t* o);
 	void data_t_ctor(struct data_t* p);
@@ -85,6 +88,7 @@ extern "C" {
 	struct data_t* data_t_new();
 	struct data_t* data_t_clone(const struct data_t* o);
 	void data_t_delete(struct data_t* p);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 #ifdef __cplusplus
 }

@@ -24,6 +24,8 @@
 /**
  * @file ftmgs.h
  *
+ * FTMGS (Fair Traceable Multi-Group Signatures) public API
+ *
  * Source files that make use of the facilities provided by the FTMGS
  * library should include the header file @c ftmgs.h, where the
  * public API is defined. This header file is installed in the system
@@ -82,104 +84,44 @@ extern "C" {
 	/*-- Version -------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * Version Number:
+	 * @defgroup version Version Number
+	 * Version Number.
 	 * - @c FTMGS_VERSION_MAJOR: changes in public API and functionality
 	 * - @c FTMGS_VERSION_MINOR: internal changes that do not affect the public API
 	 * - @c FTMGS_REVISION: bug fixes
 	 * 
 	 * Defined as macros, to allow its use by the preprocessor
+	 * @{
 	 */
 #define FTMGS_VERSION_MAJOR		0
 #define FTMGS_VERSION_MINOR		1
 #define FTMGS_REVISION			0
-	/*------------------------------------------------------------------------*/
-	/*-- Security Parameter --------------------------------------------------*/
-	/*------------------------------------------------------------------------*/
-	/**
-	 * FTMGS security parameter.
-	 *
-	 * The following values define the security parameters used when
-	 * creating a FTMGS group:
-	 *
-	 * - @c Nu1 = @e 1024
-	 * - @c Nu2 = @e 2048
-	 * - @c Nu3 = @e 3072
-	 */
-	enum secpar_t {
-		Nu1 = 1024, Nu2 = 2048, Nu3 = 3072
-	};
-	/*------------------------------------------------------------------------*/
-	/*-- Return Codes --------------------------------------------------------*/
-	/*------------------------------------------------------------------------*/
-	/**
-	 * FTMGS return codes.
-	 *
-	 * The type @c ftmgs_retcode_t defines the return codes for
-	 * incremental (iterative) functions, which can be error 
-	 * (@c FTMGS_ERROR), success (@c FTMGS_OK), or still unfinished 
-	 * (@c FTMGS_UNFINISHED), which means that the (iterative) operation
-	 * is still unfinished and it needs to be executed some more
-	 * times, till either error or success is found.
-	 */
-	typedef enum ftmgs_retcode_t {
-		FTMGS_ERROR, FTMGS_OK, FTMGS_UNFINISHED
-	} ftmgs_retcode_t;
-	/*------------------------------------------------------------------------*/
-	/**
-	 * ASN1 return codes.
-	 *
-	 * The type @c asn1_retcode_t defines the return codes for
-	 * ASN1 encoding functions.
-	 */
-	typedef enum asn1_retcode_t {
-		ASN1_Success,
-		ASN1_File_Not_Found,
-		ASN1_Element_Not_Found,
-		ASN1_Identifier_Not_Found,
-		ASN1_Der_Error,
-		ASN1_Value_Not_Found,
-		ASN1_Generic_Error,
-		ASN1_Value_Not_Valid,
-		ASN1_Tag_Error,
-		ASN1_Tag_Implicit,
-		ASN1_Error_Type_Any,
-		ASN1_Syntax_Error,
-		ASN1_Mem_Error,
-		ASN1_Mem_Alloc_Error,
-		ASN1_Der_Overflow,
-		ASN1_Name_Too_Long,
-		ASN1_Array_Error,
-		ASN1_Element_Not_Empty
-	} asn1_retcode_t;
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Hash ----------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * The hash API may be used to create the digest of some data that
+	 * @defgroup hash SHA Hash API
+	 * The SHA hash API may be used to create the digest of some data that
 	 * is not directly available as an array of contiguous data bytes.
-	 * 
-	 * The following values allow to choose the operation mode for the SHA
-	 * hash engine, as well as the length (in bytes) of the hash digest:
-	 * @code
-	 * enum sha_mode_t {
-	 *     Sha1, Sha224, Sha256, Sha384, Sha512
-	 * };
-	 * enum sha_size_t {
-	 *     Sha1Size = 20, Sha224Size = 28, Sha256Size = 32,
-	 *     Sha384Size = 48, Sha512Size = 64, ShaMaxSize = Sha512Size
-	 * };
-	 * @encode
+	 * @{
+	 */
+	/**
+	 * These values allow to choose the operation mode for the SHA
+	 * hash engine.
 	 */
 	enum sha_mode_t {
 		Sha1, Sha224, Sha256, Sha384, Sha512
 	};
+	/**
+	 * These values define the length (in bytes) of the hash digest.
+	 */
 	enum sha_size_t {
 		Sha1Size = 20, Sha224Size = 28, Sha256Size = 32,
 		Sha384Size = 48, Sha512Size = 64, ShaMaxSize = Sha512Size
 	};
 	/**
-	 * @c shactx_t is used to hold the internal context of the SHA
-	 * engine.
+	 * Holds the internal context of the SHA engine.
 	 */
 	typedef struct USHAContext shactx_t;
 	/*------------------------------------------------------------------------*/
@@ -206,11 +148,16 @@ extern "C" {
 	 */
 	FTMGS_API__
 	bool_t sha_result(shactx_t* sha_ctx, void* dat_digest, unsigned* digestlen);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Random --------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * Random Number Generator. Source of Entropy:
+	 * @defgroup random Random Bytes Generator API
+	 * @{
+	 */
+	/**
+	 * Random Bytes Generator. Source of Entropy:
 	 * - @c TrueEntropy: it seeds the random number generator with
 	 *   real random bits from a source of entropy that uses random
 	 *   noise from internal devices. If there is not enough real
@@ -236,20 +183,19 @@ extern "C" {
 		TrueEntropy, PseudoEntropy, NoEntropy
 	};
 	/**
-	 * @c rndctx_t is used to hold the internal context of the random
-	 * number generator.
+	 * Holds the internal context of the random number generator.
 	 */
 	typedef struct rndctx_t rndctx_t;
 	/*------------------------------------------------------------------------*/
 	/**
-	 * Seeds the random number generator.
+	 * Seeds the random bytes generator.
 	 *
-	 * Initializes and seeds the context for the random number
+	 * Initializes and seeds the context for the random bytes
 	 * generator. This function must be called once before using the
 	 * generator context in any other function. It returns the amount of
 	 * bytes used from the entropy source.
 	 * 
-	 * @param  rnd_ctx      Random number generator context
+	 * @param  rnd_ctx      Random bytes generator context
 	 * @param  entropy_src  Entropy source: TrueEntropy, PseudoEntropy, NoEntropy
 	 * @return length (in bytes) of entropy and nonce bytes used for seeding
 	 * @pre    Already constructed ADT (@a rnd_ctx)
@@ -257,12 +203,12 @@ extern "C" {
 	FTMGS_API__
 	unsigned random_seed(rndctx_t* rnd_ctx, unsigned entropy_src);
 	/**
-	 * Reseeds the random number generator.
+	 * Reseeds the random bytes generator.
 	 * 
-	 * Reseeds the context for the random number generator. It returns the
+	 * Reseeds the context for the random bytes generator. It returns the
 	 * amount of bytes used from the entropy source.
 	 * 
-	 * @param  rnd_ctx      Random number generator context
+	 * @param  rnd_ctx      Random bytes generator context
 	 * @param  entropy_src  Entropy source: TrueEntropy, PseudoEntropy, NoEntropy
 	 * @return length (in bytes) of entropy and nonce bytes used for seeding
 	 * @pre    Already constructed ADT (@a rnd_ctx)
@@ -279,7 +225,7 @@ extern "C" {
 	 * 
 	 * @param[out]     data     output data buffer to hold the random bytes
 	 * @param[in]      nbytes   requested number of random bytes
-	 * @param[in,out]  rnd_ctx  random number generator context
+	 * @param[in,out]  rnd_ctx  random bytes generator context
 	 * @return void
 	 * @pre    Already constructed ADT (@a rnd_ctx)
 	 */
@@ -293,54 +239,103 @@ extern "C" {
 	 * @a rnd_ctx.
 	 * 
 	 * @param[in]      max      outer limit for the generated random number
-	 * @param[in,out]  rnd_ctx  random number generator context
+	 * @param[in,out]  rnd_ctx  random bytes generator context
 	 * @return a random unsigned number less than @a max (0 <= r < max)
 	 * @pre    Already constructed ADT (@a rnd_ctx)
 	 */
 	FTMGS_API__
 	unsigned random_uint(unsigned max, rndctx_t* rnd_ctx);
+	/** @} */
+	/*------------------------------------------------------------------------*/
+	/*-- FTMGS ---------------------------------------------------------------*/
+	/*------------------------------------------------------------------------*/
+	/**
+	 * @defgroup ftmgs FTMGS API
+	 * @{
+	 */
+	/**
+	 * FTMGS return codes.
+	 *
+	 * Defines the return codes for incremental (iterative) functions,
+	 * which can be error (@c FTMGS_ERROR), success (@c FTMGS_OK), or
+	 * still unfinished (@c FTMGS_UNFINISHED), which means that the
+	 * (iterative) operation is still unfinished and it needs to be
+	 * executed some more times, till either error or success is
+	 * found.
+	 */
+	typedef enum ftmgs_retcode_t {
+		FTMGS_ERROR, FTMGS_OK, FTMGS_UNFINISHED
+	} ftmgs_retcode_t;
 	/*------------------------------------------------------------------------*/
 	/*-- Group Creation ------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * FTMGS Group Creation:
-	 * - @c ftmgs_fa_pbkey_t: it holds the modulus @f$\<\hat{n}\>@f$
-	 *   and generator @f$\<\hat{g}\>@f$ for the paillier encryption
-	 *   scheme.
-	 * - @c ftmgs_faj_pbkey_share_t: it holds the fairness authority
-	 *   public key share @f$\<\hat{y}_j\>@f$ for the paillier
-	 *   encryption scheme.
-	 * - @c ftmgs_faj_prkey_t: it holds the fairness authority private
-	 *   key @f$\<\hat{o}_j\>@f$ for the paillier encryption
-	 *   scheme. It allows to recover the member's tracing key.
-	 * - @c ftmgs_pbkey_t: it holds the group public key
-	 *   @f$\<n,a,a_o,b,g,h,y,\hat{n},\hat{g},\hat{y}\>@f$. It allows
-	 *   to verify group signatures, as well as provides support for
-	 *   all operations dealing with the group.
-	 * - @c ftmgs_prkey_t: it holds the group manager private key, the
-	 *   prime factors of the group modulus @f$\<p,q\>@f$. It allows
-	 *   to join new members to the group.
-	 * - @c ftmgs_faj_gr_pbkey_share_t: it holds the fairness
-	 *   authority public key share @f$\<y_j,h_j\>@f$ for the el-gamal
-	 *   encryption scheme for a given group.
-	 * - @c ftmgs_faj_gr_prkey_t: it holds the fairness authority
-	 *   private key @f$\<o_j\>@f$ for the el-gamal encryption scheme
-	 *   for a given group. It allows to open signatures.
+	 * @defgroup ftmgs_group FTMGS Group Setup:
+	 * @{
 	 */
 	/*------------------------------------------------------------------------*/
+	/*-- Security Parameter --------------------------------------------------*/
+	/*------------------------------------------------------------------------*/
+	/**
+	 * FTMGS security parameter.
+	 *
+	 * These values define the security parameters used when creating
+	 * a FTMGS group:
+	 *
+	 * - @c Nu1 = @e 1024
+	 * - @c Nu2 = @e 2048
+	 * - @c Nu3 = @e 3072
+	 */
+	enum secpar_t {
+		Nu1 = 1024, Nu2 = 2048, Nu3 = 3072
+	};
+	/*------------------------------------------------------------------------*/
+	/**
+	 * Holds the modulus @f$<\hat{n}>@f$ and generator @f$<\hat{g}>@f$
+	 * for the paillier encryption scheme.
+	 */
 	typedef struct ftmgs_fa_pbkey_t ftmgs_fa_pbkey_t;
+	/**
+	 * Holds the fairness authority public key share @f$<\hat{y}_j>@f$
+	 * for the paillier encryption scheme.
+	 */
 	typedef struct ftmgs_faj_pbkey_share_t ftmgs_faj_pbkey_share_t;
+	/**
+	 * Holds the fairness authority private key @f$<\hat{o}_j>@f$ for
+	 * the paillier encryption scheme. It allows to recover the
+	 * member's tracing key.
+	 */
 	typedef struct ftmgs_faj_prkey_t ftmgs_faj_prkey_t;
+	/**
+	 * Holds the group public key
+	 * @f$<n,a,a_o,b,g,h,y,\hat{n},\hat{g},\hat{y}>@f$. It allows to
+	 * verify group signatures, as well as provides support for all
+	 * operations dealing with the group.
+	 */
 	typedef struct ftmgs_pbkey_t ftmgs_pbkey_t;
+	/**
+	 * Holds the group manager private key, the prime factors of the
+	 * group modulus @f$<p,q>@f$. It allows to join new members to the
+	 * group.
+	 */
 	typedef struct ftmgs_prkey_t ftmgs_prkey_t;
+	/**
+	 * Holds the fairness authority public key share @f$<y_j,h_j>@f$
+	 * for the el-gamal encryption scheme for a given group.
+	 */
 	typedef struct ftmgs_faj_gr_pbkey_share_t ftmgs_faj_gr_pbkey_share_t;
+	/**
+	 * Holds the fairness authority private key @f$<o_j>@f$ for the
+	 * el-gamal encryption scheme for a given group. It allows to open
+	 * signatures.
+	 */
 	typedef struct ftmgs_faj_gr_prkey_t ftmgs_faj_gr_prkey_t;
 	/*------------------------------------------------------------------------*/
 	/**
 	 * It allows to create an initial public key modulus and generator
 	 * for the fairness authorities, where the security parameter
 	 * @a nu may have any of the aforementioned values. It is necessary
-	 * that the random number generator context @c rnd_ctx had been
+	 * that the random bytes generator context @c rnd_ctx had been
 	 * previously seeded.
 	 * 
 	 * @b Note: This function create the public key modulus and
@@ -518,36 +513,43 @@ extern "C" {
 								   ftmgs_faj_gr_prkey_t* faj_gsk[],
 								   unsigned nu,
 								   rndctx_t* rnd_ctx);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- DSS-DSA -------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * DSA types:
-	 * - @c dss_parms_t: it holds the DSS parameters @f$\<p, q, g\>@f$,
-	 *   used by the user when authenticated to join the group.
-	 * - @c dsa_pbkey_t: it holds the DSA user's public key
-	 *   @f$\<y\>@f$, used by the user when authenticated to join the group.
-	 * - @c dsa_prkey_t: it holds the DSA user's private key
-	 *   @f$\<x\>@f$, used by the user when authenticated to join the group.
-	 *
-	 * - @c dlogx_t: it holds a user's master private key
-	 *   @f$\<x\>@f$, used by the user when authenticated to join the group. It
-	 *   can come from the user's DSA private key, or from a group member's
-	 *   private key.
-	 * - @c dlog_t: it holds a user's master public key @f$\<n, g, y\>@f$,
-	 *   used by the user when authenticated to join the group. It can
-	 *   come from the user's DSA public key and DSS parameters, or from a
-	 *   group signature issued by the member when authenticated in joining a
-	 *   new group.
+	 * @defgroup dsa FTMGS DSS Interaction:
 	 * @{
 	 */
-	/*------------------------------------------------------------------------*/
+	/**
+	 * Holds the DSS parameters @f$<p, q, g>@f$, used by the user when
+	 * authenticated to join the group.
+	 */
 	typedef struct dss_parms_t dss_parms_t;
+	/**
+	 * Holds the DSA user's public key @f$<y>@f$, used by the user
+	 * when authenticated to join the group.
+	 */
 	typedef struct dsa_pbkey_t dsa_pbkey_t;
+	/**
+	 * Holds the DSA user's private key @f$<x>@f$, used by the user
+	 * when authenticated to join the group.
+	 */
 	typedef struct dsa_prkey_t dsa_prkey_t;
+	/**
+	 * Holds a user's master private key @f$<x>@f$, used by the user
+	 * when authenticated to join the group. It can come from the
+	 * user's DSA private key, or from a group member's private key.
+	 */
 	typedef struct dlogx_t dlogx_t;
+	/**
+	 * Holds a user's master public key @f$<n, g, y>@f$, used by the
+	 * user when authenticated to join the group. It can come from the
+	 * user's DSA public key and DSS parameters, or from a group
+	 * signature issued by the member when authenticated in joining a
+	 * new group.
+	 */
 	typedef struct dlog_t dlog_t;
-	/** @} */
 	/*------------------------------------------------------------------------*/
 	/**
 	 * It is used to extract the user's master key from a DSA private
@@ -603,32 +605,39 @@ extern "C" {
 	 */
 	FTMGS_API__
 	void extract_dsa_from_umk(dsa_prkey_t* dsa_sk, const dlogx_t* x);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Join ----------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * - @c ftmgs_join_prv_t: it holds temporal user's private data
-	 *   generated while the iterative process of joining to a group.
-	 * - @c ftmgs_join_pbl_t: it holds temporal public data generated
-	 *   while the iterative process of joining a new member to a group.
-	 * - @c ftmgs_mbr_ref_t: it holds the member's reference
-	 *   @f$\<A_i,e_i,C_i,X_i,U_i,V_i,E^{\wp}_i,\mathcal{A}_u\>@f$ (join log)
-	 *   kept by the group manager for each member of the group. It holds
-	 *   information to allow recovery, with the collaboration of the
-	 *   fairness authorities, of tracing keys and opening signatures, as
-	 *   well as non-repudiable bindings with the user.
-	 * - @c ftmgs_mbr_prkey_t: it holds the member's private key
-	 *   @f$\<A_i,e_i,x_i,x'_i\>@f$ that allows the member to issue anonymous
-	 *   and unlinkable group signatures. It holds, among other data, the
-	 *   user's master key.
+	 * @defgroup ftmgs_join FTMGS Join:
 	 * @{
 	 */
-	/*------------------------------------------------------------------------*/
+	/**
+	 * Holds temporal user's private data generated while the
+	 * iterative process of joining to a group.
+	 */
 	typedef struct ftmgs_join_prv_t ftmgs_join_prv_t;
+	/**
+	 * Holds temporal public data generated while the iterative
+	 * process of joining a new member to a group.
+	 */
 	typedef struct ftmgs_join_pbl_t ftmgs_join_pbl_t;
+	/**
+	 * Holds the member's reference
+	 * @f$<A_i,e_i,C_i,X_i,U_i,V_i,E^{\wp}_i,\mathcal{A}_u>@f$ (join
+	 * log) kept by the group manager for each member of the group. It
+	 * holds information to allow recovery, with the collaboration of
+	 * the fairness authorities, of tracing keys and opening
+	 * signatures, as well as non-repudiable bindings with the user.
+	 */
 	typedef struct ftmgs_mbr_ref_t ftmgs_mbr_ref_t;
+	/**
+	 * Holds the member's private key @f$<A_i,e_i,x_i,x'_i>@f$ that
+	 * allows the member to issue anonymous and unlinkable group
+	 * signatures. It holds, among other data, the user's master key.
+	 */
 	typedef struct ftmgs_mbr_prkey_t ftmgs_mbr_prkey_t;
-	/** @} */
 	/*------------------------------------------------------------------------*/
 	/**
 	 * This function belongs to an iterative protocol, at the user's
@@ -738,13 +747,17 @@ extern "C" {
 							const ftmgs_prkey_t* gsk,
 							const ftmgs_pbkey_t* gpk,
 							rndctx_t* rnd_ctx);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Sign ----------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * Signature type:
-	 * - @c ftmgs_sign_t: it holds a FTMGS signature
-	 *   @f$\<T_1,\cdots,T_7,\sigma^{\wp}\>@f$ issued by a member of the group.
+	 * @defgroup ftmgs_sign FTMGS Sign:
+	 * @{
+	 */
+	/**
+	 * Holds a FTMGS signature @f$<T_1,\cdots,T_7,\sigma^{\wp}>@f$
+	 * issued by a member of the group.
 	 */
 	/*------------------------------------------------------------------------*/
 	typedef struct ftmgs_sign_t ftmgs_sign_t;
@@ -834,25 +847,29 @@ extern "C" {
 						   const void* dat_digest,
 						   unsigned dat_digestlen,
 						   const ftmgs_pbkey_t* gpk);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Open ----------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * Opening types:
-	 * - @c ftmgs_opensharej_t: it holds a decryption share
-	 *   @f$\<\hat{\omega}_{j\sigma},\hat{\omega}^{\wp}_{j\sigma}\>@f$ of the
-	 *   opening of a signature.
-	 * - @c ftmgs_openacc_t: it holds the incremental product of the
-	 *   opening decryption shares.
-	 * - @c ftmgs_open_t: it holds the member's reference
-	 *   @f$\<\omega_{\sigma}\>@f$ result of opening a signature.
+	 * @defgroup ftmgs_open FTMGS Open:
 	 * @{
 	 */
-	/*------------------------------------------------------------------------*/
+	/**
+	 * Holds the member's reference @f$<\omega_{\sigma}>@f$ result of
+	 * opening a signature.
+	 */
 	typedef struct ftmgs_open_t ftmgs_open_t;
+	/**
+	 * Holds a decryption share
+	 * @f$<\hat{\omega}_{j\sigma},\hat{\omega}^{\wp}_{j\sigma}>@f$ of
+	 * the opening of a signature.
+	 */
 	typedef struct ftmgs_opensharej_t ftmgs_opensharej_t;
+	/**
+	 * Holds the incremental product of the opening decryption shares.
+	 */
 	typedef struct ftmgs_openacc_t ftmgs_openacc_t;
-	/** @} */
 	/*------------------------------------------------------------------------*/
 	/**
 	 * It is used by a fairness authority (with key-pair @a faj_gsk and
@@ -929,25 +946,30 @@ extern "C" {
 							const ftmgs_faj_gr_pbkey_share_t* faj_gpk[],
 							const ftmgs_faj_gr_prkey_t* faj_gsk[],
 							rndctx_t* rnd_ctx);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Reveal&Trace --------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * Revealing types:
-	 * \item @c ftmgs_mtkey_sharej_t: it holds a decryption share
-	 *   @f$\<\hat{\tau}_{ji},\hat{\tau}^{\wp}_{ji}\>@f$ of the
-	 *   revealing of a member's tracing key.
-	 * \item @c ftmgs_mtkey_acc_t: it holds the incremental product of the
-	 *   revealing decryption shares.
-	 * \item @c ftmgs_mtkey_t: it holds the member's tracing key
-	 *   @f$\<\tau_{i}\>@f$ result of opening a signature.
+	 * @defgroup ftmgs_reveal_trace FTMGS Reveal and Trace:
 	 * @{
 	 */
-	/*------------------------------------------------------------------------*/
+	/**
+	 * Holds the member's tracing key @f$<\tau_{i}>@f$ result of
+	 * opening a signature.
+	 */
 	typedef struct ftmgs_mtkey_t ftmgs_mtkey_t;
+	/**
+	 * Holds a decryption share
+	 * @f$<\hat{\tau}_{ji},\hat{\tau}^{\wp}_{ji}>@f$ of the revealing
+	 * of a member's tracing key.
+	 */
 	typedef struct ftmgs_mtkey_sharej_t ftmgs_mtkey_sharej_t;
+	/**
+	 * Holds the incremental product of the revealing decryption
+	 * shares.
+	 */
 	typedef struct ftmgs_mtkey_acc_t ftmgs_mtkey_acc_t;
-	/** @} */
 	/*------------------------------------------------------------------------*/
 	/**
 	 * It is used by a fairness authority (with key-pair @a faj_sk and
@@ -1022,12 +1044,17 @@ extern "C" {
 							  const ftmgs_faj_pbkey_share_t* faj_pk[],
 							  const ftmgs_faj_prkey_t* faj_sk[],
 							  rndctx_t* rnd_ctx);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Claim ---------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * @c ftmgs_claim_t: it holds the proof @f$\<\pi^{\wp}\>@f$ of
-	 *   the claiming of a signature authorship.
+	 * @defgroup ftmgs_claim FTMGS Claim:
+	 * @{
+	 */
+	/**
+	 * Holds the proof @f$<\pi^{\wp}>@f$ of the claiming of a
+	 * signature authorship.
 	 */
 	typedef struct ftmgs_claim_t ftmgs_claim_t;
 	/*------------------------------------------------------------------------*/
@@ -1127,12 +1154,17 @@ extern "C" {
 								 const void* dat_digest,
 								 unsigned dat_digestlen,
 								 const ftmgs_pbkey_t* gpk);
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Link ----------------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * @c ftmgs_link_t: it holds the proof @f$\<\lambda^{\wp}\>@f$ of
-	 *   the linking of several FTMGS signatures.
+	 * @defgroup ftmgs_link FTMGS Link:
+	 * @{
+	 */
+	/**
+	 * Holds the proof @f$<\lambda^{\wp}>@f$ of the linking of several
+	 * FTMGS signatures.
 	 */
 	typedef struct ftmgs_link_t ftmgs_link_t;
 	/*------------------------------------------------------------------------*/
@@ -1294,11 +1326,19 @@ extern "C" {
 								  unsigned nsg,
 								  const ftmgs_sign_t* sg[],
 								  const ftmgs_pbkey_t* gpk[]);
+	/** @} */
+	/*------------------------------------------------------------------------*/
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- ASN1-Buffer ---------------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * Buffer data type
+	 * @defgroup buffer ASN1 encoding buffer
+	 * @{
+	 */
+	/**
+	 * Holds a buffer of bytes representing the ASN.1 DER encoding of
+	 * some abstract data type.
 	 */
 	typedef struct buffer_t buffer_t;
 	/*------------------------------------------------------------------------*/
@@ -1447,13 +1487,47 @@ extern "C" {
 #define buffer_reserve_add(buffer, sz)						\
 	buffer_reserve((buffer), buffer_size(buffer)+(sz)+1)
 #endif
+	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- ASN1-Conversion -----------------------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * ASN1 DER encoding and decoding functions.
+	 * @defgroup asn1der ASN1 DER encoding and decoding functions.
+	 * 
+	 * These functions allow to encode in ASN.1 DER each of the FTMGS
+	 * abstract data types, storing the result in a buffer of bytes
+	 * (of type @c buffer_t). They also allow to decode from a buffer
+	 * of bytes in ASN.1 DER to any of the FTMGS abstract data types:
+	 *
 	 * @{
 	 */
+	/*------------------------------------------------------------------------*/
+	/**
+	 * ASN1 return codes.
+	 *
+	 * The type @c asn1_retcode_t defines the return codes for
+	 * ASN1 encoding functions.
+	 */
+	typedef enum asn1_retcode_t {
+		ASN1_Success,
+		ASN1_File_Not_Found,
+		ASN1_Element_Not_Found,
+		ASN1_Identifier_Not_Found,
+		ASN1_Der_Error,
+		ASN1_Value_Not_Found,
+		ASN1_Generic_Error,
+		ASN1_Value_Not_Valid,
+		ASN1_Tag_Error,
+		ASN1_Tag_Implicit,
+		ASN1_Error_Type_Any,
+		ASN1_Syntax_Error,
+		ASN1_Mem_Error,
+		ASN1_Mem_Alloc_Error,
+		ASN1_Der_Overflow,
+		ASN1_Name_Too_Long,
+		ASN1_Array_Error,
+		ASN1_Element_Not_Empty
+	} asn1_retcode_t;
 	/*------------------------------------------------------------------------*/
 	FTMGS_API__ USE_RESULT__
 	asn1_retcode_t asn1_enc_dssparms(buffer_t* buff, const dss_parms_t* p);
@@ -1561,7 +1635,64 @@ extern "C" {
 	/*-- CONSTRUCTORS AND DESTRUCTORS ----------------------------------------*/
 	/*------------------------------------------------------------------------*/
 	/**
-	 * ADT: Constructors (New), Destructors (Delete), and Cloners
+	 * @defgroup adt ADT: Constructors (New), Destructors (Delete), and Cloners
+	 *
+	 * All defined data in the FTMGS library, except for enumerations,
+	 * are Abstract Data Types (ADT), and therefore their internal
+	 * representation is hidden (and protected). This fact has several
+	 * advantages:
+	 * 
+	 * - The internal representation is hidden, so there is no need to
+	 *   expose the internal data types and internal implementation.
+	 * - As the internal representation is hidden, it diminishes the
+	 *   possibility (and temptation) to bypass the API and dealing
+	 *   with the internal data representation.
+	 * - It improves the possibility of internal modifications that do
+	 *   not affect to the external public API.
+	 * - It improves the binary compatibility of the library, since
+	 *   all data are defined as pointers to the internal
+	 *   representation, which can change without affecting to the
+	 *   external pointers.
+	 * 
+	 * As abstract data types, except for enumerations, any variable
+	 * to deal with data must be declared as a @b pointer to the
+	 * hidden data representation. Each of them will be created
+	 * through a function (the @b constructor) that allocates memory
+	 * space to hold the internal representation, and initializes the
+	 * data to a known initial state. Moreover, when such data is not
+	 * useful anymore, then it is necessary to call a function (the @b
+	 * destructor) to free the allocated resources associated with the
+	 * internal representation. Additionally, there is also a function
+	 * (the @b cloner) that allows to clone the internal
+	 * representation of the abstract data.
+	 * 
+	 * For each type in the library, these functions are named by the
+	 * name of the type followed by the word @b new, @b delete and @b
+	 * clone respectively. For example, for the type @c rndctx_t, the
+	 * following code defines a variable to point to the internal
+	 * representation, calls the constructors, other functions from
+	 * the API, cloning and finally calls the destructors:
+	 *
+	 * @code
+	 * #include <ftmgs.h>
+	 * int main()
+	 * {
+	 *     unsigned x;
+	 *     rndctx_t* rctx;
+	 *     rndctx_t* random_context = rndctx_t_new();
+	 *     ...
+	 *     bi_random_seed(random_context, PseudoEntropy);
+	 *     ...
+	 *     x = bi_random_ui(10, random_context);
+	 *     ...
+	 *     rctx = rndctx_t_clone(random_context);
+	 *     ... 
+	 *     rndctx_t_delete(random_context);
+	 *     rndctx_t_delete(rctx);
+	 *     return 0;
+	 * }
+	 * @endcode
+	 *
 	 * @{
 	 */
 	/*------------------------------------------------------------------------*/
