@@ -22,9 +22,9 @@
 SRCS=test.c
 SRCSLIB=random.c system_rnd.c
 HDRS=random.h
-PRIVHDRS=system_rnd.h
+PRIVHDRS=system_rnd.h system_mutex.h
 AUXS=Makefile
-LIBS=-lsha
+LIBS=-lsha -lpthread
 #----------------------------------
 PROGNAME=
 LNAME=
@@ -64,8 +64,13 @@ else ifdef DEBUG2
 else
   CDBGFLAGS=-DNDEBUG -O3 -DOPTLEVEL=2 -s
 endif
-#------------------------------------
-OPTFLAGS=
+#---------------------------------------
+ifdef NTHREADS
+  OPTFLAGS=-DNTHREADS__
+  LIBS:=$(subst -lpthread,,$(LIBS))
+else
+  OPTFLAGS=
+endif
 #----------------------------------
 CERRFLAGS=-ansi -pedantic -Wall -Werror -Wextra -Wno-long-long -Wshadow -Wfloat-equal -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Wconversion -Wsign-conversion -Wchar-subscripts
 #----------------------------------
@@ -142,5 +147,5 @@ uninstalllibs:
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
 test.o: random.h
-random.o: random.h ../include/sha.h system_rnd.h
+random.o: random.h ../include/sha.h system_rnd.h system_mutex.h
 system_rnd.o: system_rnd.h

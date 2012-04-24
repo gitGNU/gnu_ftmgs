@@ -29,6 +29,7 @@
 
 #include "sha.h"
 #include "system_rnd.h"
+#include "system_mutex.h"
 
 /*----------------------------------------------------------------------------*/
 #ifndef UNUSED__
@@ -43,6 +44,19 @@
     extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 /*----------------------------------------------------------------------------*/
 STATIC_ASSERT(TRUE_ENTROPY == 0, Bad_entropy_definition);
+/*----------------------------------------------------------------------------*/
+/* 
+ * NISTSP80090. 10.1.1.1. pg: 35
+ */
+enum {
+	RANDOM_CTX_SEEDLEN = 55
+};
+struct rndctx_t {
+	char v[RANDOM_CTX_SEEDLEN];
+	char c[RANDOM_CTX_SEEDLEN];
+	unsigned counter;
+	MUTEX_VAR(mutex)
+};
 /*----------------------------------------------------------------------------*/
 /* Menezes HAC, Algorithm 14.7, pg 594 */
 /* z may be equal to a or b or both */
@@ -262,6 +276,7 @@ unsigned random_seed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	unsigned le = 0;
 	unsigned ln = 0;
 	assert(rnd_ctx != NULL);
+	BEGIN_MUTEX(&rnd_ctx->mutex);
 	if (entropy_src != NO_ENTROPY) {
 		le = entropy(rnd_ctx->c, RANDOM_CTX_ENTROPY, entropy_src);
 		ln = nonce(rnd_ctx->c+le, RANDOM_CTX_NONCE);
@@ -271,6 +286,7 @@ unsigned random_seed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	hash_df(RANDOM_CTX_HASH, rnd_ctx->c, sizeof(rnd_ctx->c),
 			&tag, sizeof(tag), rnd_ctx->v, sizeof(rnd_ctx->v), NULL, 0);
 	rnd_ctx->counter = 1;
+	END_MUTEX(&rnd_ctx->mutex);
 	/*------------------------------*/
 	return (le+ln);
 }
@@ -286,6 +302,7 @@ unsigned random_reseed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	unsigned le = 0;
 	unsigned ln = 0;
 	assert(rnd_ctx != NULL);
+	BEGIN_MUTEX(&rnd_ctx->mutex);
 	aux[0] = 0x01;
 	if (entropy_src != NO_ENTROPY) {
 		le = entropy(rnd_ctx->c, RANDOM_CTX_ENTROPY, entropy_src);
@@ -297,6 +314,7 @@ unsigned random_reseed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	hash_df(RANDOM_CTX_HASH, rnd_ctx->c, sizeof(rnd_ctx->c),
 			&tag0, sizeof(tag0), rnd_ctx->v, sizeof(rnd_ctx->v), NULL, 0);
 	rnd_ctx->counter = 1;
+	END_MUTEX(&rnd_ctx->mutex);
 	/*------------------------------*/
 	return (le+ln);
 }
@@ -312,6 +330,7 @@ void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx)
 	unsigned counter = uint2bigendian(rnd_ctx->counter);
 	assert(nbytes <= 65535); /*NISTSP80090 table 2: 2^19/2^3*/
 	assert(rnd_ctx != NULL);
+	BEGIN_MUTEX(&rnd_ctx->mutex);
 	hash_gen(RANDOM_CTX_HASH, data, nbytes, rnd_ctx->v, sizeof(rnd_ctx->v));
 	digest_len = hash_tag(RANDOM_CTX_HASH, msg_digest,
 						  &tag, sizeof(tag), rnd_ctx->v, sizeof(rnd_ctx->v));
@@ -319,6 +338,7 @@ void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx)
 	inc_mod2k(rnd_ctx->v, sizeof(rnd_ctx->v), rnd_ctx->c, sizeof(rnd_ctx->c));
 	inc_mod2k(rnd_ctx->v, sizeof(rnd_ctx->v), &counter, sizeof(counter));
 	++rnd_ctx->counter;
+	END_MUTEX(&rnd_ctx->mutex);
 }
 /*-----------------------------------------------------------------*/
 /* r rnd such that 0 <= r < max */
@@ -331,6 +351,14 @@ unsigned random_uint(unsigned max, rnd_ctx_t* rnd_ctx)
 /*-----------------------------------------------------------------*/
 /*-----------------------------------------------------------------*/
 /*-----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+#define MUTEX_VAR_dtor(mutex_var__)	DESTROY_MUTEX(mutex_var__)
+#define MUTEX_VAR_ctor(mutex_var__)	CREATE_MUTEX(mutex_var__)
+#define MUTEX_VAR_asg(mutex_var_d__, mutex_var_o__)	do{DESTROY_MUTEX(mutex_var_d__);CREATE_MUTEX(mutex_var_d__);}while(0)
+/*----------------------------------------------------------------------------*/
+void rndctx_t_ctor(struct rndctx_t* p);
+void rndctx_t_dtor(struct rndctx_t* p);
+void rndctx_t_asg(struct rndctx_t* d, const struct rndctx_t* o);
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
 static int rndctx_t_chk_members(struct rndctx_t* p, int code)/*auto*/
@@ -350,43 +378,26 @@ static int rndctx_t_chk_members(struct rndctx_t* p, int code)/*auto*/
 		char v[RANDOM_CTX_SEEDLEN];
 		char c[RANDOM_CTX_SEEDLEN];
 		unsigned counter;
+		MUTEX_VAR(mutex)
 	};
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, v);
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, c);
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, counter);
+	CHK_FIELD__(dummy_rndctx_t, rndctx_t, mutex);
 	CHK_SIZE__(dummy_rndctx_t, rndctx_t);
-	return (p!=NULL)&&(code == 64347738);
+	return (p!=NULL)&&(code == 85127968);
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
 }
 #endif
 /*----------------------------------------------------------------------------*/
-void rndctx_t_ctor(struct rndctx_t* p)/*modified*/
-{
-	assert(p != NULL);
-	assert(rndctx_t_chk_members(p,64347738));
-	p->v[0] = '\0';
-	p->c[0] = '\0';
-	p->counter = 0;
-}
-/*----------------------------------------------------------------------------*/
 void rndctx_t_dtor(struct rndctx_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(rndctx_t_chk_members(p,64347738));
+	assert(rndctx_t_chk_members(p,85127968));
+	MUTEX_VAR_dtor(&p->mutex);
 	(void)p;
-}
-/*----------------------------------------------------------------------------*/
-void rndctx_t_asg(struct rndctx_t* p, const struct rndctx_t* o)/*modified*/
-{
-	assert(p != NULL && o != NULL);
-	assert(rndctx_t_chk_members(p,64347738));
-	if (p != o) {
-		memcpy(p->v, o->v, sizeof(p->v));
-		memcpy(p->c, o->c, sizeof(p->c));
-		p->counter = o->counter;
-	}
 }
 /*----------------------------------------------------------------------------*/
 struct rndctx_t* rndctx_t_new()/*auto*/
@@ -416,6 +427,28 @@ void rndctx_t_delete(struct rndctx_t* p)/*auto*/
 	if (p != NULL) {
 		rndctx_t_dtor(p);
 		free(p);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void rndctx_t_ctor(struct rndctx_t* p)/*modified*/
+{
+	assert(p != NULL);
+	assert(rndctx_t_chk_members(p,85127968));
+	p->v[0] = '\0';
+	p->c[0] = '\0';
+	p->counter = 0;
+	MUTEX_VAR_ctor(&p->mutex);
+}
+/*----------------------------------------------------------------------------*/
+void rndctx_t_asg(struct rndctx_t* p, const struct rndctx_t* o)/*modified*/
+{
+	assert(p != NULL && o != NULL);
+	assert(rndctx_t_chk_members(p,85127968));
+	if (p != o) {
+		memcpy(p->v, o->v, sizeof(p->v));
+		memcpy(p->c, o->c, sizeof(p->c));
+		p->counter = o->counter;
+		MUTEX_VAR_asg(&p->mutex, &o->mutex);
 	}
 }
 /*----------------------------------------------------------------------------*/

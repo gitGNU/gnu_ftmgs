@@ -2,6 +2,7 @@
 #-------------------------------------
 OPTS=''
 PRECOMP=''
+THREADS=''
 DEBUG=''
 TIMER=''
 STS=''
@@ -9,7 +10,7 @@ ASN1=''
 while true ; do
 	case "$1" in
 		-h)
-			echo "usage: `basename $0` [-[no]precomp] [-[no]timer] [-[no]sts] [-[no]debug] [-[no]asn1] [target]"
+			echo "usage: `basename $0` [-[no]precomp] [-[no]timer] [-[no]sts] [-[no]debug] [-[no]asn1] [-[no]threads] [target]"
 			exit
 			;;
 		-noprecomp)
@@ -17,6 +18,12 @@ while true ; do
 			;;
 		-precomp)
 			PRECOMP=''
+			;;
+		-nothreads)
+			THREADS='NTHREADS=1'
+			;;
+		-threads)
+			THREADS=''
 			;;
 		-nodebug)
 			DEBUG=''

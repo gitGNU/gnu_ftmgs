@@ -41,7 +41,7 @@ PRIVHDRS=claim.h	\
 	syssph.h		\
 	system.h
 AUXS=README Makefile ftmgs.asn1 makeit.sh
-LIBS=-ltasn1 -lcrypto -lbigint -lbuffer -lrandom -lsha -lgmp -lm
+LIBS=-ltasn1 -lcrypto -lbigint -lbuffer -lrandom -lsha -lgmp -lm -lpthread
 #----------------------------------
 PROGNAME=
 LNAME=
@@ -105,10 +105,17 @@ OPTFLAGS4=-DNCHECK_ASN1__
 else
 OPTFLAGS4=
 endif
+#---------------------------------------
+ifdef NTHREADS
+OPTFLAGS5=-DNTHREADS__
+LIBS:=$(subst -lpthread,,$(LIBS))
+else
+OPTFLAGS5=
+endif
 #------------------------------------
 OPTFLAGS0=-DFTMGS_BUILDING__
 #------------------------------------
-OPTFLAGS=$(OPTFLAGS0) $(OPTFLAGS1) $(OPTFLAGS2) $(OPTFLAGS3) $(OPTFLAGS4)
+OPTFLAGS=$(OPTFLAGS0) $(OPTFLAGS1) $(OPTFLAGS2) $(OPTFLAGS3) $(OPTFLAGS4) $(OPTFLAGS5)
 #----------------------------------
 CERRFLAGS=-ansi -pedantic -Wall -Werror -Wextra -Wno-long-long -Wshadow -Wfloat-equal -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Wconversion -Wsign-conversion -Wchar-subscripts
 #----------------------------------
@@ -205,45 +212,14 @@ uninstalllibs:
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
 test.o: ftmgs.h
-claim.o: claim.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
-claim.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
-claim.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
-claim.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
-claim.o: ../include/sok.h ../include/cdtor.h
-group.o: group.h ftmgs.h ../include/bigint.h ../include/birnd.h
-group.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
-group.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
-group.o: ../include/paillier_thr.h ../include/generator.h ../include/cdtor.h
-join.o: join.h ftmgs.h ../include/bigint.h ../include/birnd.h
-join.o: ../include/random.h ../include/paillier_thr.h ../include/syspar.h
-join.o: ../include/sha.h ../include/sphere.h ../include/nadrp.h group.h
-join.o: syssph.h ../include/elgamal_thr.h ../include/iexport.h
-join.o: ../include/sok.h ../include/cdtor.h
-link.o: link.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
-link.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
-link.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
-link.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
-link.o: ../include/sok.h ../include/cdtor.h
-open.o: open.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
-open.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
-open.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
-open.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
-open.o: ../include/cdtor.h
-revtrace.o: revtrace.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
-revtrace.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
-revtrace.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
-revtrace.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
-revtrace.o: ../include/cdtor.h
-sign.o: sign.h ftmgs.h ../include/bigint.h ../include/iexport.h
-sign.o: ../include/sha.h ../include/birnd.h ../include/random.h
-sign.o: ../include/elgamal_thr.h ../include/syspar.h ../include/sphere.h
-sign.o: group.h syssph.h ../include/nadrp.h ../include/paillier_thr.h join.h
-sign.o: ../include/sok.h ../include/cdtor.h
-syssph.o: syssph.h ../include/bigint.h ../include/syspar.h ../include/sha.h
-syssph.o: ../include/sphere.h ../include/birnd.h ../include/random.h
-ftmgs_asn1.o: ../include/bigint.h ../include/iexport.h ../include/sha.h
-ftmgs_asn1.o: ../include/buffer.h system.h ftmgs.h group.h ../include/birnd.h
-ftmgs_asn1.o: ../include/random.h syssph.h ../include/syspar.h
-ftmgs_asn1.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
-ftmgs_asn1.o: ../include/paillier_thr.h join.h sign.h open.h revtrace.h
-ftmgs_asn1.o: claim.h link.h
+claim.o: claim.h ftmgs.h group.h ../include/random.h syssph.h join.h sign.h
+group.o: group.h ftmgs.h ../include/random.h syssph.h
+join.o: join.h ftmgs.h ../include/random.h group.h syssph.h
+link.o: link.h ftmgs.h group.h ../include/random.h syssph.h join.h sign.h
+open.o: open.h ftmgs.h group.h ../include/random.h syssph.h join.h sign.h
+revtrace.o: revtrace.h ftmgs.h group.h ../include/random.h syssph.h join.h
+revtrace.o: sign.h
+sign.o: sign.h ftmgs.h ../include/random.h group.h syssph.h join.h
+syssph.o: syssph.h
+ftmgs_asn1.o: system.h ftmgs.h group.h ../include/random.h syssph.h join.h
+ftmgs_asn1.o: sign.h open.h revtrace.h claim.h link.h

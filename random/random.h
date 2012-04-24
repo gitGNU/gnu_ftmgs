@@ -18,6 +18,7 @@
 /* Public License along with this library. If not, see                        */
 /* <http://www.gnu.org/licenses/>.                                            */
 /*----------------------------------------------------------------------------*/
+/** @file */
 #ifndef umalccvbg_random_h__
 #define umalccvbg_random_h__	1
 #ifdef __cplusplus
@@ -36,34 +37,26 @@ extern "C" {
 typedef enum Entropy_src_t {
 	TRUE_ENTROPY, PSEUDO_ENTROPY, NO_ENTROPY
 } entropy_src_t;
-/* 
- * NISTSP80090. 10.1.1.1. pg: 35
+/*--------------------------------*/
+/**
+ * Random bytes generator context
  */
-enum {
-	RANDOM_CTX_SEEDLEN = 55
-};
-typedef struct rndctx_t {
-	char v[RANDOM_CTX_SEEDLEN];
-	char c[RANDOM_CTX_SEEDLEN];
-	unsigned counter;
-} rnd_ctx_t;
+typedef struct rndctx_t rnd_ctx_t;
 /*-------------------------------------------------------------*/
 /**
- * Random Context ADT: Constructor, Destructor, Asignment, New, Clone, Delete
+ * @defgroup random_adt
+ * Random Context ADT: Constructor (New), Destructor (Delete), Clone
  * @{
  */
-void rndctx_t_ctor(struct rndctx_t* p);
-void rndctx_t_dtor(struct rndctx_t* p);
-void rndctx_t_asg(struct rndctx_t* d, const struct rndctx_t* o);
 struct rndctx_t* rndctx_t_new();
 struct rndctx_t* rndctx_t_clone(const struct rndctx_t* o);
 void rndctx_t_delete(struct rndctx_t* p);
 /** @} */
 /*-------------------------------------------------------------*/
 /**
- * Seeds the random number generator
+ * Seeds the random bytes generator
  * 
- * @param  rnd_ctx      Random number generator context
+ * @param  rnd_ctx      Random bytes generator context
  * @param  entropy_src  Entropy source: TRUE_ENTROPY, PSEUDO_ENTROPY, NO_ENTROPY
  * @return length (in bytes) of entropy and nonce bytes used for seeding
  * @pre    Already constructed ADT (@a rnd_ctx)
@@ -71,9 +64,9 @@ void rndctx_t_delete(struct rndctx_t* p);
 unsigned random_seed(rnd_ctx_t* rnd_ctx, unsigned entropy_src);
 /*-------------------------------------------------------------*/
 /**
- * Reseeds the random number generator
+ * Reseeds the random bytes generator
  * 
- * @param  rnd_ctx      Random number generator context
+ * @param  rnd_ctx      Random bytes generator context
  * @param  entropy_src  Entropy source: TRUE_ENTROPY, PSEUDO_ENTROPY, NO_ENTROPY
  * @return length (in bytes) of entropy and nonce bytes used for seeding
  * @pre    Already constructed ADT (@a rnd_ctx)
@@ -85,7 +78,7 @@ unsigned random_reseed(rnd_ctx_t* rnd_ctx, unsigned entropy_src);
  * 
  * @param[out]     data     output data buffer to hold the random bytes
  * @param[in]      nbytes   requested number of random bytes
- * @param[in,out]  rnd_ctx  random number generator context
+ * @param[in,out]  rnd_ctx  random bytes generator context
  * @return void
  * @pre    Already constructed ADT (@a rnd_ctx)
  */
@@ -95,7 +88,7 @@ void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx);
  * Generates a random unsigned number less than @a max (0 <= r < max)
  * 
  * @param[in]      max      outer limit for the generated random number
- * @param[in,out]  rnd_ctx  random number generator context
+ * @param[in,out]  rnd_ctx  random bytes generator context
  * @return a random unsigned number less than @a max (0 <= r < max)
  * @pre    Already constructed ADT (@a rnd_ctx)
  */

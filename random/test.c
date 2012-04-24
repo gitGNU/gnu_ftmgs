@@ -157,28 +157,28 @@ int test(struct rndctx_t* rnd_ctx)
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-	struct rndctx_t rnd_ctx;
+	struct rndctx_t* rnd_ctx;
 	unsigned aux, i, j;
 	unsigned entropy_src = PSEUDO_ENTROPY;
 	int ok;
 	if ((argc == 2)&&(strcmp(argv[1],"-t")==0)) {
 		entropy_src = TRUE_ENTROPY;
 	}
-	rndctx_t_ctor(&rnd_ctx);
+	rnd_ctx = rndctx_t_new();
 	printf("Entropy Source: %s\n",
 		   entropy_src == TRUE_ENTROPY ? "TRUE_ENTROPY" : "PSEUDO_ENTROPY");
-	random_seed(&rnd_ctx, entropy_src);
+	random_seed(rnd_ctx, entropy_src);
 	printf("\n");
 	for (j = 0; j < 2; ++j) {
 		for (i = 0; i < 5; ++i) {
-			random_bytes(&aux, sizeof(aux), &rnd_ctx);
+			random_bytes(&aux, sizeof(aux), rnd_ctx);
 			printf("0x%08x ", aux);
 		}
 		printf("\n");
 	}
 	printf("\n");
-	ok = test(&rnd_ctx);
+	ok = test(rnd_ctx);
 	printf("Test: %s\n", (ok?"Success":"Fail"));
-	rndctx_t_dtor(&rnd_ctx);
+	rndctx_t_delete(rnd_ctx);
 	return 0;
 }
