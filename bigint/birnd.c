@@ -70,7 +70,7 @@ unsigned bi_random_ui(unsigned max, rnd_ctx_t* rnd_ctx)
 /*----------------------------------*/
 /* r rnd such that 0 <= r < uppbnd */
 /* 
- * NIST-SP-300-90 B.5.1.3
+ * NIST-SP-800-90 B.5.1.3
  */
 void bi_random_ub(bigint_t r, const bigint_t uppbnd, rnd_ctx_t* rnd_ctx)
 {
@@ -81,7 +81,7 @@ void bi_random_ub(bigint_t r, const bigint_t uppbnd, rnd_ctx_t* rnd_ctx)
 /*----------------------------------*/
 /* r rnd such that lwbnd <= r < uppbnd */
 /* 
- * NIST-SP-300-90 B.5.1
+ * NIST-SP-800-90 B.5.1
  */
 void bi_random_lub(bigint_t r, const bigint_t lwbnd, const bigint_t uppbnd,
 				   rnd_ctx_t* rnd_ctx)

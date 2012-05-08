@@ -26,6 +26,14 @@
  *
  * FTMGS (Fair Traceable Multi-Group Signatures) public API
  *
+ * References: 
+ *    V. Benjumea, S. G. Choi, J. Lopez, and M. Yung.
+ *    Fair Traceable Multi-Group Signatures.
+ *    In G. Tsudik, editor, FC'08: 12th. Intl. Conf. on Financial
+ *    Cryptography and Data Security, volume 5143 of Lecture Notes in
+ *    Computer Science, pages 231--246. Springer-Verlag, Jan. 2008.
+ *    Full Version: http://eprint.iacr.org/2008/047
+ *
  * Source files that make use of the facilities provided by the FTMGS
  * library should include the header file @c ftmgs.h, where the
  * public API is defined. This header file is installed in the system

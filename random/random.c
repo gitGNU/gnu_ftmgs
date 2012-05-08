@@ -164,8 +164,8 @@ static void inc_mod2k(void* a, unsigned alen,
 /*-----------------------------------------------------------------*/
 /* 
  * Highest Security strengths for Random Number Generation (BITS)
- *		(table 3 pg 64 NIST SP 300-57)
- *		(table 2 pg 43 NIST SP 300-90)
+ *		(table 3 pg 64 NIST SP 800-57)
+ *		(table 2 pg 43 NIST SP 800-90)
  *
  * 				Sha1	Sha224	| Sha256 |	Sha384	Sha512
  *				-------------------------------------------

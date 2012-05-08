@@ -18,7 +18,12 @@
 /* Public License along with this library. If not, see                        */
 /* <http://www.gnu.org/licenses/>.                                            */
 /*----------------------------------------------------------------------------*/
-/** @file */
+/**
+ * @file Random Number Generator
+ * References: NIST-SP-800-90: Recommendation for Random Number
+ *             Generation Using Deterministic Random Bit Generators
+ *	      NIST-SP-800-57: Recommendation for Key Management – Part 1: General
+ */
 #ifndef umalccvbg_random_h__
 #define umalccvbg_random_h__	1
 #ifdef __cplusplus
