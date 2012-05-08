@@ -39,8 +39,10 @@ SRCSLIB=usha.c hkdf.c hmac.c sha1.c sha224-256.c sha384-512.c
 HDRS=sha.h
 PRIVHDRS=sha-private.h stdint-example.h
 AUXS=Makefile COPYING_SHA
-LIBS=
-#----------------------------------
+#------
+PRJLIBS=
+SYSLIBS=
+#-------------------------------------------------------------------------------
 PROGNAME=
 LNAME=sha
 LIBNAME=
@@ -55,9 +57,11 @@ IDIR=../include
 LDIR=../lib
 INCDIR=-I$(IDIR) 
 LIBDIR=-L$(LDIR)
-#---------------------------------------
-PRJLIBS=
-#-------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+LIBS:=$(addprefix -l,$(PRJLIBS) $(SYSLIBS)) 
+PLIBS:=$(addprefix $(LDIR)/lib,$(PRJLIBS)) 
+PLIBS:=$(addsuffix .a,$(PLIBS)) 
+#-------------------------------------------------------------------------------
 ifeq ($(strip $(PROGNAME)),)
   PROGNAME=$(basename $(notdir $(firstword $(SRCS))))
 endif
@@ -71,13 +75,13 @@ ifeq ($(strip $(SHAREDLIBNAME)),)
   SHAREDLIBNAME=lib$(LNAME).so
 endif
 #------------------------------------
-ifdef DEBUG1
-  CDBGFLAGS=-O2 -DOPTLEVEL=0 -s
-else ifdef DEBUG2
+ifdef NDEBUG
+  CDBGFLAGS=-DNDEBUG -O3 -DOPTLEVEL=2 -s
+else ifdef DEBUG
 # -g -> para debugging info, -rdynamic -> para backtraces
   CDBGFLAGS=-g -rdynamic -O0 -DOPTLEVEL=0 -DDEBUGINFO
 else
-  CDBGFLAGS=-DNDEBUG -O3 -DOPTLEVEL=2 -s
+  CDBGFLAGS=-O2 -DOPTLEVEL=0 -s
 endif
 #----------------------------------
 CERRFLAGS=-Wall -Wextra -Wno-long-long -Wfloat-equal -Wsign-compare -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings 
@@ -108,7 +112,7 @@ installsh: $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR)
 uninstall:
 	$(RM) $(INST_LDIR)/$(LIBNAME) $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR) $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR) $(INST_LDIR)/$(SHAREDLIBNAME)
 	$(CD) $(INST_IDIR) && $(RM) $(HDRS)
-$(LIBNAME): $(PRJLIBS) $(OBJSLIB)
+$(LIBNAME): $(PLIBS) $(OBJSLIB)
 	$(RM) $@ ; $(AR) -rsc $@ $(OBJSLIB)
 $(INST_LDIR)/$(LIBNAME): $(HDRS) $(LIBNAME)
 	-$(MD) $(INST_IDIR) $(INST_LDIR)
@@ -117,7 +121,7 @@ $(INST_LDIR)/$(LIBNAME): $(HDRS) $(LIBNAME)
 	$(CP) $(LIBNAME) $(INST_LDIR)
 	$(CD) $(INST_IDIR) && $(CHMOD) 0644 $(HDRS)
 	$(CD) $(INST_LDIR) && $(CHMOD) 0644 $(LIBNAME)
-$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR): $(PRJLIBS) $(OBJSLIB)
+$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR): $(PLIBS) $(OBJSLIB)
 	$(LINK.c) -shared -fPIC -Wl,-soname,$(SHAREDLIBNAME).$(VMAJOR) -o $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR) $(OBJSLIB) $(LIBDIR) $(LIBS)
 $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR): $(HDRS) $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR)
 	-$(MD) $(INST_IDIR) $(INST_LDIR)
@@ -135,20 +139,25 @@ clean:
 	$(RM) $(OBJS) $(OBJSLIB)
 cleanup: cleanuplibs uninstalllibs
 	$(RM) $(OBJS) $(OBJSLIB) $(LIBNAME) $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR) $(PROGNAME)
-zip: $(LNAME)-$(VMAJOR).$(VMINOR).zip
-$(LNAME)-$(VMAJOR).$(VMINOR).zip:
+$(PLIBS):
+	$(CD) ../$(patsubst $(LDIR)/lib%.a,%,$@) && $(MAKE) installst
+cleanuplibs:
+	$(foreach lib,$(PRJLIBS),$(CD) ../$(lib) && $(MAKE) cleanup ; )
+uninstalllibs:
+	$(foreach lib,$(PRJLIBS),$(CD) ../$(lib) && $(MAKE) uninstall ; )
+zip: $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION).zip
+$(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION).zip:
 	@($(CD) .. && $(LN) -n $(LNAME) $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
-	($(CD) .. && zip -r $@ $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
+	($(CD) .. && zip -r $@ $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) -x .git \*~ \*.bak \*.o \*.a \*.so \*.so.\* )
 	@($(CD) .. && $(RM) $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
 tgz: $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION).tgz
 $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION).tgz:
 	@($(CD) .. && $(LN) -n $(LNAME) $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
-	($(CD) .. && $(TAR) --exclude-backups --exclude='*.bak' --exclude='*.o' --exclude='*.a' --exclude='*.so' --exclude='*.so.*' -zchf $@ $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
+	($(CD) .. && $(TAR) --exclude-backups --exclude='*.git' --exclude='*~' --exclude='*.bak' --exclude='*.o' --exclude='*.a' --exclude='*.so' --exclude='*.so.*' -zchf $@ $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
 	@($(CD) .. && $(RM) $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
 depend:
 	-@$(DEPEND) $(DEPENDFLAGS) -- $(ALLDEFINES) $(DEPEND_DEFINES) -- $(SRCS) $(SRCSLIB) 2> /dev/null
-cleanuplibs:
-uninstalllibs:
+
 # -----------------------------------------------------------------------
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 

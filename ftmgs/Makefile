@@ -39,10 +39,12 @@ PRIVHDRS=claim.h	\
 	revtrace.h		\
 	sign.h			\
 	syssph.h		\
-	system.h
+	system_endian.h
 AUXS=README Makefile ftmgs.asn1 makeit.sh
-LIBS=-ltasn1 -lcrypto -lbigint -lbuffer -lrandom -lsha -lgmp -lm -lpthread
-#----------------------------------
+#------
+PRJLIBS=crypto bigint buffer random sha
+SYSLIBS=tasn1 gmp m pthread
+#-------------------------------------------------------------------------------
 PROGNAME=
 LNAME=
 LIBNAME=
@@ -57,9 +59,11 @@ IDIR=../include
 LDIR=../lib
 INCDIR=-I$(IDIR)
 LIBDIR=-L$(LDIR)
-#---------------------------------------
-PRJLIBS=$(LDIR)/libsha.a $(LDIR)/librandom.a $(LDIR)/libbuffer.a $(LDIR)/libbigint.a $(LDIR)/libcrypto.a
-#-------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+LIBS:=$(addprefix -l,$(PRJLIBS) $(SYSLIBS)) 
+PLIBS:=$(addprefix $(LDIR)/lib,$(PRJLIBS)) 
+PLIBS:=$(addsuffix .a,$(PLIBS)) 
+#-------------------------------------------------------------------------------
 ifeq ($(strip $(PROGNAME)),)
   PROGNAME=$(basename $(notdir $(firstword $(SRCS))))
 endif
@@ -73,13 +77,13 @@ ifeq ($(strip $(SHAREDLIBNAME)),)
   SHAREDLIBNAME=lib$(LNAME).so
 endif
 #------------------------------------
-ifdef DEBUG1
-  CDBGFLAGS=-O2 -DOPTLEVEL=0 -s
-else ifdef DEBUG2
+ifdef NDEBUG
+  CDBGFLAGS=-DNDEBUG -O3 -DOPTLEVEL=2 -s
+else ifdef DEBUG
 # -g -> para debugging info, -rdynamic -> para backtraces
   CDBGFLAGS=-g -rdynamic -O0 -DOPTLEVEL=0 -DDEBUGINFO
 else
-  CDBGFLAGS=-DNDEBUG -O3 -DOPTLEVEL=2 -s
+  CDBGFLAGS=-O2 -DOPTLEVEL=0 -s
 endif
 #------------------------------------
 ifdef TIMER
@@ -117,7 +121,7 @@ OPTFLAGS0=-DFTMGS_BUILDING__
 #------------------------------------
 OPTFLAGS=$(OPTFLAGS0) $(OPTFLAGS1) $(OPTFLAGS2) $(OPTFLAGS3) $(OPTFLAGS4) $(OPTFLAGS5)
 #----------------------------------
-CERRFLAGS=-ansi -pedantic -Wall -Werror -Wextra -Wno-long-long -Wshadow -Wfloat-equal -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Wconversion -Wsign-conversion -Wchar-subscripts
+CERRFLAGS=-ansi -pedantic -Wall -Werror -Wextra -Wno-long-long -Wshadow -Wfloat-equal -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Wchar-subscripts
 #----------------------------------
 CFLAGS=-fPIC $(CERRFLAGS) $(CDBGFLAGS) $(OPTFLAGS) $(INCDIR)
 ALLDEFINES=$(CFLAGS)
@@ -136,8 +140,7 @@ CHMOD=chmod -f
 OBJS=$(SRCS:.c=.o)
 OBJSLIB=$(SRCSLIB:.c=.o)
 #---------------------------------------
-all: lib $(PROGNAME)
-lib: stlib shlib
+all: $(PROGNAME)
 stlib: $(LIBNAME)
 shlib: $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR)
 install: installst installsh
@@ -146,16 +149,16 @@ installsh: $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR)
 uninstall:
 	$(RM) $(INST_LDIR)/$(LIBNAME) $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR) $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR) $(INST_LDIR)/$(SHAREDLIBNAME)
 	$(CD) $(INST_IDIR) && $(RM) $(HDRS)
-$(LIBNAME): $(PRJLIBS) $(OBJSLIB)
+$(LIBNAME): $(PLIBS) $(OBJSLIB)
 	$(RM) $@ ; $(AR) -rsc $@ $(OBJSLIB)
-	$(MD) tmp && $(CD) tmp && $(foreach lib,$(PRJLIBS), $(RM) *.o ; $(AR) x ../$(lib) ; $(AR) -qs ../$@ *.o ;  $(RM) *.o )
+	$(MD) tmp && $(CD) tmp && $(foreach lib,$(PLIBS), $(RM) *.o ; $(AR) x ../$(lib) ; $(AR) -qs ../$@ *.o ;  $(RM) *.o ; )
 $(INST_LDIR)/$(LIBNAME): $(HDRS) $(LIBNAME)
 	-$(MD) $(INST_IDIR) $(INST_LDIR)
 	$(CP) $(HDRS) $(INST_IDIR)
 	$(CP) $(LIBNAME) $(INST_LDIR)
 	$(CD) $(INST_IDIR) && $(CHMOD) 0644 $(HDRS)
 	$(CD) $(INST_LDIR) && $(CHMOD) 0644 $(LIBNAME)
-$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR): $(PRJLIBS) $(OBJSLIB)
+$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR): $(PLIBS) $(OBJSLIB)
 	$(LINK.c) -shared -fPIC -Wl,-soname,$(SHAREDLIBNAME).$(VMAJOR) -o $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR) $(OBJSLIB) $(LIBDIR) $(LIBS)
 $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR): $(HDRS) $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR)
 	-$(MD) $(INST_IDIR) $(INST_LDIR)
@@ -166,12 +169,18 @@ $(INST_LDIR)/$(SHAREDLIBNAME).$(VMAJOR).$(VMINOR): $(HDRS) $(SHAREDLIBNAME).$(VM
 	$(CD) $(INST_LDIR) && $(CHMOD) 0644 $(SHAREDLIBNAME).*
 	$(CD) $(INST_IDIR) && $(CHMOD) 0644 $(HDRS)
 	$(LDCONFIG)
-$(PROGNAME): $(OBJS) $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR)
+$(PROGNAME): $(OBJS) $(LIBNAME)
 	$(LINK.c) -o $@ $(OBJS) -L. -l$(LNAME) $(LIBDIR) $(LIBS)
 clean:
 	$(RM) $(OBJS) $(OBJSLIB)
 cleanup: cleanuplibs uninstalllibs
 	$(RM) $(OBJS) $(OBJSLIB) $(LIBNAME) $(SHAREDLIBNAME).$(VMAJOR).$(VMINOR) $(PROGNAME)
+$(PLIBS):
+	$(CD) ../$(patsubst $(LDIR)/lib%.a,%,$@) && $(MAKE) installst
+cleanuplibs:
+	$(foreach lib,$(PRJLIBS),$(CD) ../$(lib) && $(MAKE) cleanup ; )
+uninstalllibs:
+	$(foreach lib,$(PRJLIBS),$(CD) ../$(lib) && $(MAKE) uninstall ; )
 zip: $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION).zip
 $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION).zip:
 	@($(CD) ../.. && $(LN) -n $(LNAME) $(LNAME)-$(VMAJOR).$(VMINOR).$(REVISION) )
@@ -186,28 +195,7 @@ depend:
 	-@$(DEPEND) $(DEPENDFLAGS) -- $(ALLDEFINES) $(DEPEND_DEFINES) -- $(SRCS) $(SRCSLIB) 2> /dev/null
 ftmgs_asn1_tab.c: ftmgs.asn1
 	asn1Parser -o $@ $<
-$(LDIR)/libsha.a:
-	cd ../sha && $(MAKE) installst
-$(LDIR)/librandom.a:
-	cd ../random && $(MAKE) installst
-$(LDIR)/libbuffer.a:
-	cd ../buffer && $(MAKE) installst
-$(LDIR)/libbigint.a:
-	cd ../bigint && $(MAKE) installst
-$(LDIR)/libcrypto.a:
-	cd ../crypto && $(MAKE) installst
-cleanuplibs:
-	cd ../sha && $(MAKE) cleanup
-	cd ../random && $(MAKE) cleanup
-	cd ../buffer && $(MAKE) cleanup
-	cd ../bigint && $(MAKE) cleanup
-	cd ../crypto && $(MAKE) cleanup
-uninstalllibs:
-	cd ../sha && $(MAKE) uninstall
-	cd ../random && $(MAKE) uninstall
-	cd ../buffer && $(MAKE) uninstall
-	cd ../bigint && $(MAKE) uninstall
-	cd ../crypto && $(MAKE) uninstall
+
 # -----------------------------------------------------------------------
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
@@ -221,5 +209,5 @@ revtrace.o: revtrace.h ftmgs.h group.h ../include/random.h syssph.h join.h
 revtrace.o: sign.h
 sign.o: sign.h ftmgs.h ../include/random.h group.h syssph.h join.h
 syssph.o: syssph.h
-ftmgs_asn1.o: system.h ftmgs.h group.h ../include/random.h syssph.h join.h
-ftmgs_asn1.o: sign.h open.h revtrace.h claim.h link.h
+ftmgs_asn1.o: system_endian.h ftmgs.h group.h ../include/random.h syssph.h
+ftmgs_asn1.o: join.h sign.h open.h revtrace.h claim.h link.h
