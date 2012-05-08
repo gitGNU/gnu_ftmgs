@@ -29,7 +29,7 @@
 #include "bigint.h"
 #include "iexport.h"
 #include "buffer.h"
-#include "system.h"
+#include "system_endian.h"
 #include "ftmgs.h"
 #include "group.h"
 #include "join.h"
