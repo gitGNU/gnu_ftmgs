@@ -568,6 +568,7 @@ extern "C" {
 	 */
 	FTMGS_API__
 	void extract_umk_from_dsa(dlogx_t* x, const dsa_prkey_t* dsa_sk);
+	/*------------------------------------------------------------------------*/
 	/**
 	 * It is used to extract the user's authentication from a DSA
 	 * public key that have been used (a DSA signature used as
@@ -580,28 +581,7 @@ extern "C" {
 	void extract_uauth_from_dsa(dlog_t* uauth,
 								const dsa_pbkey_t* dsa_pk,
 								const dss_parms_t* dss_parms);
-	/**
-	 * It is used to extract the user's master key from a FTMGS group
-	 * member's private key that have been used (a FTMGS signature
-	 * used as authentication method) when the user was authorized to
-	 * join the group. This user's master key will be used in the
-	 * joining process, and it will be embedded into the user's member
-	 * private key.
-	 */
-	FTMGS_API__
-	void extract_umk_from_msk(dlogx_t* x, const ftmgs_mbr_prkey_t* msk);
-	/**
-	 * It is used to extract the user's authentication from a FTMGS
-	 * signature that have been used (a FTMGS signature used as
-	 * authentication method) when the user was authorized to join the
-	 * group. This user's authentication will be used in the joining
-	 * process, and it will be embedded into the member's reference
-	 * with non-repudiation purposes.
-	 */
-	FTMGS_API__
-	void extract_uauth_from_sg(dlog_t* uauth,
-							   const ftmgs_sign_t* sg,
-							   const ftmgs_pbkey_t* gpk);
+	/*------------------------------------------------------------------------*/
 	/**
 	 * This function is used to extract (and create) a DSA private key
 	 * from a user's master key (which can also be extracted from a
@@ -755,6 +735,17 @@ extern "C" {
 							const ftmgs_prkey_t* gsk,
 							const ftmgs_pbkey_t* gpk,
 							rndctx_t* rnd_ctx);
+	/*------------------------------------------------------------------------*/
+	/**
+	 * It is used to extract the user's master key from a FTMGS group
+	 * member's private key that have been used (a FTMGS signature
+	 * used as authentication method) when the user was authorized to
+	 * join the group. This user's master key will be used in the
+	 * joining process, and it will be embedded into the user's member
+	 * private key.
+	 */
+	FTMGS_API__
+	void extract_umk_from_msk(dlogx_t* x, const ftmgs_mbr_prkey_t* msk);
 	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Sign ----------------------------------------------------------------*/
@@ -855,6 +846,19 @@ extern "C" {
 						   const void* dat_digest,
 						   unsigned dat_digestlen,
 						   const ftmgs_pbkey_t* gpk);
+	/*------------------------------------------------------------------------*/
+	/**
+	 * It is used to extract the user's authentication from a FTMGS
+	 * signature that have been used (a FTMGS signature used as
+	 * authentication method) when the user was authorized to join the
+	 * group. This user's authentication will be used in the joining
+	 * process, and it will be embedded into the member's reference
+	 * with non-repudiation purposes.
+	 */
+	FTMGS_API__
+	void extract_uauth_from_sg(dlog_t* uauth,
+							   const ftmgs_sign_t* sg,
+							   const ftmgs_pbkey_t* gpk);
 	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Open ----------------------------------------------------------------*/
