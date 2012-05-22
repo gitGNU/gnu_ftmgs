@@ -25,6 +25,7 @@
 #ifndef umalccvbg_system_endian_h__
 #define umalccvbg_system_endian_h__	1
 #include <limits.h>
+#include <stdint.h>
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -96,7 +97,7 @@ static int is_little_endian()
  *		[http://gcc.gnu.org/ml/gcc-help/2007-07/msg00342.html]
  */
 /*----------------------------------------------------------------------------*/
-#define int8_swap__(n__)	(n__)
+#define int8_swap__(n__)	((n__) & 0xFF)
 /*------------------------------------*/
 #ifdef __bswap_16
 #define int16_swap__(n__)		__bswap_16(n__)
@@ -130,17 +131,29 @@ static int is_little_endian()
 	 (((n__) << 56) & 0xFF00000000000000))
 #endif
 /*----------------------------------------------------------------------------*/
-#if INT_MAX == 127
-#define int_swap__(n__)		int8_swap__(n__)
-#elif INT_MAX == 32767
-#define int_swap__(n__)		int16_swap__(n__)
-#elif INT_MAX == 2147483647
-#define int_swap__(n__)		int32_swap__(n__)
-#elif INT_MAX == 9223372036854775807
-#define int_swap__(n__)		int64_swap__(n__)
-#else
-#error "INT_MAX undefined"
-#endif
+/* 
+ * #if INT_MAX == 127
+ * #define int_swap__(n__)		int8_swap__(n__)
+ * #elif INT_MAX == 32767
+ * #define int_swap__(n__)		int16_swap__(n__)
+ * #elif INT_MAX == 2147483647
+ * #define int_swap__(n__)		int32_swap__(n__)
+ * #elif INT_MAX == 9223372036854775807
+ * #define int_swap__(n__)		int64_swap__(n__)
+ * #else
+ * #error "INT_MAX undefined"
+ * #endif
+ */
+/* 
+ * Compile-time swap selection based on size of operand. Compile-time error
+ * if unsuitable size of operand
+ */
+#define int_swap__(n__)							\
+	((sizeof(n__) == 1)		? int8_swap__(n__)	\
+	 : (sizeof(n__) == 2)	? int16_swap__(n__)	\
+	 : (sizeof(n__) == 4)	? int32_swap__(n__)	\
+	 : (sizeof(n__) == 8)	? int64_swap__(n__)	\
+	 : (!!sizeof(struct{int unsuitable_size:((sizeof(n__) == 1)||(sizeof(n__) == 2)||(sizeof(n__) == 4)||(sizeof(n__) == 8))?1:-1;})) ? 0 : 0)
 /*----------------------------------------------------------------------------*/
 #if HAVE_HTONL__ && HAVE_NTOHL__ && (INT_MAX == 2147483647)
 #define int2bigendian(n__)	(htonl(n__))
@@ -175,20 +188,20 @@ static int is_little_endian()
 #endif
 /*----------------------------------------------------------------------------*/
 #if RUNTIME_ENDIAN__
-#define int32_le(n__)	((is_little_endian()) ? (n__) : int32_swap__(n__))
-#define le_int32(n__)	((is_little_endian()) ? (n__) : int32_swap__(n__))
-#define int32_be(n__)	((is_little_endian()) ? int32_swap__(n__) : (n__))
-#define be_int32(n__)	((is_little_endian()) ? int32_swap__(n__) : (n__))
+#define int2le(n__)	((is_little_endian()) ? (n__) : int_swap__(n__))
+#define le2int(n__)	((is_little_endian()) ? (n__) : int_swap__(n__))
+#define int2be(n__)	((is_little_endian()) ? int_swap__(n__) : (n__))
+#define be2int(n__)	((is_little_endian()) ? int_swap__(n__) : (n__))
 #elif BIG_ENDIAN__
-#define int32_le(n__)	int32_swap__(n__)
-#define le_int32(n__)	int32_swap__(n__)
-#define int32_be(n__)	(n__)
-#define be_int32(n__)	(n__)
+#define int2le(n__)	int_swap__(n__)
+#define le2int(n__)	int_swap__(n__)
+#define int2be(n__)	(n__)
+#define be2int(n__)	(n__)
 #elif LITTLE_ENDIAN__
-#define int32_le(n__)	(n__)
-#define le_int32(n__)	(n__)
-#define int32_be(n__)	int32_swap__(n__)
-#define be_int32(n__)	int32_swap__(n__)
+#define int2le(n__)	(n__)
+#define le2int(n__)	(n__)
+#define int2be(n__)	int_swap__(n__)
+#define be2int(n__)	int_swap__(n__)
 #else
 #error "Code not prepared for unknown endianness"
 #endif
