@@ -22,7 +22,7 @@
 SRCS=test.c
 SRCSLIB=random.c system_rnd.c
 HDRS=random.h
-PRIVHDRS=system_rnd.h system_mutex.h
+PRIVHDRS=system_rnd.h system_mutex.h system_endian.h
 AUXS=Makefile
 #------
 PRJLIBS=sha
@@ -153,4 +153,5 @@ depend:
 
 test.o: random.h
 random.o: random.h ../include/sha.h system_rnd.h system_mutex.h
+random.o: system_endian.h
 system_rnd.o: system_rnd.h

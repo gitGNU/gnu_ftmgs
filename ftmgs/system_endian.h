@@ -34,7 +34,7 @@
 #include <netinet/in.h>
 #define HAVE_HTONL__			1
 #define HAVE_NTOHL__			1
-#elif HAVE_WINSOCK2_H || defined _MSC_VER || defined _WIN32 || defined __WIN32__
+#elif HAVE_WINSOCK2_H || defined _WIN32 || defined _MSC_VER || defined __WIN32__
 #include <Winsock2.h>
 #define HAVE_HTONL__			1
 #define HAVE_NTOHL__			1
@@ -54,7 +54,7 @@
 #define RUNTIME_ENDIAN__	1
 #endif
 /*----------------------------------------------------------------------------*/
-#elif defined _MSC_VER || defined _WIN32
+#elif defined _WIN32 || defined _MSC_VER || defined __WIN32__
 #include <rpcndr.h>
 #if defined NDR_LOCAL_ENDIAN && NDR_LOCAL_ENDIAN == NDR_BIG_ENDIAN
 #define BIG_ENDIAN__		1

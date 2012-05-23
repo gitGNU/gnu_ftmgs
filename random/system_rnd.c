@@ -34,7 +34,7 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <unistd.h>
-#elif defined __WIN32__ ||defined __WIN64__ ||defined _MSC_VER ||defined _WIN32
+#elif defined _WIN32 || defined _MSC_VER || defined __WIN32__
 #include <windows.h>
 #include <process.h>
 #include <Wincrypt.h>
@@ -65,7 +65,7 @@ unsigned entropy(void* dst, unsigned maxlen, unsigned entropy_src)
 			}
 		} while (nb > 0 && maxlen > 0);
 	}
-#elif defined __WIN32__ ||defined __WIN64__ ||defined _MSC_VER ||defined _WIN32
+#elif defined _WIN32 || defined _MSC_VER || defined __WIN32__
 	HCRYPTPROV hProvider = 0;
 	if (CryptAcquireContext(&hProvider, 0, 0, PROV_RSA_FULL,
 							CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {
@@ -101,7 +101,7 @@ unsigned nonce(void* dst, unsigned maxlen)
 			memcat(dst, &len, maxlen, &pid, sizeof(pid));
 		}
 	}
-#elif defined __WIN32__ ||defined __WIN64__ ||defined _MSC_VER ||defined _WIN32
+#elif defined _WIN32 || defined _MSC_VER || defined __WIN32__
 	{
 		FILETIME tv;
 		GetSystemTimeAsFileTime(&tv);

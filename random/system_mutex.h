@@ -24,6 +24,7 @@
 extern "C" {
 #endif
 #if defined NTHREADS__
+#define MUTEX_STVAR(mutex_var__)
 #define MUTEX_VAR(mutex_var__)
 #define CREATE_MUTEX(mutex_var__)
 #define BEGIN_MUTEX(mutex_var__)
@@ -31,19 +32,25 @@ extern "C" {
 #define DESTROY_MUTEX(mutex_var__)
 #elif defined __linux__ || defined __unix__ || defined __APPLE__
 #include <pthread.h>
+#define MUTEX_STVAR(mutex_var__)	static pthread_mutex_t  mutex_var__ = PTHREAD_MUTEX_INITIALIZER;
 #define MUTEX_VAR(mutex_var__)		pthread_mutex_t mutex_var__;
 #define CREATE_MUTEX(mutex_var__)	pthread_mutex_init(mutex_var__, NULL)
 #define BEGIN_MUTEX(mutex_var__)	do{{pthread_mutex_lock(mutex_var__)
 #define END_MUTEX(mutex_var__)		pthread_mutex_unlock(mutex_var__);}}while(0)
 #define DESTROY_MUTEX(mutex_var__)	pthread_mutex_destroy(mutex_var__)
-#elif defined _MSC_VER || defined _WIN32 || defined __WIN32__
+#elif defined _WIN32 || defined _MSC_VER || defined __WIN32__
 #include <windows.h>
+/*
+ * #define MUTEX_STVAR(mutex_var__)	static CRITICAL_SECTION mutex_var__;do{volatile static int init__=0;if(InterlockedCompareExchange(&init__,1,0)==0){InitializeCriticalSection(&mutex_var__);}}while(0);
+ */
+#define MUTEX_STVAR(mutex_var__)	static CRITICAL_SECTION mutex_var__ = {(void*)-1,-1,0,0,0,0};/*tricky http://locklessinc.com/articles/pthreads_on_windows/*/
 #define MUTEX_VAR(mutex_var__)		CRITICAL_SECTION mutex_var__;
 #define CREATE_MUTEX(mutex_var__)	InitializeCriticalSection(mutex_var__)
 #define BEGIN_MUTEX(mutex_var__)	do{{EnterCriticalSection(mutex_var__)
 #define END_MUTEX(mutex_var__)		LeaveCriticalSection(mutex_var__);}}while(0)
 #define DESTROY_MUTEX(mutex_var__)	DeleteCriticalSection(mutex_var__)
 /* 
+ * #define MUTEX_STVAR(mutex_var__)		static HANDLE mutex_var__ = CreateMutex(NULL, 0, NULL);
  * #define MUTEX_VAR(mutex_var__)		HANDLE mutex_var__;
  * #define CREATE_MUTEX(mutex_var__)	mutex_var__ = CreateMutex(NULL, 0, NULL)
  * #define BEGIN_MUTEX(mutex_var__)	do{{WaitForSingleObject(mutex_var__,INFINITE)

@@ -735,9 +735,9 @@ void print_system_options(unsigned nu, unsigned nfas)
 
 #ifdef __linux__
 	fprintf(stderr, "\tLinux");
-#elif defined __WIN32__
+#elif defined _WIN32 || defined __WIN32__
 	fprintf(stderr, "\tWindows-32");
-#elif defined __WIN64__
+#elif defined _WIN64 || defined __WIN64__
 	fprintf(stderr, "\tWindows-64");
 #endif
 

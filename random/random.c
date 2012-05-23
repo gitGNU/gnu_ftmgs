@@ -30,6 +30,7 @@
 #include "sha.h"
 #include "system_rnd.h"
 #include "system_mutex.h"
+#include "system_endian.h"
 
 /*----------------------------------------------------------------------------*/
 #ifndef UNUSED__
@@ -327,7 +328,7 @@ void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx)
 	uint8_t tag = 0x03;
 	uint8_t msg_digest[USHAMaxHashSize];
 	unsigned digest_len;
-	unsigned counter = uint2bigendian(rnd_ctx->counter);
+	unsigned counter = int2bigendian(rnd_ctx->counter);
 	assert(nbytes <= 65535); /*NISTSP80090 table 2: 2^19/2^3*/
 	assert(rnd_ctx != NULL);
 	BEGIN_MUTEX(&rnd_ctx->mutex);
