@@ -20,8 +20,8 @@
 #-------------------------------------------------------------------------------
 #- Makefile --------------------------------------------------------
 SRCS=test.c
-SRCSLIB=buffer.c
-HDRS=buffer.h
+SRCSLIB=vector.c
+HDRS=vector.h
 PRIVHDRS=
 AUXS=Makefile
 #------
@@ -144,4 +144,4 @@ depend:
 # -----------------------------------------------------------------------
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-buffer.o: buffer.h
+vector.o: vector.h

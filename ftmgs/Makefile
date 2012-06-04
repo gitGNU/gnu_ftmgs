@@ -42,7 +42,7 @@ PRIVHDRS=claim.h	\
 	system_endian.h
 AUXS=README Makefile ftmgs.asn1 makeit.sh
 #------
-PRJLIBS=crypto bigint buffer random sha
+PRJLIBS=crypto bigint buffer vector random sha
 SYSLIBS=tasn1 gmp m pthread
 #-------------------------------------------------------------------------------
 PROGNAME=
