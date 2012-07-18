@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include "bigint.h"
 #include "random.h"
 #include "birnd.h"
@@ -538,10 +539,10 @@ bool_t nadrp_prtcl(bigint_t* ax,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_precomp_t_chk_members(struct nadrp_precomp_t* p, int code)/*auto*/
+static int nadrp_precomp_t_chk_members(const struct nadrp_precomp_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -554,15 +555,15 @@ static int nadrp_precomp_t_chk_members(struct nadrp_precomp_t* p, int code)/*aut
 	struct dummy_nadrp_precomp_t {
 		sphere_t theta;
 		sphere_t omega;
-		bigint_t nadrp_1_g_x_theta;
-		bigint_t nadrp_1_h_r_omega;
-		bigint_t nadrp_1_y_r_omega;
-		bigint_t nadrp_2_g_m_theta_ek_range;
-		bigint_t nadrp_2_g_a_theta;
-		bigint_t nadrp_2_h_g_omega;
-		bigint_t nadrp_2_y_g_omega;
-		bigint_t nadrp_2_gm_b_theta;
-		bigint_t nadrp_2_a_a_theta;
+		bigint_t nadrp_1_g_x_theta;				/* zero */
+		bigint_t nadrp_1_h_r_omega;				/* zero */
+		bigint_t nadrp_1_y_r_omega;				/* zero */
+		bigint_t nadrp_2_g_m_theta_ek_range;	/* zero */
+		bigint_t nadrp_2_g_a_theta;				/* zero */
+		bigint_t nadrp_2_h_g_omega;				/* zero */
+		bigint_t nadrp_2_y_g_omega;				/* zero */
+		bigint_t nadrp_2_gm_b_theta;			/* zero */
+		bigint_t nadrp_2_a_a_theta;				/* zero */
 	};
 	CHK_FIELD__(dummy_nadrp_precomp_t, nadrp_precomp_t, theta);
 	CHK_FIELD__(dummy_nadrp_precomp_t, nadrp_precomp_t, omega);
@@ -576,7 +577,7 @@ static int nadrp_precomp_t_chk_members(struct nadrp_precomp_t* p, int code)/*aut
 	CHK_FIELD__(dummy_nadrp_precomp_t, nadrp_precomp_t, nadrp_2_gm_b_theta);
 	CHK_FIELD__(dummy_nadrp_precomp_t, nadrp_precomp_t, nadrp_2_a_a_theta);
 	CHK_SIZE__(dummy_nadrp_precomp_t, nadrp_precomp_t);
-	return (p!=NULL)&&(code == 368707169);
+	return (code == 19155497); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -586,7 +587,7 @@ static int nadrp_precomp_t_chk_members(struct nadrp_precomp_t* p, int code)/*aut
 void nadrp_precomp_t_ctor(struct nadrp_precomp_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_precomp_t_chk_members(p,368707169));
+	assert(nadrp_precomp_t_chk_members(p,19155497));
 	sphere_t_ctor(&p->theta);
 	sphere_t_ctor(&p->omega);
 	bi_ctor(p->nadrp_1_g_x_theta);
@@ -603,24 +604,34 @@ void nadrp_precomp_t_ctor(struct nadrp_precomp_t* p)/*auto*/
 void nadrp_precomp_t_dtor(struct nadrp_precomp_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_precomp_t_chk_members(p,368707169));
+	assert(nadrp_precomp_t_chk_members(p,19155497));
+	bi_clear_zero(p->nadrp_2_a_a_theta);
 	bi_dtor(p->nadrp_2_a_a_theta);
+	bi_clear_zero(p->nadrp_2_gm_b_theta);
 	bi_dtor(p->nadrp_2_gm_b_theta);
+	bi_clear_zero(p->nadrp_2_y_g_omega);
 	bi_dtor(p->nadrp_2_y_g_omega);
+	bi_clear_zero(p->nadrp_2_h_g_omega);
 	bi_dtor(p->nadrp_2_h_g_omega);
+	bi_clear_zero(p->nadrp_2_g_a_theta);
 	bi_dtor(p->nadrp_2_g_a_theta);
+	bi_clear_zero(p->nadrp_2_g_m_theta_ek_range);
 	bi_dtor(p->nadrp_2_g_m_theta_ek_range);
+	bi_clear_zero(p->nadrp_1_y_r_omega);
 	bi_dtor(p->nadrp_1_y_r_omega);
+	bi_clear_zero(p->nadrp_1_h_r_omega);
 	bi_dtor(p->nadrp_1_h_r_omega);
+	bi_clear_zero(p->nadrp_1_g_x_theta);
 	bi_dtor(p->nadrp_1_g_x_theta);
 	sphere_t_dtor(&p->omega);
 	sphere_t_dtor(&p->theta);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_precomp_t_asg(struct nadrp_precomp_t* p, const struct nadrp_precomp_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_precomp_t_chk_members(p,368707169));
+	assert(nadrp_precomp_t_chk_members(p,19155497));
 	if (p != o) {
 		sphere_t_asg(&p->theta, &o->theta);
 		sphere_t_asg(&p->omega, &o->omega);
@@ -633,6 +644,34 @@ void nadrp_precomp_t_asg(struct nadrp_precomp_t* p, const struct nadrp_precomp_t
 		bi_asg(p->nadrp_2_y_g_omega, o->nadrp_2_y_g_omega);
 		bi_asg(p->nadrp_2_gm_b_theta, o->nadrp_2_gm_b_theta);
 		bi_asg(p->nadrp_2_a_a_theta, o->nadrp_2_a_a_theta);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_precomp_t_move(struct nadrp_precomp_t* p, struct nadrp_precomp_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_precomp_t_chk_members(p,19155497));
+	if (p != o) {
+		sphere_t_move(&p->theta, &o->theta);
+		sphere_t_move(&p->omega, &o->omega);
+		bi_asg_si(p->nadrp_1_g_x_theta, 0);
+		bi_swap(p->nadrp_1_g_x_theta, o->nadrp_1_g_x_theta);
+		bi_asg_si(p->nadrp_1_h_r_omega, 0);
+		bi_swap(p->nadrp_1_h_r_omega, o->nadrp_1_h_r_omega);
+		bi_asg_si(p->nadrp_1_y_r_omega, 0);
+		bi_swap(p->nadrp_1_y_r_omega, o->nadrp_1_y_r_omega);
+		bi_asg_si(p->nadrp_2_g_m_theta_ek_range, 0);
+		bi_swap(p->nadrp_2_g_m_theta_ek_range, o->nadrp_2_g_m_theta_ek_range);
+		bi_asg_si(p->nadrp_2_g_a_theta, 0);
+		bi_swap(p->nadrp_2_g_a_theta, o->nadrp_2_g_a_theta);
+		bi_asg_si(p->nadrp_2_h_g_omega, 0);
+		bi_swap(p->nadrp_2_h_g_omega, o->nadrp_2_h_g_omega);
+		bi_asg_si(p->nadrp_2_y_g_omega, 0);
+		bi_swap(p->nadrp_2_y_g_omega, o->nadrp_2_y_g_omega);
+		bi_asg_si(p->nadrp_2_gm_b_theta, 0);
+		bi_swap(p->nadrp_2_gm_b_theta, o->nadrp_2_gm_b_theta);
+		bi_asg_si(p->nadrp_2_a_a_theta, 0);
+		bi_swap(p->nadrp_2_a_a_theta, o->nadrp_2_a_a_theta);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -667,10 +706,10 @@ void nadrp_precomp_t_delete(struct nadrp_precomp_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_parms_t_chk_members(struct nadrp_parms_t* p, int code)/*auto*/
+static int nadrp_parms_t_chk_members(const struct nadrp_parms_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -681,15 +720,15 @@ static int nadrp_parms_t_chk_members(struct nadrp_parms_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_nadrp_parms_t {
-		const bigint_t* n;		/* modulus */
-		const bigint_t* a;		/* calculates x and a^x (mod n) */
+		const bigint_t* n;			/* n: modulus */
+		const bigint_t* a;			/* a: calculates x and a^x (mod n) */
 		const bigint_t* g;
 		const bigint_t* h;
 		const bigint_t* y;
 		const syspar_t* sp;
-		const sphere_t* sph;			/* sphere for x */
-		const sphere_t* theta;		/* outer sphere for Z_m */
-		const sphere_t* omega;		/* sphere for Z_{n^2} */
+		const sphere_t* sph;		/* sph: sphere for x */
+		const sphere_t* theta;		/* theta: outer sphere for Z_m */
+		const sphere_t* omega;		/* omega: sphere for Z_{n^2} */
 #ifdef PRECOMPUTATIONS__
 		const nadrp_precomp_t* precomp;
 #else
@@ -713,7 +752,7 @@ static int nadrp_parms_t_chk_members(struct nadrp_parms_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_nadrp_parms_t, nadrp_parms_t, base_omega);
 #endif
 	CHK_SIZE__(dummy_nadrp_parms_t, nadrp_parms_t);
-	return (p!=NULL)&&(code == 468468338);
+	return (code == 408632838); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -723,7 +762,7 @@ static int nadrp_parms_t_chk_members(struct nadrp_parms_t* p, int code)/*auto*/
 void nadrp_parms_t_ctor(struct nadrp_parms_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_parms_t_chk_members(p,468468338));
+	assert(nadrp_parms_t_chk_members(p,408632838));
 	p->n = NULL;
 	p->a = NULL;
 	p->g = NULL;
@@ -744,19 +783,19 @@ void nadrp_parms_t_ctor(struct nadrp_parms_t* p)/*auto*/
 void nadrp_parms_t_dtor(struct nadrp_parms_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_parms_t_chk_members(p,468468338));
+	assert(nadrp_parms_t_chk_members(p,408632838));
 #ifndef PRECOMPUTATIONS__
 	sphere_t_dtor(&p->base_omega);
 	sphere_t_dtor(&p->base_theta);
 #else
-	(void)p;
 #endif
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_parms_t_asg(struct nadrp_parms_t* p, const struct nadrp_parms_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_parms_t_chk_members(p,468468338));
+	assert(nadrp_parms_t_chk_members(p,408632838));
 	if (p != o) {
 		p->n = o->n;
 		p->a = o->a;
@@ -772,6 +811,39 @@ void nadrp_parms_t_asg(struct nadrp_parms_t* p, const struct nadrp_parms_t* o)/*
 #else
 		sphere_t_asg(&p->base_theta, &o->base_theta);
 		sphere_t_asg(&p->base_omega, &o->base_omega);
+#endif
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_parms_t_move(struct nadrp_parms_t* p, struct nadrp_parms_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_parms_t_chk_members(p,408632838));
+	if (p != o) {
+		p->n = o->n;
+		o->n = NULL;
+		p->a = o->a;
+		o->a = NULL;
+		p->g = o->g;
+		o->g = NULL;
+		p->h = o->h;
+		o->h = NULL;
+		p->y = o->y;
+		o->y = NULL;
+		p->sp = o->sp;
+		o->sp = NULL;
+		p->sph = o->sph;
+		o->sph = NULL;
+		p->theta = o->theta;
+		o->theta = NULL;
+		p->omega = o->omega;
+		o->omega = NULL;
+#ifdef PRECOMPUTATIONS__
+		p->precomp = o->precomp;
+		o->precomp = NULL;
+#else
+		sphere_t_move(&p->base_theta, &o->base_theta);
+		sphere_t_move(&p->base_omega, &o->base_omega);
 #endif
 	}
 }
@@ -807,10 +879,10 @@ void nadrp_parms_t_delete(struct nadrp_parms_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_a1prv_t_chk_members(struct nadrp_a1prv_t* p, int code)/*auto*/
+static int nadrp_a1prv_t_chk_members(const struct nadrp_a1prv_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -821,13 +893,13 @@ static int nadrp_a1prv_t_chk_members(struct nadrp_a1prv_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_nadrp_a1prv_t {
-		bigint_t xx;
-		bigint_t rr;
+		bigint_t xx;		/* zero */
+		bigint_t rr;		/* zero */
 	};
 	CHK_FIELD__(dummy_nadrp_a1prv_t, nadrp_a1prv_t, xx);
 	CHK_FIELD__(dummy_nadrp_a1prv_t, nadrp_a1prv_t, rr);
 	CHK_SIZE__(dummy_nadrp_a1prv_t, nadrp_a1prv_t);
-	return (p!=NULL)&&(code == 121590482);
+	return (code == 90011590); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -837,7 +909,7 @@ static int nadrp_a1prv_t_chk_members(struct nadrp_a1prv_t* p, int code)/*auto*/
 void nadrp_a1prv_t_ctor(struct nadrp_a1prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a1prv_t_chk_members(p,121590482));
+	assert(nadrp_a1prv_t_chk_members(p,90011590));
 	bi_ctor(p->xx);
 	bi_ctor(p->rr);
 }
@@ -845,18 +917,33 @@ void nadrp_a1prv_t_ctor(struct nadrp_a1prv_t* p)/*auto*/
 void nadrp_a1prv_t_dtor(struct nadrp_a1prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a1prv_t_chk_members(p,121590482));
+	assert(nadrp_a1prv_t_chk_members(p,90011590));
+	bi_clear_zero(p->rr);
 	bi_dtor(p->rr);
+	bi_clear_zero(p->xx);
 	bi_dtor(p->xx);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_a1prv_t_asg(struct nadrp_a1prv_t* p, const struct nadrp_a1prv_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_a1prv_t_chk_members(p,121590482));
+	assert(nadrp_a1prv_t_chk_members(p,90011590));
 	if (p != o) {
 		bi_asg(p->xx, o->xx);
 		bi_asg(p->rr, o->rr);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_a1prv_t_move(struct nadrp_a1prv_t* p, struct nadrp_a1prv_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_a1prv_t_chk_members(p,90011590));
+	if (p != o) {
+		bi_asg_si(p->xx, 0);
+		bi_swap(p->xx, o->xx);
+		bi_asg_si(p->rr, 0);
+		bi_swap(p->rr, o->rr);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -891,10 +978,10 @@ void nadrp_a1prv_t_delete(struct nadrp_a1prv_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_a1pbl_t_chk_members(struct nadrp_a1pbl_t* p, int code)/*auto*/
+static int nadrp_a1pbl_t_chk_members(const struct nadrp_a1pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -905,11 +992,11 @@ static int nadrp_a1pbl_t_chk_members(struct nadrp_a1pbl_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_nadrp_a1pbl_t {
-		bigint_t C1;
-		bigint_t C2;
-		bigint_t c;
-		bigint_t sx;
-		bigint_t sr;
+		bigint_t C1;		/* zero */
+		bigint_t C2;		/* zero */
+		bigint_t c;			/* zero */
+		bigint_t sx;		/* zero */
+		bigint_t sr;		/* zero */
 	};
 	CHK_FIELD__(dummy_nadrp_a1pbl_t, nadrp_a1pbl_t, C1);
 	CHK_FIELD__(dummy_nadrp_a1pbl_t, nadrp_a1pbl_t, C2);
@@ -917,7 +1004,7 @@ static int nadrp_a1pbl_t_chk_members(struct nadrp_a1pbl_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_nadrp_a1pbl_t, nadrp_a1pbl_t, sx);
 	CHK_FIELD__(dummy_nadrp_a1pbl_t, nadrp_a1pbl_t, sr);
 	CHK_SIZE__(dummy_nadrp_a1pbl_t, nadrp_a1pbl_t);
-	return (p!=NULL)&&(code == 423652068);
+	return (code == 9921207); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -927,7 +1014,7 @@ static int nadrp_a1pbl_t_chk_members(struct nadrp_a1pbl_t* p, int code)/*auto*/
 void nadrp_a1pbl_t_ctor(struct nadrp_a1pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a1pbl_t_chk_members(p,423652068));
+	assert(nadrp_a1pbl_t_chk_members(p,9921207));
 	bi_ctor(p->C1);
 	bi_ctor(p->C2);
 	bi_ctor(p->c);
@@ -938,24 +1025,48 @@ void nadrp_a1pbl_t_ctor(struct nadrp_a1pbl_t* p)/*auto*/
 void nadrp_a1pbl_t_dtor(struct nadrp_a1pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a1pbl_t_chk_members(p,423652068));
+	assert(nadrp_a1pbl_t_chk_members(p,9921207));
+	bi_clear_zero(p->sr);
 	bi_dtor(p->sr);
+	bi_clear_zero(p->sx);
 	bi_dtor(p->sx);
+	bi_clear_zero(p->c);
 	bi_dtor(p->c);
+	bi_clear_zero(p->C2);
 	bi_dtor(p->C2);
+	bi_clear_zero(p->C1);
 	bi_dtor(p->C1);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_a1pbl_t_asg(struct nadrp_a1pbl_t* p, const struct nadrp_a1pbl_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_a1pbl_t_chk_members(p,423652068));
+	assert(nadrp_a1pbl_t_chk_members(p,9921207));
 	if (p != o) {
 		bi_asg(p->C1, o->C1);
 		bi_asg(p->C2, o->C2);
 		bi_asg(p->c, o->c);
 		bi_asg(p->sx, o->sx);
 		bi_asg(p->sr, o->sr);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_a1pbl_t_move(struct nadrp_a1pbl_t* p, struct nadrp_a1pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_a1pbl_t_chk_members(p,9921207));
+	if (p != o) {
+		bi_asg_si(p->C1, 0);
+		bi_swap(p->C1, o->C1);
+		bi_asg_si(p->C2, 0);
+		bi_swap(p->C2, o->C2);
+		bi_asg_si(p->c, 0);
+		bi_swap(p->c, o->c);
+		bi_asg_si(p->sx, 0);
+		bi_swap(p->sx, o->sx);
+		bi_asg_si(p->sr, 0);
+		bi_swap(p->sr, o->sr);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -990,10 +1101,10 @@ void nadrp_a1pbl_t_delete(struct nadrp_a1pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_b2pbl_t_chk_members(struct nadrp_b2pbl_t* p, int code)/*auto*/
+static int nadrp_b2pbl_t_chk_members(const struct nadrp_b2pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1004,11 +1115,11 @@ static int nadrp_b2pbl_t_chk_members(struct nadrp_b2pbl_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_nadrp_b2pbl_t {
-		bigint_t yy;
+		bigint_t yy;		/* zero */
 	};
 	CHK_FIELD__(dummy_nadrp_b2pbl_t, nadrp_b2pbl_t, yy);
 	CHK_SIZE__(dummy_nadrp_b2pbl_t, nadrp_b2pbl_t);
-	return (p!=NULL)&&(code == 198500726);
+	return (code == 433789588); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1018,23 +1129,35 @@ static int nadrp_b2pbl_t_chk_members(struct nadrp_b2pbl_t* p, int code)/*auto*/
 void nadrp_b2pbl_t_ctor(struct nadrp_b2pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_b2pbl_t_chk_members(p,198500726));
+	assert(nadrp_b2pbl_t_chk_members(p,433789588));
 	bi_ctor(p->yy);
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_b2pbl_t_dtor(struct nadrp_b2pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_b2pbl_t_chk_members(p,198500726));
+	assert(nadrp_b2pbl_t_chk_members(p,433789588));
+	bi_clear_zero(p->yy);
 	bi_dtor(p->yy);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_b2pbl_t_asg(struct nadrp_b2pbl_t* p, const struct nadrp_b2pbl_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_b2pbl_t_chk_members(p,198500726));
+	assert(nadrp_b2pbl_t_chk_members(p,433789588));
 	if (p != o) {
 		bi_asg(p->yy, o->yy);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_b2pbl_t_move(struct nadrp_b2pbl_t* p, struct nadrp_b2pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_b2pbl_t_chk_members(p,433789588));
+	if (p != o) {
+		bi_asg_si(p->yy, 0);
+		bi_swap(p->yy, o->yy);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1069,10 +1192,10 @@ void nadrp_b2pbl_t_delete(struct nadrp_b2pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_a3prv_t_chk_members(struct nadrp_a3prv_t* p, int code)/*auto*/
+static int nadrp_a3prv_t_chk_members(const struct nadrp_a3prv_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1083,11 +1206,11 @@ static int nadrp_a3prv_t_chk_members(struct nadrp_a3prv_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_nadrp_a3prv_t {
-		bigint_t x;
+		bigint_t x;		/* zero */
 	};
 	CHK_FIELD__(dummy_nadrp_a3prv_t, nadrp_a3prv_t, x);
 	CHK_SIZE__(dummy_nadrp_a3prv_t, nadrp_a3prv_t);
-	return (p!=NULL)&&(code == 411837210);
+	return (code == 451805986); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1097,23 +1220,35 @@ static int nadrp_a3prv_t_chk_members(struct nadrp_a3prv_t* p, int code)/*auto*/
 void nadrp_a3prv_t_ctor(struct nadrp_a3prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a3prv_t_chk_members(p,411837210));
+	assert(nadrp_a3prv_t_chk_members(p,451805986));
 	bi_ctor(p->x);
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_a3prv_t_dtor(struct nadrp_a3prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a3prv_t_chk_members(p,411837210));
+	assert(nadrp_a3prv_t_chk_members(p,451805986));
+	bi_clear_zero(p->x);
 	bi_dtor(p->x);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_a3prv_t_asg(struct nadrp_a3prv_t* p, const struct nadrp_a3prv_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_a3prv_t_chk_members(p,411837210));
+	assert(nadrp_a3prv_t_chk_members(p,451805986));
 	if (p != o) {
 		bi_asg(p->x, o->x);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_a3prv_t_move(struct nadrp_a3prv_t* p, struct nadrp_a3prv_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_a3prv_t_chk_members(p,451805986));
+	if (p != o) {
+		bi_asg_si(p->x, 0);
+		bi_swap(p->x, o->x);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1148,10 +1283,10 @@ void nadrp_a3prv_t_delete(struct nadrp_a3prv_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_a3pbl_t_chk_members(struct nadrp_a3pbl_t* p, int code)/*auto*/
+static int nadrp_a3pbl_t_chk_members(const struct nadrp_a3pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1162,11 +1297,11 @@ static int nadrp_a3pbl_t_chk_members(struct nadrp_a3pbl_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_nadrp_a3pbl_t {
-		bigint_t C3;
-		bigint_t c;
-		bigint_t sx;
-		bigint_t sz;
-		bigint_t sr;
+		bigint_t C3;		/* zero */
+		bigint_t c;			/* zero */
+		bigint_t sx;		/* zero */
+		bigint_t sz;		/* zero */
+		bigint_t sr;		/* zero */
 	};
 	CHK_FIELD__(dummy_nadrp_a3pbl_t, nadrp_a3pbl_t, C3);
 	CHK_FIELD__(dummy_nadrp_a3pbl_t, nadrp_a3pbl_t, c);
@@ -1174,7 +1309,7 @@ static int nadrp_a3pbl_t_chk_members(struct nadrp_a3pbl_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_nadrp_a3pbl_t, nadrp_a3pbl_t, sz);
 	CHK_FIELD__(dummy_nadrp_a3pbl_t, nadrp_a3pbl_t, sr);
 	CHK_SIZE__(dummy_nadrp_a3pbl_t, nadrp_a3pbl_t);
-	return (p!=NULL)&&(code == 118293540);
+	return (code == 372483553); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1184,7 +1319,7 @@ static int nadrp_a3pbl_t_chk_members(struct nadrp_a3pbl_t* p, int code)/*auto*/
 void nadrp_a3pbl_t_ctor(struct nadrp_a3pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a3pbl_t_chk_members(p,118293540));
+	assert(nadrp_a3pbl_t_chk_members(p,372483553));
 	bi_ctor(p->C3);
 	bi_ctor(p->c);
 	bi_ctor(p->sx);
@@ -1195,24 +1330,48 @@ void nadrp_a3pbl_t_ctor(struct nadrp_a3pbl_t* p)/*auto*/
 void nadrp_a3pbl_t_dtor(struct nadrp_a3pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_a3pbl_t_chk_members(p,118293540));
+	assert(nadrp_a3pbl_t_chk_members(p,372483553));
+	bi_clear_zero(p->sr);
 	bi_dtor(p->sr);
+	bi_clear_zero(p->sz);
 	bi_dtor(p->sz);
+	bi_clear_zero(p->sx);
 	bi_dtor(p->sx);
+	bi_clear_zero(p->c);
 	bi_dtor(p->c);
+	bi_clear_zero(p->C3);
 	bi_dtor(p->C3);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_a3pbl_t_asg(struct nadrp_a3pbl_t* p, const struct nadrp_a3pbl_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_a3pbl_t_chk_members(p,118293540));
+	assert(nadrp_a3pbl_t_chk_members(p,372483553));
 	if (p != o) {
 		bi_asg(p->C3, o->C3);
 		bi_asg(p->c, o->c);
 		bi_asg(p->sx, o->sx);
 		bi_asg(p->sz, o->sz);
 		bi_asg(p->sr, o->sr);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_a3pbl_t_move(struct nadrp_a3pbl_t* p, struct nadrp_a3pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_a3pbl_t_chk_members(p,372483553));
+	if (p != o) {
+		bi_asg_si(p->C3, 0);
+		bi_swap(p->C3, o->C3);
+		bi_asg_si(p->c, 0);
+		bi_swap(p->c, o->c);
+		bi_asg_si(p->sx, 0);
+		bi_swap(p->sx, o->sx);
+		bi_asg_si(p->sz, 0);
+		bi_swap(p->sz, o->sz);
+		bi_asg_si(p->sr, 0);
+		bi_swap(p->sr, o->sr);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1247,10 +1406,10 @@ void nadrp_a3pbl_t_delete(struct nadrp_a3pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int nadrp_b4pbl_t_chk_members(struct nadrp_b4pbl_t* p, int code)/*auto*/
+static int nadrp_b4pbl_t_chk_members(const struct nadrp_b4pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1261,11 +1420,11 @@ static int nadrp_b4pbl_t_chk_members(struct nadrp_b4pbl_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_nadrp_b4pbl_t {
-		bigint_t ax;
+		bigint_t ax;		/* zero */
 	};
 	CHK_FIELD__(dummy_nadrp_b4pbl_t, nadrp_b4pbl_t, ax);
 	CHK_SIZE__(dummy_nadrp_b4pbl_t, nadrp_b4pbl_t);
-	return (p!=NULL)&&(code == 198501363);
+	return (code == 526706459); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1275,23 +1434,35 @@ static int nadrp_b4pbl_t_chk_members(struct nadrp_b4pbl_t* p, int code)/*auto*/
 void nadrp_b4pbl_t_ctor(struct nadrp_b4pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_b4pbl_t_chk_members(p,198501363));
+	assert(nadrp_b4pbl_t_chk_members(p,526706459));
 	bi_ctor(p->ax);
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_b4pbl_t_dtor(struct nadrp_b4pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(nadrp_b4pbl_t_chk_members(p,198501363));
+	assert(nadrp_b4pbl_t_chk_members(p,526706459));
+	bi_clear_zero(p->ax);
 	bi_dtor(p->ax);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void nadrp_b4pbl_t_asg(struct nadrp_b4pbl_t* p, const struct nadrp_b4pbl_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(nadrp_b4pbl_t_chk_members(p,198501363));
+	assert(nadrp_b4pbl_t_chk_members(p,526706459));
 	if (p != o) {
 		bi_asg(p->ax, o->ax);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void nadrp_b4pbl_t_move(struct nadrp_b4pbl_t* p, struct nadrp_b4pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(nadrp_b4pbl_t_chk_members(p,526706459));
+	if (p != o) {
+		bi_asg_si(p->ax, 0);
+		bi_swap(p->ax, o->ax);
 	}
 }
 /*----------------------------------------------------------------------------*/

@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #include "sign.h"
 #include "cdtor.h"
 /*----------------------------------------------------------------------------*/
@@ -159,7 +160,7 @@ bool_t ftmgs_open_prtcl(ftmgs_open_t* op,
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_open_t_chk_members(struct ftmgs_open_t* p, int code)/*auto*/
+static int ftmgs_open_t_chk_members(const struct ftmgs_open_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -173,11 +174,11 @@ static int ftmgs_open_t_chk_members(struct ftmgs_open_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_ftmgs_open_t {
-		bigint_t A;
+		bigint_t A;		/* zero */
 	};
 	CHK_FIELD__(dummy_ftmgs_open_t, ftmgs_open_t, A);
 	CHK_SIZE__(dummy_ftmgs_open_t, ftmgs_open_t);
-	return (p!=NULL)&&(code == 411834515);
+	return (code == 510635963); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -187,23 +188,35 @@ static int ftmgs_open_t_chk_members(struct ftmgs_open_t* p, int code)/*auto*/
 void ftmgs_open_t_ctor(struct ftmgs_open_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_open_t_chk_members(p,411834515));
+	assert(ftmgs_open_t_chk_members(p,510635963));
 	bi_ctor(p->A);
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_open_t_dtor(struct ftmgs_open_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_open_t_chk_members(p,411834515));
+	assert(ftmgs_open_t_chk_members(p,510635963));
+	bi_clear_zero(p->A);
 	bi_dtor(p->A);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_open_t_asg(struct ftmgs_open_t* p, const struct ftmgs_open_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(ftmgs_open_t_chk_members(p,411834515));
+	assert(ftmgs_open_t_chk_members(p,510635963));
 	if (p != o) {
 		bi_asg(p->A, o->A);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_open_t_move(struct ftmgs_open_t* p, struct ftmgs_open_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_open_t_chk_members(p,510635963));
+	if (p != o) {
+		bi_asg_si(p->A, 0);
+		bi_swap(p->A, o->A);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -238,7 +251,7 @@ void ftmgs_open_t_delete(struct ftmgs_open_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_opensharej_t_chk_members(struct ftmgs_opensharej_t* p, int code)/*auto*/
+static int ftmgs_opensharej_t_chk_members(const struct ftmgs_opensharej_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -256,7 +269,7 @@ static int ftmgs_opensharej_t_chk_members(struct ftmgs_opensharej_t* p, int code
 	};
 	CHK_FIELD__(dummy_ftmgs_opensharej_t, ftmgs_opensharej_t, dsharej);
 	CHK_SIZE__(dummy_ftmgs_opensharej_t, ftmgs_opensharej_t);
-	return (p!=NULL)&&(code == 377619568);
+	return (code == 377619568); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -275,6 +288,7 @@ void ftmgs_opensharej_t_dtor(struct ftmgs_opensharej_t* p)/*auto*/
 	assert(p != NULL);
 	assert(ftmgs_opensharej_t_chk_members(p,377619568));
 	elgamal_thr_decrypt_share_t_dtor(&p->dsharej);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_opensharej_t_asg(struct ftmgs_opensharej_t* p, const struct ftmgs_opensharej_t* o)/*auto*/
@@ -283,6 +297,15 @@ void ftmgs_opensharej_t_asg(struct ftmgs_opensharej_t* p, const struct ftmgs_ope
 	assert(ftmgs_opensharej_t_chk_members(p,377619568));
 	if (p != o) {
 		elgamal_thr_decrypt_share_t_asg(&p->dsharej, &o->dsharej);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_opensharej_t_move(struct ftmgs_opensharej_t* p, struct ftmgs_opensharej_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_opensharej_t_chk_members(p,377619568));
+	if (p != o) {
+		elgamal_thr_decrypt_share_t_move(&p->dsharej, &o->dsharej);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -317,7 +340,7 @@ void ftmgs_opensharej_t_delete(struct ftmgs_opensharej_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_openacc_t_chk_members(struct ftmgs_openacc_t* p, int code)/*auto*/
+static int ftmgs_openacc_t_chk_members(const struct ftmgs_openacc_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -335,7 +358,7 @@ static int ftmgs_openacc_t_chk_members(struct ftmgs_openacc_t* p, int code)/*aut
 	};
 	CHK_FIELD__(dummy_ftmgs_openacc_t, ftmgs_openacc_t, dshacc);
 	CHK_SIZE__(dummy_ftmgs_openacc_t, ftmgs_openacc_t);
-	return (p!=NULL)&&(code == 528357397);
+	return (code == 528357397); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -354,6 +377,7 @@ void ftmgs_openacc_t_dtor(struct ftmgs_openacc_t* p)/*auto*/
 	assert(p != NULL);
 	assert(ftmgs_openacc_t_chk_members(p,528357397));
 	elgamal_thr_dshare_acc_t_dtor(&p->dshacc);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_openacc_t_asg(struct ftmgs_openacc_t* p, const struct ftmgs_openacc_t* o)/*auto*/
@@ -362,6 +386,15 @@ void ftmgs_openacc_t_asg(struct ftmgs_openacc_t* p, const struct ftmgs_openacc_t
 	assert(ftmgs_openacc_t_chk_members(p,528357397));
 	if (p != o) {
 		elgamal_thr_dshare_acc_t_asg(&p->dshacc, &o->dshacc);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_openacc_t_move(struct ftmgs_openacc_t* p, struct ftmgs_openacc_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_openacc_t_chk_members(p,528357397));
+	if (p != o) {
+		elgamal_thr_dshare_acc_t_move(&p->dshacc, &o->dshacc);
 	}
 }
 /*----------------------------------------------------------------------------*/

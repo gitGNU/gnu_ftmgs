@@ -21,6 +21,7 @@
 #include "sign.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 #include "iexport.h"
 #include "sphere.h"
 #include "syssph.h"
@@ -333,7 +334,7 @@ void ftmgs_hash_sign(unsigned which_sha,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_sign_t_chk_members(struct ftmgs_sign_t* p, int code)/*auto*/
+static int ftmgs_sign_t_chk_members(const struct ftmgs_sign_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -348,17 +349,17 @@ static int ftmgs_sign_t_chk_members(struct ftmgs_sign_t* p, int code)/*auto*/
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_ftmgs_sign_t {
 		elgamal_thr_ciphertext_t T1_T2; /* T1: beta ; T2: alpha */
-		bigint_t T3;
-		bigint_t T4;
-		bigint_t T5;
-		bigint_t T6;
-		bigint_t T7;
-		bigint_t c;
-		bigint_t sx;
-		bigint_t sx1;
-		bigint_t se;
-		bigint_t sr;
-		bigint_t sh1;
+		bigint_t T3;		/* zero */
+		bigint_t T4;		/* zero */
+		bigint_t T5;		/* zero */
+		bigint_t T6;		/* zero */
+		bigint_t T7;		/* zero */
+		bigint_t c;			/* zero */
+		bigint_t sx;		/* zero */
+		bigint_t sx1;		/* zero */
+		bigint_t se;		/* zero */
+		bigint_t sr;		/* zero */
+		bigint_t sh1;		/* zero */
 	};
 	CHK_FIELD__(dummy_ftmgs_sign_t, ftmgs_sign_t, T1_T2);
 	CHK_FIELD__(dummy_ftmgs_sign_t, ftmgs_sign_t, T3);
@@ -373,7 +374,7 @@ static int ftmgs_sign_t_chk_members(struct ftmgs_sign_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_ftmgs_sign_t, ftmgs_sign_t, sr);
 	CHK_FIELD__(dummy_ftmgs_sign_t, ftmgs_sign_t, sh1);
 	CHK_SIZE__(dummy_ftmgs_sign_t, ftmgs_sign_t);
-	return (p!=NULL)&&(code == 373412698);
+	return (code == 206327477); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -383,7 +384,7 @@ static int ftmgs_sign_t_chk_members(struct ftmgs_sign_t* p, int code)/*auto*/
 void ftmgs_sign_t_ctor(struct ftmgs_sign_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_sign_t_chk_members(p,373412698));
+	assert(ftmgs_sign_t_chk_members(p,206327477));
 	elgamal_thr_ciphertext_t_ctor(&p->T1_T2);
 	bi_ctor(p->T3);
 	bi_ctor(p->T4);
@@ -401,25 +402,37 @@ void ftmgs_sign_t_ctor(struct ftmgs_sign_t* p)/*auto*/
 void ftmgs_sign_t_dtor(struct ftmgs_sign_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_sign_t_chk_members(p,373412698));
+	assert(ftmgs_sign_t_chk_members(p,206327477));
+	bi_clear_zero(p->sh1);
 	bi_dtor(p->sh1);
+	bi_clear_zero(p->sr);
 	bi_dtor(p->sr);
+	bi_clear_zero(p->se);
 	bi_dtor(p->se);
+	bi_clear_zero(p->sx1);
 	bi_dtor(p->sx1);
+	bi_clear_zero(p->sx);
 	bi_dtor(p->sx);
+	bi_clear_zero(p->c);
 	bi_dtor(p->c);
+	bi_clear_zero(p->T7);
 	bi_dtor(p->T7);
+	bi_clear_zero(p->T6);
 	bi_dtor(p->T6);
+	bi_clear_zero(p->T5);
 	bi_dtor(p->T5);
+	bi_clear_zero(p->T4);
 	bi_dtor(p->T4);
+	bi_clear_zero(p->T3);
 	bi_dtor(p->T3);
 	elgamal_thr_ciphertext_t_dtor(&p->T1_T2);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_sign_t_asg(struct ftmgs_sign_t* p, const struct ftmgs_sign_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(ftmgs_sign_t_chk_members(p,373412698));
+	assert(ftmgs_sign_t_chk_members(p,206327477));
 	if (p != o) {
 		elgamal_thr_ciphertext_t_asg(&p->T1_T2, &o->T1_T2);
 		bi_asg(p->T3, o->T3);
@@ -433,6 +446,37 @@ void ftmgs_sign_t_asg(struct ftmgs_sign_t* p, const struct ftmgs_sign_t* o)/*aut
 		bi_asg(p->se, o->se);
 		bi_asg(p->sr, o->sr);
 		bi_asg(p->sh1, o->sh1);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_sign_t_move(struct ftmgs_sign_t* p, struct ftmgs_sign_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_sign_t_chk_members(p,206327477));
+	if (p != o) {
+		elgamal_thr_ciphertext_t_move(&p->T1_T2, &o->T1_T2);
+		bi_asg_si(p->T3, 0);
+		bi_swap(p->T3, o->T3);
+		bi_asg_si(p->T4, 0);
+		bi_swap(p->T4, o->T4);
+		bi_asg_si(p->T5, 0);
+		bi_swap(p->T5, o->T5);
+		bi_asg_si(p->T6, 0);
+		bi_swap(p->T6, o->T6);
+		bi_asg_si(p->T7, 0);
+		bi_swap(p->T7, o->T7);
+		bi_asg_si(p->c, 0);
+		bi_swap(p->c, o->c);
+		bi_asg_si(p->sx, 0);
+		bi_swap(p->sx, o->sx);
+		bi_asg_si(p->sx1, 0);
+		bi_swap(p->sx1, o->sx1);
+		bi_asg_si(p->se, 0);
+		bi_swap(p->se, o->se);
+		bi_asg_si(p->sr, 0);
+		bi_swap(p->sr, o->sr);
+		bi_asg_si(p->sh1, 0);
+		bi_swap(p->sh1, o->sh1);
 	}
 }
 /*----------------------------------------------------------------------------*/

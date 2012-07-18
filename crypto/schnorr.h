@@ -28,20 +28,21 @@
 #include "sphere.h"
 BEGIN_EXTERN_C
 /*------------------------------------------------------------------------*/
+/* y = g^x (mod n) */
 typedef struct schnorr_pbkey_t {
 	syspar_t sp;
-	bigint_t n;
-	bigint_t g;
-	bigint_t y;			/* y = g^x (mod n) */
+	bigint_t n;		/* zero */
+	bigint_t g;		/* zero */
+	bigint_t y;		/* zero */
 } schnorr_pbkey_t;
 /*------------------------------------*/
 typedef struct schnorr_prkey_t {
-	bigint_t x;
+	bigint_t x;		/* zero */
 } schnorr_prkey_t;
 /*------------------------------------*/
 typedef struct schnorr_sign_t {
-	bigint_t c;
-	bigint_t sx;
+	bigint_t c;		/* zero */
+	bigint_t sx;	/* zero */
 } schnorr_sign_t;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -89,6 +90,7 @@ bool_t schnorr_vrfy_dat(unsigned which_sha,
 void schnorr_pbkey_t_ctor(struct schnorr_pbkey_t* p);
 void schnorr_pbkey_t_dtor(struct schnorr_pbkey_t* p);
 void schnorr_pbkey_t_asg(struct schnorr_pbkey_t* p, const struct schnorr_pbkey_t* o);
+void schnorr_pbkey_t_move(struct schnorr_pbkey_t* p, struct schnorr_pbkey_t* o);
 struct schnorr_pbkey_t* schnorr_pbkey_t_new();
 struct schnorr_pbkey_t* schnorr_pbkey_t_clone(const struct schnorr_pbkey_t* o);
 void schnorr_pbkey_t_delete(struct schnorr_pbkey_t* p);
@@ -96,6 +98,7 @@ void schnorr_pbkey_t_delete(struct schnorr_pbkey_t* p);
 void schnorr_prkey_t_ctor(struct schnorr_prkey_t* p);
 void schnorr_prkey_t_dtor(struct schnorr_prkey_t* p);
 void schnorr_prkey_t_asg(struct schnorr_prkey_t* p, const struct schnorr_prkey_t* o);
+void schnorr_prkey_t_move(struct schnorr_prkey_t* p, struct schnorr_prkey_t* o);
 struct schnorr_prkey_t* schnorr_prkey_t_new();
 struct schnorr_prkey_t* schnorr_prkey_t_clone(const struct schnorr_prkey_t* o);
 void schnorr_prkey_t_delete(struct schnorr_prkey_t* p);
@@ -103,6 +106,7 @@ void schnorr_prkey_t_delete(struct schnorr_prkey_t* p);
 void schnorr_sign_t_ctor(struct schnorr_sign_t* p);
 void schnorr_sign_t_dtor(struct schnorr_sign_t* p);
 void schnorr_sign_t_asg(struct schnorr_sign_t* p, const struct schnorr_sign_t* o);
+void schnorr_sign_t_move(struct schnorr_sign_t* p, struct schnorr_sign_t* o);
 struct schnorr_sign_t* schnorr_sign_t_new();
 struct schnorr_sign_t* schnorr_sign_t_clone(const struct schnorr_sign_t* o);
 void schnorr_sign_t_delete(struct schnorr_sign_t* p);

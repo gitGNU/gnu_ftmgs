@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #include "iexport.h"
 #include "sphere.h"
 #include "sok.h"
@@ -912,7 +913,7 @@ static bool_t join_ei_vrfy(const join_proof_t* Eiproof,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int dlogx_t_chk_members(struct dlogx_t* p, int code)/*auto*/
+static int dlogx_t_chk_members(const struct dlogx_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -926,11 +927,11 @@ static int dlogx_t_chk_members(struct dlogx_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_dlogx_t {
-		bigint_t x;		/* y = g^x (mod n) */
+		bigint_t x;		/* zero */
 	};
 	CHK_FIELD__(dummy_dlogx_t, dlogx_t, x);
 	CHK_SIZE__(dummy_dlogx_t, dlogx_t);
-	return (p!=NULL)&&(code == 95389640);
+	return (code == 451805986); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -940,23 +941,35 @@ static int dlogx_t_chk_members(struct dlogx_t* p, int code)/*auto*/
 void dlogx_t_ctor(struct dlogx_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dlogx_t_chk_members(p,95389640));
+	assert(dlogx_t_chk_members(p,451805986));
 	bi_ctor(p->x);
 }
 /*----------------------------------------------------------------------------*/
 void dlogx_t_dtor(struct dlogx_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dlogx_t_chk_members(p,95389640));
+	assert(dlogx_t_chk_members(p,451805986));
+	bi_clear_zero(p->x);
 	bi_dtor(p->x);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void dlogx_t_asg(struct dlogx_t* p, const struct dlogx_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(dlogx_t_chk_members(p,95389640));
+	assert(dlogx_t_chk_members(p,451805986));
 	if (p != o) {
 		bi_asg(p->x, o->x);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void dlogx_t_move(struct dlogx_t* p, struct dlogx_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(dlogx_t_chk_members(p,451805986));
+	if (p != o) {
+		bi_asg_si(p->x, 0);
+		bi_swap(p->x, o->x);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -991,10 +1004,10 @@ void dlogx_t_delete(struct dlogx_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int dlog_t_chk_members(struct dlog_t* p, int code)/*auto*/
+static int dlog_t_chk_members(const struct dlog_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1005,15 +1018,15 @@ static int dlog_t_chk_members(struct dlog_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_dlog_t {
-		bigint_t g;
-		bigint_t y;		/* y = g^x (mod n) */
-		bigint_t n;
+		bigint_t g;		/* zero */
+		bigint_t y;		/* zero */
+		bigint_t n;		/* zero */
 	};
 	CHK_FIELD__(dummy_dlog_t, dlog_t, g);
 	CHK_FIELD__(dummy_dlog_t, dlog_t, y);
 	CHK_FIELD__(dummy_dlog_t, dlog_t, n);
 	CHK_SIZE__(dummy_dlog_t, dlog_t);
-	return (p!=NULL)&&(code == 100980172);
+	return (code == 469974750); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1023,7 +1036,7 @@ static int dlog_t_chk_members(struct dlog_t* p, int code)/*auto*/
 void dlog_t_ctor(struct dlog_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dlog_t_chk_members(p,100980172));
+	assert(dlog_t_chk_members(p,469974750));
 	bi_ctor(p->g);
 	bi_ctor(p->y);
 	bi_ctor(p->n);
@@ -1032,20 +1045,38 @@ void dlog_t_ctor(struct dlog_t* p)/*auto*/
 void dlog_t_dtor(struct dlog_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dlog_t_chk_members(p,100980172));
+	assert(dlog_t_chk_members(p,469974750));
+	bi_clear_zero(p->n);
 	bi_dtor(p->n);
+	bi_clear_zero(p->y);
 	bi_dtor(p->y);
+	bi_clear_zero(p->g);
 	bi_dtor(p->g);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void dlog_t_asg(struct dlog_t* p, const struct dlog_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(dlog_t_chk_members(p,100980172));
+	assert(dlog_t_chk_members(p,469974750));
 	if (p != o) {
 		bi_asg(p->g, o->g);
 		bi_asg(p->y, o->y);
 		bi_asg(p->n, o->n);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void dlog_t_move(struct dlog_t* p, struct dlog_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(dlog_t_chk_members(p,469974750));
+	if (p != o) {
+		bi_asg_si(p->g, 0);
+		bi_swap(p->g, o->g);
+		bi_asg_si(p->y, 0);
+		bi_swap(p->y, o->y);
+		bi_asg_si(p->n, 0);
+		bi_swap(p->n, o->n);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1080,10 +1111,10 @@ void dlog_t_delete(struct dlog_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int join_proof_t_chk_members(struct join_proof_t* p, int code)/*auto*/
+static int join_proof_t_chk_members(const struct join_proof_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1094,17 +1125,17 @@ static int join_proof_t_chk_members(struct join_proof_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_join_proof_t {
-		bigint_t c;
-		bigint_t sx1;
-		bigint_t sr;
-		bigint_t sx;
+		bigint_t c;			/* zero */
+		bigint_t sx1;		/* zero */
+		bigint_t sr;		/* zero */
+		bigint_t sx;		/* zero */
 	};
 	CHK_FIELD__(dummy_join_proof_t, join_proof_t, c);
 	CHK_FIELD__(dummy_join_proof_t, join_proof_t, sx1);
 	CHK_FIELD__(dummy_join_proof_t, join_proof_t, sr);
 	CHK_FIELD__(dummy_join_proof_t, join_proof_t, sx);
 	CHK_SIZE__(dummy_join_proof_t, join_proof_t);
-	return (p!=NULL)&&(code == 517455595);
+	return (code == 67824370); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1114,7 +1145,7 @@ static int join_proof_t_chk_members(struct join_proof_t* p, int code)/*auto*/
 void join_proof_t_ctor(struct join_proof_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_proof_t_chk_members(p,517455595));
+	assert(join_proof_t_chk_members(p,67824370));
 	bi_ctor(p->c);
 	bi_ctor(p->sx1);
 	bi_ctor(p->sr);
@@ -1124,22 +1155,43 @@ void join_proof_t_ctor(struct join_proof_t* p)/*auto*/
 void join_proof_t_dtor(struct join_proof_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_proof_t_chk_members(p,517455595));
+	assert(join_proof_t_chk_members(p,67824370));
+	bi_clear_zero(p->sx);
 	bi_dtor(p->sx);
+	bi_clear_zero(p->sr);
 	bi_dtor(p->sr);
+	bi_clear_zero(p->sx1);
 	bi_dtor(p->sx1);
+	bi_clear_zero(p->c);
 	bi_dtor(p->c);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void join_proof_t_asg(struct join_proof_t* p, const struct join_proof_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(join_proof_t_chk_members(p,517455595));
+	assert(join_proof_t_chk_members(p,67824370));
 	if (p != o) {
 		bi_asg(p->c, o->c);
 		bi_asg(p->sx1, o->sx1);
 		bi_asg(p->sr, o->sr);
 		bi_asg(p->sx, o->sx);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void join_proof_t_move(struct join_proof_t* p, struct join_proof_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(join_proof_t_chk_members(p,67824370));
+	if (p != o) {
+		bi_asg_si(p->c, 0);
+		bi_swap(p->c, o->c);
+		bi_asg_si(p->sx1, 0);
+		bi_swap(p->sx1, o->sx1);
+		bi_asg_si(p->sr, 0);
+		bi_swap(p->sr, o->sr);
+		bi_asg_si(p->sx, 0);
+		bi_swap(p->sx, o->sx);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1174,10 +1226,10 @@ void join_proof_t_delete(struct join_proof_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int join_u1prv_t_chk_members(struct join_u1prv_t* p, int code)/*auto*/
+static int join_u1prv_t_chk_members(const struct join_u1prv_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1189,12 +1241,12 @@ static int join_u1prv_t_chk_members(struct join_u1prv_t* p, int code)/*auto*/
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_join_u1prv_t {
 		nadrp_a1prv_t nadrp_a1;
-		bigint_t x1i;
+		bigint_t x1i;		/* zero */
 	};
 	CHK_FIELD__(dummy_join_u1prv_t, join_u1prv_t, nadrp_a1);
 	CHK_FIELD__(dummy_join_u1prv_t, join_u1prv_t, x1i);
 	CHK_SIZE__(dummy_join_u1prv_t, join_u1prv_t);
-	return (p!=NULL)&&(code == 262603007);
+	return (code == 514983335); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1204,7 +1256,7 @@ static int join_u1prv_t_chk_members(struct join_u1prv_t* p, int code)/*auto*/
 void join_u1prv_t_ctor(struct join_u1prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_u1prv_t_chk_members(p,262603007));
+	assert(join_u1prv_t_chk_members(p,514983335));
 	nadrp_a1prv_t_ctor(&p->nadrp_a1);
 	bi_ctor(p->x1i);
 }
@@ -1212,18 +1264,31 @@ void join_u1prv_t_ctor(struct join_u1prv_t* p)/*auto*/
 void join_u1prv_t_dtor(struct join_u1prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_u1prv_t_chk_members(p,262603007));
+	assert(join_u1prv_t_chk_members(p,514983335));
+	bi_clear_zero(p->x1i);
 	bi_dtor(p->x1i);
 	nadrp_a1prv_t_dtor(&p->nadrp_a1);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void join_u1prv_t_asg(struct join_u1prv_t* p, const struct join_u1prv_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(join_u1prv_t_chk_members(p,262603007));
+	assert(join_u1prv_t_chk_members(p,514983335));
 	if (p != o) {
 		nadrp_a1prv_t_asg(&p->nadrp_a1, &o->nadrp_a1);
 		bi_asg(p->x1i, o->x1i);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void join_u1prv_t_move(struct join_u1prv_t* p, struct join_u1prv_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(join_u1prv_t_chk_members(p,514983335));
+	if (p != o) {
+		nadrp_a1prv_t_move(&p->nadrp_a1, &o->nadrp_a1);
+		bi_asg_si(p->x1i, 0);
+		bi_swap(p->x1i, o->x1i);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1258,10 +1323,10 @@ void join_u1prv_t_delete(struct join_u1prv_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int join_u1pbl_t_chk_members(struct join_u1pbl_t* p, int code)/*auto*/
+static int join_u1pbl_t_chk_members(const struct join_u1pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1273,12 +1338,12 @@ static int join_u1pbl_t_chk_members(struct join_u1pbl_t* p, int code)/*auto*/
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_join_u1pbl_t {
 		nadrp_a1pbl_t nadrp_a1;
-		bigint_t Ci;
+		bigint_t Ci;		/* zero */
 	};
 	CHK_FIELD__(dummy_join_u1pbl_t, join_u1pbl_t, nadrp_a1);
 	CHK_FIELD__(dummy_join_u1pbl_t, join_u1pbl_t, Ci);
 	CHK_SIZE__(dummy_join_u1pbl_t, join_u1pbl_t);
-	return (p!=NULL)&&(code == 142543215);
+	return (code == 224042007); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1288,7 +1353,7 @@ static int join_u1pbl_t_chk_members(struct join_u1pbl_t* p, int code)/*auto*/
 void join_u1pbl_t_ctor(struct join_u1pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_u1pbl_t_chk_members(p,142543215));
+	assert(join_u1pbl_t_chk_members(p,224042007));
 	nadrp_a1pbl_t_ctor(&p->nadrp_a1);
 	bi_ctor(p->Ci);
 }
@@ -1296,18 +1361,31 @@ void join_u1pbl_t_ctor(struct join_u1pbl_t* p)/*auto*/
 void join_u1pbl_t_dtor(struct join_u1pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_u1pbl_t_chk_members(p,142543215));
+	assert(join_u1pbl_t_chk_members(p,224042007));
+	bi_clear_zero(p->Ci);
 	bi_dtor(p->Ci);
 	nadrp_a1pbl_t_dtor(&p->nadrp_a1);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void join_u1pbl_t_asg(struct join_u1pbl_t* p, const struct join_u1pbl_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(join_u1pbl_t_chk_members(p,142543215));
+	assert(join_u1pbl_t_chk_members(p,224042007));
 	if (p != o) {
 		nadrp_a1pbl_t_asg(&p->nadrp_a1, &o->nadrp_a1);
 		bi_asg(p->Ci, o->Ci);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void join_u1pbl_t_move(struct join_u1pbl_t* p, struct join_u1pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(join_u1pbl_t_chk_members(p,224042007));
+	if (p != o) {
+		nadrp_a1pbl_t_move(&p->nadrp_a1, &o->nadrp_a1);
+		bi_asg_si(p->Ci, 0);
+		bi_swap(p->Ci, o->Ci);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1342,10 +1420,10 @@ void join_u1pbl_t_delete(struct join_u1pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int join_gm2pbl_t_chk_members(struct join_gm2pbl_t* p, int code)/*auto*/
+static int join_gm2pbl_t_chk_members(const struct join_gm2pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1360,7 +1438,7 @@ static int join_gm2pbl_t_chk_members(struct join_gm2pbl_t* p, int code)/*auto*/
 	};
 	CHK_FIELD__(dummy_join_gm2pbl_t, join_gm2pbl_t, nadrp_b2);
 	CHK_SIZE__(dummy_join_gm2pbl_t, join_gm2pbl_t);
-	return (p!=NULL)&&(code == 388929167);
+	return (code == 388929167); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1379,6 +1457,7 @@ void join_gm2pbl_t_dtor(struct join_gm2pbl_t* p)/*auto*/
 	assert(p != NULL);
 	assert(join_gm2pbl_t_chk_members(p,388929167));
 	nadrp_b2pbl_t_dtor(&p->nadrp_b2);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void join_gm2pbl_t_asg(struct join_gm2pbl_t* p, const struct join_gm2pbl_t* o)/*auto*/
@@ -1387,6 +1466,15 @@ void join_gm2pbl_t_asg(struct join_gm2pbl_t* p, const struct join_gm2pbl_t* o)/*
 	assert(join_gm2pbl_t_chk_members(p,388929167));
 	if (p != o) {
 		nadrp_b2pbl_t_asg(&p->nadrp_b2, &o->nadrp_b2);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void join_gm2pbl_t_move(struct join_gm2pbl_t* p, struct join_gm2pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(join_gm2pbl_t_chk_members(p,388929167));
+	if (p != o) {
+		nadrp_b2pbl_t_move(&p->nadrp_b2, &o->nadrp_b2);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1421,10 +1509,10 @@ void join_gm2pbl_t_delete(struct join_gm2pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int join_u3prv_t_chk_members(struct join_u3prv_t* p, int code)/*auto*/
+static int join_u3prv_t_chk_members(const struct join_u3prv_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1436,12 +1524,12 @@ static int join_u3prv_t_chk_members(struct join_u3prv_t* p, int code)/*auto*/
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_join_u3prv_t {
 		nadrp_a3prv_t nadrp_a3;
-		bigint_t Xi;
+		bigint_t Xi;		/* zero */
 	};
 	CHK_FIELD__(dummy_join_u3prv_t, join_u3prv_t, nadrp_a3);
 	CHK_FIELD__(dummy_join_u3prv_t, join_u3prv_t, Xi);
 	CHK_SIZE__(dummy_join_u3prv_t, join_u3prv_t);
-	return (p!=NULL)&&(code == 358408492);
+	return (code == 123573108); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1451,7 +1539,7 @@ static int join_u3prv_t_chk_members(struct join_u3prv_t* p, int code)/*auto*/
 void join_u3prv_t_ctor(struct join_u3prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_u3prv_t_chk_members(p,358408492));
+	assert(join_u3prv_t_chk_members(p,123573108));
 	nadrp_a3prv_t_ctor(&p->nadrp_a3);
 	bi_ctor(p->Xi);
 }
@@ -1459,18 +1547,31 @@ void join_u3prv_t_ctor(struct join_u3prv_t* p)/*auto*/
 void join_u3prv_t_dtor(struct join_u3prv_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_u3prv_t_chk_members(p,358408492));
+	assert(join_u3prv_t_chk_members(p,123573108));
+	bi_clear_zero(p->Xi);
 	bi_dtor(p->Xi);
 	nadrp_a3prv_t_dtor(&p->nadrp_a3);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void join_u3prv_t_asg(struct join_u3prv_t* p, const struct join_u3prv_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(join_u3prv_t_chk_members(p,358408492));
+	assert(join_u3prv_t_chk_members(p,123573108));
 	if (p != o) {
 		nadrp_a3prv_t_asg(&p->nadrp_a3, &o->nadrp_a3);
 		bi_asg(p->Xi, o->Xi);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void join_u3prv_t_move(struct join_u3prv_t* p, struct join_u3prv_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(join_u3prv_t_chk_members(p,123573108));
+	if (p != o) {
+		nadrp_a3prv_t_move(&p->nadrp_a3, &o->nadrp_a3);
+		bi_asg_si(p->Xi, 0);
+		bi_swap(p->Xi, o->Xi);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1505,10 +1606,10 @@ void join_u3prv_t_delete(struct join_u3prv_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int join_u3pbl_t_chk_members(struct join_u3pbl_t* p, int code)/*auto*/
+static int join_u3pbl_t_chk_members(const struct join_u3pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1527,7 +1628,7 @@ static int join_u3pbl_t_chk_members(struct join_u3pbl_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_join_u3pbl_t, join_u3pbl_t, UiVi);
 	CHK_FIELD__(dummy_join_u3pbl_t, join_u3pbl_t, Eiproof);
 	CHK_SIZE__(dummy_join_u3pbl_t, join_u3pbl_t);
-	return (p!=NULL)&&(code == 447188112);
+	return (code == 447188112); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1550,6 +1651,7 @@ void join_u3pbl_t_dtor(struct join_u3pbl_t* p)/*auto*/
 	join_proof_t_dtor(&p->Eiproof);
 	paillier_thr_ciphertext_t_dtor(&p->UiVi);
 	nadrp_a3pbl_t_dtor(&p->nadrp_a3);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void join_u3pbl_t_asg(struct join_u3pbl_t* p, const struct join_u3pbl_t* o)/*auto*/
@@ -1560,6 +1662,17 @@ void join_u3pbl_t_asg(struct join_u3pbl_t* p, const struct join_u3pbl_t* o)/*aut
 		nadrp_a3pbl_t_asg(&p->nadrp_a3, &o->nadrp_a3);
 		paillier_thr_ciphertext_t_asg(&p->UiVi, &o->UiVi);
 		join_proof_t_asg(&p->Eiproof, &o->Eiproof);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void join_u3pbl_t_move(struct join_u3pbl_t* p, struct join_u3pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(join_u3pbl_t_chk_members(p,447188112));
+	if (p != o) {
+		nadrp_a3pbl_t_move(&p->nadrp_a3, &o->nadrp_a3);
+		paillier_thr_ciphertext_t_move(&p->UiVi, &o->UiVi);
+		join_proof_t_move(&p->Eiproof, &o->Eiproof);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1594,10 +1707,10 @@ void join_u3pbl_t_delete(struct join_u3pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int join_gm4pbl_t_chk_members(struct join_gm4pbl_t* p, int code)/*auto*/
+static int join_gm4pbl_t_chk_members(const struct join_gm4pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1608,13 +1721,13 @@ static int join_gm4pbl_t_chk_members(struct join_gm4pbl_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_join_gm4pbl_t {
-		bigint_t Ai;
-		bigint_t ei;
+		bigint_t Ai;		/* zero */
+		bigint_t ei;		/* zero */
 	};
 	CHK_FIELD__(dummy_join_gm4pbl_t, join_gm4pbl_t, Ai);
 	CHK_FIELD__(dummy_join_gm4pbl_t, join_gm4pbl_t, ei);
 	CHK_SIZE__(dummy_join_gm4pbl_t, join_gm4pbl_t);
-	return (p!=NULL)&&(code == 493619906);
+	return (code == 87237266); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1624,7 +1737,7 @@ static int join_gm4pbl_t_chk_members(struct join_gm4pbl_t* p, int code)/*auto*/
 void join_gm4pbl_t_ctor(struct join_gm4pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_gm4pbl_t_chk_members(p,493619906));
+	assert(join_gm4pbl_t_chk_members(p,87237266));
 	bi_ctor(p->Ai);
 	bi_ctor(p->ei);
 }
@@ -1632,18 +1745,33 @@ void join_gm4pbl_t_ctor(struct join_gm4pbl_t* p)/*auto*/
 void join_gm4pbl_t_dtor(struct join_gm4pbl_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(join_gm4pbl_t_chk_members(p,493619906));
+	assert(join_gm4pbl_t_chk_members(p,87237266));
+	bi_clear_zero(p->ei);
 	bi_dtor(p->ei);
+	bi_clear_zero(p->Ai);
 	bi_dtor(p->Ai);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void join_gm4pbl_t_asg(struct join_gm4pbl_t* p, const struct join_gm4pbl_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(join_gm4pbl_t_chk_members(p,493619906));
+	assert(join_gm4pbl_t_chk_members(p,87237266));
 	if (p != o) {
 		bi_asg(p->Ai, o->Ai);
 		bi_asg(p->ei, o->ei);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void join_gm4pbl_t_move(struct join_gm4pbl_t* p, struct join_gm4pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(join_gm4pbl_t_chk_members(p,87237266));
+	if (p != o) {
+		bi_asg_si(p->Ai, 0);
+		bi_swap(p->Ai, o->Ai);
+		bi_asg_si(p->ei, 0);
+		bi_swap(p->ei, o->ei);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1678,10 +1806,10 @@ void join_gm4pbl_t_delete(struct join_gm4pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_mbr_ref_t_chk_members(struct ftmgs_mbr_ref_t* p, int code)/*auto*/
+static int ftmgs_mbr_ref_t_chk_members(const struct ftmgs_mbr_ref_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1692,10 +1820,10 @@ static int ftmgs_mbr_ref_t_chk_members(struct ftmgs_mbr_ref_t* p, int code)/*aut
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_ftmgs_mbr_ref_t {
-		bigint_t Ai;
-		bigint_t ei;
-		bigint_t Ci;
-		bigint_t Xi;
+		bigint_t Ai;		/* zero */
+		bigint_t ei;		/* zero */
+		bigint_t Ci;		/* zero */
+		bigint_t Xi;		/* zero */
 		paillier_thr_ciphertext_t UiVi;	/* alpha: Ui ; beta: Vi */
 		dlog_t user_auth;
 		join_proof_t Eiproof;
@@ -1708,7 +1836,7 @@ static int ftmgs_mbr_ref_t_chk_members(struct ftmgs_mbr_ref_t* p, int code)/*aut
 	CHK_FIELD__(dummy_ftmgs_mbr_ref_t, ftmgs_mbr_ref_t, user_auth);
 	CHK_FIELD__(dummy_ftmgs_mbr_ref_t, ftmgs_mbr_ref_t, Eiproof);
 	CHK_SIZE__(dummy_ftmgs_mbr_ref_t, ftmgs_mbr_ref_t);
-	return (p!=NULL)&&(code == 461998817);
+	return (code == 119169697); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1718,7 +1846,7 @@ static int ftmgs_mbr_ref_t_chk_members(struct ftmgs_mbr_ref_t* p, int code)/*aut
 void ftmgs_mbr_ref_t_ctor(struct ftmgs_mbr_ref_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_mbr_ref_t_chk_members(p,461998817));
+	assert(ftmgs_mbr_ref_t_chk_members(p,119169697));
 	bi_ctor(p->Ai);
 	bi_ctor(p->ei);
 	bi_ctor(p->Ci);
@@ -1731,20 +1859,25 @@ void ftmgs_mbr_ref_t_ctor(struct ftmgs_mbr_ref_t* p)/*auto*/
 void ftmgs_mbr_ref_t_dtor(struct ftmgs_mbr_ref_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_mbr_ref_t_chk_members(p,461998817));
+	assert(ftmgs_mbr_ref_t_chk_members(p,119169697));
 	join_proof_t_dtor(&p->Eiproof);
 	dlog_t_dtor(&p->user_auth);
 	paillier_thr_ciphertext_t_dtor(&p->UiVi);
+	bi_clear_zero(p->Xi);
 	bi_dtor(p->Xi);
+	bi_clear_zero(p->Ci);
 	bi_dtor(p->Ci);
+	bi_clear_zero(p->ei);
 	bi_dtor(p->ei);
+	bi_clear_zero(p->Ai);
 	bi_dtor(p->Ai);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_mbr_ref_t_asg(struct ftmgs_mbr_ref_t* p, const struct ftmgs_mbr_ref_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(ftmgs_mbr_ref_t_chk_members(p,461998817));
+	assert(ftmgs_mbr_ref_t_chk_members(p,119169697));
 	if (p != o) {
 		bi_asg(p->Ai, o->Ai);
 		bi_asg(p->ei, o->ei);
@@ -1753,6 +1886,25 @@ void ftmgs_mbr_ref_t_asg(struct ftmgs_mbr_ref_t* p, const struct ftmgs_mbr_ref_t
 		paillier_thr_ciphertext_t_asg(&p->UiVi, &o->UiVi);
 		dlog_t_asg(&p->user_auth, &o->user_auth);
 		join_proof_t_asg(&p->Eiproof, &o->Eiproof);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_mbr_ref_t_move(struct ftmgs_mbr_ref_t* p, struct ftmgs_mbr_ref_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_mbr_ref_t_chk_members(p,119169697));
+	if (p != o) {
+		bi_asg_si(p->Ai, 0);
+		bi_swap(p->Ai, o->Ai);
+		bi_asg_si(p->ei, 0);
+		bi_swap(p->ei, o->ei);
+		bi_asg_si(p->Ci, 0);
+		bi_swap(p->Ci, o->Ci);
+		bi_asg_si(p->Xi, 0);
+		bi_swap(p->Xi, o->Xi);
+		paillier_thr_ciphertext_t_move(&p->UiVi, &o->UiVi);
+		dlog_t_move(&p->user_auth, &o->user_auth);
+		join_proof_t_move(&p->Eiproof, &o->Eiproof);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1787,10 +1939,10 @@ void ftmgs_mbr_ref_t_delete(struct ftmgs_mbr_ref_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_mbr_prkey_t_chk_members(struct ftmgs_mbr_prkey_t* p, int code)/*auto*/
+static int ftmgs_mbr_prkey_t_chk_members(const struct ftmgs_mbr_prkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -1801,17 +1953,17 @@ static int ftmgs_mbr_prkey_t_chk_members(struct ftmgs_mbr_prkey_t* p, int code)/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_ftmgs_mbr_prkey_t {
-		bigint_t Ai;
-		bigint_t ei;
-		bigint_t xi;
-		bigint_t x1i;
+		bigint_t Ai;		/* zero */
+		bigint_t ei;		/* zero */
+		bigint_t xi;		/* zero */
+		bigint_t x1i;		/* zero */
 	};
 	CHK_FIELD__(dummy_ftmgs_mbr_prkey_t, ftmgs_mbr_prkey_t, Ai);
 	CHK_FIELD__(dummy_ftmgs_mbr_prkey_t, ftmgs_mbr_prkey_t, ei);
 	CHK_FIELD__(dummy_ftmgs_mbr_prkey_t, ftmgs_mbr_prkey_t, xi);
 	CHK_FIELD__(dummy_ftmgs_mbr_prkey_t, ftmgs_mbr_prkey_t, x1i);
 	CHK_SIZE__(dummy_ftmgs_mbr_prkey_t, ftmgs_mbr_prkey_t);
-	return (p!=NULL)&&(code == 261608047);
+	return (code == 200381983); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1821,7 +1973,7 @@ static int ftmgs_mbr_prkey_t_chk_members(struct ftmgs_mbr_prkey_t* p, int code)/
 void ftmgs_mbr_prkey_t_ctor(struct ftmgs_mbr_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_mbr_prkey_t_chk_members(p,261608047));
+	assert(ftmgs_mbr_prkey_t_chk_members(p,200381983));
 	bi_ctor(p->Ai);
 	bi_ctor(p->ei);
 	bi_ctor(p->xi);
@@ -1831,22 +1983,43 @@ void ftmgs_mbr_prkey_t_ctor(struct ftmgs_mbr_prkey_t* p)/*auto*/
 void ftmgs_mbr_prkey_t_dtor(struct ftmgs_mbr_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_mbr_prkey_t_chk_members(p,261608047));
+	assert(ftmgs_mbr_prkey_t_chk_members(p,200381983));
+	bi_clear_zero(p->x1i);
 	bi_dtor(p->x1i);
+	bi_clear_zero(p->xi);
 	bi_dtor(p->xi);
+	bi_clear_zero(p->ei);
 	bi_dtor(p->ei);
+	bi_clear_zero(p->Ai);
 	bi_dtor(p->Ai);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_mbr_prkey_t_asg(struct ftmgs_mbr_prkey_t* p, const struct ftmgs_mbr_prkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(ftmgs_mbr_prkey_t_chk_members(p,261608047));
+	assert(ftmgs_mbr_prkey_t_chk_members(p,200381983));
 	if (p != o) {
 		bi_asg(p->Ai, o->Ai);
 		bi_asg(p->ei, o->ei);
 		bi_asg(p->xi, o->xi);
 		bi_asg(p->x1i, o->x1i);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_mbr_prkey_t_move(struct ftmgs_mbr_prkey_t* p, struct ftmgs_mbr_prkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_mbr_prkey_t_chk_members(p,200381983));
+	if (p != o) {
+		bi_asg_si(p->Ai, 0);
+		bi_swap(p->Ai, o->Ai);
+		bi_asg_si(p->ei, 0);
+		bi_swap(p->ei, o->ei);
+		bi_asg_si(p->xi, 0);
+		bi_swap(p->xi, o->xi);
+		bi_asg_si(p->x1i, 0);
+		bi_swap(p->x1i, o->x1i);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1881,7 +2054,7 @@ void ftmgs_mbr_prkey_t_delete(struct ftmgs_mbr_prkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_join_prv_t_chk_members(struct ftmgs_join_prv_t* p, int code)/*auto*/
+static int ftmgs_join_prv_t_chk_members(const struct ftmgs_join_prv_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -1903,7 +2076,7 @@ static int ftmgs_join_prv_t_chk_members(struct ftmgs_join_prv_t* p, int code)/*a
 	CHK_FIELD__(dummy_ftmgs_join_prv_t, ftmgs_join_prv_t, u1);
 	CHK_FIELD__(dummy_ftmgs_join_prv_t, ftmgs_join_prv_t, u3);
 	CHK_SIZE__(dummy_ftmgs_join_prv_t, ftmgs_join_prv_t);
-	return (p!=NULL)&&(code == 526712973);
+	return (code == 526712973); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -1925,6 +2098,7 @@ void ftmgs_join_prv_t_dtor(struct ftmgs_join_prv_t* p)/*auto*/
 	assert(ftmgs_join_prv_t_chk_members(p,526712973));
 	join_u3prv_t_dtor(&p->u3);
 	join_u1prv_t_dtor(&p->u1);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_join_prv_t_asg(struct ftmgs_join_prv_t* p, const struct ftmgs_join_prv_t* o)/*auto*/
@@ -1935,6 +2109,17 @@ void ftmgs_join_prv_t_asg(struct ftmgs_join_prv_t* p, const struct ftmgs_join_pr
 		p->status = o->status;
 		join_u1prv_t_asg(&p->u1, &o->u1);
 		join_u3prv_t_asg(&p->u3, &o->u3);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_join_prv_t_move(struct ftmgs_join_prv_t* p, struct ftmgs_join_prv_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_join_prv_t_chk_members(p,526712973));
+	if (p != o) {
+		p->status = o->status;
+		join_u1prv_t_move(&p->u1, &o->u1);
+		join_u3prv_t_move(&p->u3, &o->u3);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -1969,7 +2154,7 @@ void ftmgs_join_prv_t_delete(struct ftmgs_join_prv_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_join_pbl_t_chk_members(struct ftmgs_join_pbl_t* p, int code)/*auto*/
+static int ftmgs_join_pbl_t_chk_members(const struct ftmgs_join_pbl_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -1995,7 +2180,7 @@ static int ftmgs_join_pbl_t_chk_members(struct ftmgs_join_pbl_t* p, int code)/*a
 	CHK_FIELD__(dummy_ftmgs_join_pbl_t, ftmgs_join_pbl_t, u3);
 	CHK_FIELD__(dummy_ftmgs_join_pbl_t, ftmgs_join_pbl_t, gm4);
 	CHK_SIZE__(dummy_ftmgs_join_pbl_t, ftmgs_join_pbl_t);
-	return (p!=NULL)&&(code == 279795973);
+	return (code == 279795973); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -2021,6 +2206,7 @@ void ftmgs_join_pbl_t_dtor(struct ftmgs_join_pbl_t* p)/*auto*/
 	join_u3pbl_t_dtor(&p->u3);
 	join_gm2pbl_t_dtor(&p->gm2);
 	join_u1pbl_t_dtor(&p->u1);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_join_pbl_t_asg(struct ftmgs_join_pbl_t* p, const struct ftmgs_join_pbl_t* o)/*auto*/
@@ -2033,6 +2219,19 @@ void ftmgs_join_pbl_t_asg(struct ftmgs_join_pbl_t* p, const struct ftmgs_join_pb
 		join_gm2pbl_t_asg(&p->gm2, &o->gm2);
 		join_u3pbl_t_asg(&p->u3, &o->u3);
 		join_gm4pbl_t_asg(&p->gm4, &o->gm4);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_join_pbl_t_move(struct ftmgs_join_pbl_t* p, struct ftmgs_join_pbl_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_join_pbl_t_chk_members(p,279795973));
+	if (p != o) {
+		p->status = o->status;
+		join_u1pbl_t_move(&p->u1, &o->u1);
+		join_gm2pbl_t_move(&p->gm2, &o->gm2);
+		join_u3pbl_t_move(&p->u3, &o->u3);
+		join_gm4pbl_t_move(&p->gm4, &o->gm4);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -2067,7 +2266,7 @@ void ftmgs_join_pbl_t_delete(struct ftmgs_join_pbl_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int dss_parms_t_chk_members(struct dss_parms_t* p, int code)/*auto*/
+static int dss_parms_t_chk_members(const struct dss_parms_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -2081,15 +2280,15 @@ static int dss_parms_t_chk_members(struct dss_parms_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_dss_parms_t {
-		bigint_t p;
-		bigint_t q;
-		bigint_t g;
+		bigint_t p;		/* zero */
+		bigint_t q;		/* zero */
+		bigint_t g;		/* zero */
 	};
 	CHK_FIELD__(dummy_dss_parms_t, dss_parms_t, p);
 	CHK_FIELD__(dummy_dss_parms_t, dss_parms_t, q);
 	CHK_FIELD__(dummy_dss_parms_t, dss_parms_t, g);
 	CHK_SIZE__(dummy_dss_parms_t, dss_parms_t);
-	return (p!=NULL)&&(code == 314505616);
+	return (code == 117362936); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -2099,7 +2298,7 @@ static int dss_parms_t_chk_members(struct dss_parms_t* p, int code)/*auto*/
 void dss_parms_t_ctor(struct dss_parms_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dss_parms_t_chk_members(p,314505616));
+	assert(dss_parms_t_chk_members(p,117362936));
 	bi_ctor(p->p);
 	bi_ctor(p->q);
 	bi_ctor(p->g);
@@ -2108,20 +2307,38 @@ void dss_parms_t_ctor(struct dss_parms_t* p)/*auto*/
 void dss_parms_t_dtor(struct dss_parms_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dss_parms_t_chk_members(p,314505616));
+	assert(dss_parms_t_chk_members(p,117362936));
+	bi_clear_zero(p->g);
 	bi_dtor(p->g);
+	bi_clear_zero(p->q);
 	bi_dtor(p->q);
+	bi_clear_zero(p->p);
 	bi_dtor(p->p);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void dss_parms_t_asg(struct dss_parms_t* p, const struct dss_parms_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(dss_parms_t_chk_members(p,314505616));
+	assert(dss_parms_t_chk_members(p,117362936));
 	if (p != o) {
 		bi_asg(p->p, o->p);
 		bi_asg(p->q, o->q);
 		bi_asg(p->g, o->g);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void dss_parms_t_move(struct dss_parms_t* p, struct dss_parms_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(dss_parms_t_chk_members(p,117362936));
+	if (p != o) {
+		bi_asg_si(p->p, 0);
+		bi_swap(p->p, o->p);
+		bi_asg_si(p->q, 0);
+		bi_swap(p->q, o->q);
+		bi_asg_si(p->g, 0);
+		bi_swap(p->g, o->g);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -2156,7 +2373,7 @@ void dss_parms_t_delete(struct dss_parms_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int dsa_pbkey_t_chk_members(struct dsa_pbkey_t* p, int code)/*auto*/
+static int dsa_pbkey_t_chk_members(const struct dsa_pbkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -2170,11 +2387,11 @@ static int dsa_pbkey_t_chk_members(struct dsa_pbkey_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_dsa_pbkey_t {
-		bigint_t y;		/* y = g^x (mod p) */
+		bigint_t y;		/* zero */
 	};
 	CHK_FIELD__(dummy_dsa_pbkey_t, dsa_pbkey_t, y);
 	CHK_SIZE__(dummy_dsa_pbkey_t, dsa_pbkey_t);
-	return (p!=NULL)&&(code == 62920925);
+	return (code == 70046067); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -2184,23 +2401,35 @@ static int dsa_pbkey_t_chk_members(struct dsa_pbkey_t* p, int code)/*auto*/
 void dsa_pbkey_t_ctor(struct dsa_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dsa_pbkey_t_chk_members(p,62920925));
+	assert(dsa_pbkey_t_chk_members(p,70046067));
 	bi_ctor(p->y);
 }
 /*----------------------------------------------------------------------------*/
 void dsa_pbkey_t_dtor(struct dsa_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dsa_pbkey_t_chk_members(p,62920925));
+	assert(dsa_pbkey_t_chk_members(p,70046067));
+	bi_clear_zero(p->y);
 	bi_dtor(p->y);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void dsa_pbkey_t_asg(struct dsa_pbkey_t* p, const struct dsa_pbkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(dsa_pbkey_t_chk_members(p,62920925));
+	assert(dsa_pbkey_t_chk_members(p,70046067));
 	if (p != o) {
 		bi_asg(p->y, o->y);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void dsa_pbkey_t_move(struct dsa_pbkey_t* p, struct dsa_pbkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(dsa_pbkey_t_chk_members(p,70046067));
+	if (p != o) {
+		bi_asg_si(p->y, 0);
+		bi_swap(p->y, o->y);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -2235,7 +2464,7 @@ void dsa_pbkey_t_delete(struct dsa_pbkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int dsa_prkey_t_chk_members(struct dsa_prkey_t* p, int code)/*auto*/
+static int dsa_prkey_t_chk_members(const struct dsa_prkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -2249,11 +2478,11 @@ static int dsa_prkey_t_chk_members(struct dsa_prkey_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_dsa_prkey_t {
-		bigint_t x;		/* y = g^x (mod p) */
+		bigint_t x;		/* zero */
 	};
 	CHK_FIELD__(dummy_dsa_prkey_t, dsa_prkey_t, x);
 	CHK_SIZE__(dummy_dsa_prkey_t, dsa_prkey_t);
-	return (p!=NULL)&&(code == 95423254);
+	return (code == 451805986); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -2263,23 +2492,35 @@ static int dsa_prkey_t_chk_members(struct dsa_prkey_t* p, int code)/*auto*/
 void dsa_prkey_t_ctor(struct dsa_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dsa_prkey_t_chk_members(p,95423254));
+	assert(dsa_prkey_t_chk_members(p,451805986));
 	bi_ctor(p->x);
 }
 /*----------------------------------------------------------------------------*/
 void dsa_prkey_t_dtor(struct dsa_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(dsa_prkey_t_chk_members(p,95423254));
+	assert(dsa_prkey_t_chk_members(p,451805986));
+	bi_clear_zero(p->x);
 	bi_dtor(p->x);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void dsa_prkey_t_asg(struct dsa_prkey_t* p, const struct dsa_prkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(dsa_prkey_t_chk_members(p,95423254));
+	assert(dsa_prkey_t_chk_members(p,451805986));
 	if (p != o) {
 		bi_asg(p->x, o->x);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void dsa_prkey_t_move(struct dsa_prkey_t* p, struct dsa_prkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(dsa_prkey_t_chk_members(p,451805986));
+	if (p != o) {
+		bi_asg_si(p->x, 0);
+		bi_swap(p->x, o->x);
 	}
 }
 /*----------------------------------------------------------------------------*/

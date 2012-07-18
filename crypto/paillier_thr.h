@@ -28,44 +28,46 @@
 BEGIN_EXTERN_C
 /*------------------------------------------------------------------------*/
 typedef struct paillier_thr_precomp_t {
-	bigint_t n2;
+	bigint_t n2;		/* zero */
 	sphere_t upsilon;			/* { 0 .. Z_{n^2/4} } */
 	sphere_t psi;				/* { 0 .. Z_{n/4} } */
 } paillier_thr_precomp_t;
 /*----------------------------------------------------------------------------*/
+/* y = PROD_j(yj) */
 typedef struct paillier_thr_pbkey_t {
-	syspar_t sp;
-	bigint_t n;
-	bigint_t g;
-	bigint_t y;					/* y = PROD_j(yj) */
-	unsigned nkeys;
+	syspar_t sp;		/* zero */
+	bigint_t n;			/* zero */
+	bigint_t g;			/* zero */
+	bigint_t y;			/* zero */
+	unsigned nkeys;		/* zero */
 #ifdef PRECOMPUTATIONS__
 	paillier_thr_precomp_t precomp;
 #endif
 } paillier_thr_pbkey_t;
 /*----------------------------------------------------------------------------*/
+/* yj = g^xj (mod n) */
 typedef struct paillier_thr_pbkey_share_t {
-	bigint_t yj;				/* yj = g^xj (mod n) */
+	bigint_t yj;		/* zero */
 } paillier_thr_pbkey_share_t;
 /*----------------------------------------------------------------------------*/
 typedef struct paillier_thr_prkey_t {
-	bigint_t xj;
+	bigint_t xj;		/* zero */
 } paillier_thr_prkey_t;
 /*----------------------------------------------------------------------------*/
 typedef struct paillier_thr_ciphertext_t {
-	bigint_t alpha;
-	bigint_t beta;
+	bigint_t alpha;		/* zero */
+	bigint_t beta;		/* zero */
 } paillier_thr_ciphertext_t;
 /*----------------------------------------------------------------------------*/
 typedef struct paillier_thr_decrypt_share_t {
-	bigint_t alpha_xj;
-	bigint_t c;
-	bigint_t sx;
+	bigint_t alpha_xj;	/* zero */
+	bigint_t c;			/* zero */
+	bigint_t sx;		/* zero */
 } paillier_thr_decrypt_share_t;
 /*----------------------------------------------------------------------------*/
 typedef struct paillier_thr_dshare_acc_t {
-	unsigned nshares;
-	bigint_t a;
+	unsigned nshares;	/* zero */
+	bigint_t a;			/* zero */
 } paillier_thr_dshare_acc_t;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -126,6 +128,7 @@ bool_t paillier_thr_decrypt(bigint_t msg,
 void paillier_thr_precomp_t_ctor(struct paillier_thr_precomp_t* p);
 void paillier_thr_precomp_t_dtor(struct paillier_thr_precomp_t* p);
 void paillier_thr_precomp_t_asg(struct paillier_thr_precomp_t* p, const struct paillier_thr_precomp_t* o);
+void paillier_thr_precomp_t_move(struct paillier_thr_precomp_t* p, struct paillier_thr_precomp_t* o);
 struct paillier_thr_precomp_t* paillier_thr_precomp_t_new();
 struct paillier_thr_precomp_t* paillier_thr_precomp_t_clone(const struct paillier_thr_precomp_t* o);
 void paillier_thr_precomp_t_delete(struct paillier_thr_precomp_t* p);
@@ -133,6 +136,7 @@ void paillier_thr_precomp_t_delete(struct paillier_thr_precomp_t* p);
 void paillier_thr_pbkey_t_ctor(struct paillier_thr_pbkey_t* p);
 void paillier_thr_pbkey_t_dtor(struct paillier_thr_pbkey_t* p);
 void paillier_thr_pbkey_t_asg(struct paillier_thr_pbkey_t* p, const struct paillier_thr_pbkey_t* o);
+void paillier_thr_pbkey_t_move(struct paillier_thr_pbkey_t* p, struct paillier_thr_pbkey_t* o);
 struct paillier_thr_pbkey_t* paillier_thr_pbkey_t_new();
 struct paillier_thr_pbkey_t* paillier_thr_pbkey_t_clone(const struct paillier_thr_pbkey_t* o);
 void paillier_thr_pbkey_t_delete(struct paillier_thr_pbkey_t* p);
@@ -140,6 +144,7 @@ void paillier_thr_pbkey_t_delete(struct paillier_thr_pbkey_t* p);
 void paillier_thr_pbkey_share_t_ctor(struct paillier_thr_pbkey_share_t* p);
 void paillier_thr_pbkey_share_t_dtor(struct paillier_thr_pbkey_share_t* p);
 void paillier_thr_pbkey_share_t_asg(struct paillier_thr_pbkey_share_t* p, const struct paillier_thr_pbkey_share_t* o);
+void paillier_thr_pbkey_share_t_move(struct paillier_thr_pbkey_share_t* p, struct paillier_thr_pbkey_share_t* o);
 struct paillier_thr_pbkey_share_t* paillier_thr_pbkey_share_t_new();
 struct paillier_thr_pbkey_share_t* paillier_thr_pbkey_share_t_clone(const struct paillier_thr_pbkey_share_t* o);
 void paillier_thr_pbkey_share_t_delete(struct paillier_thr_pbkey_share_t* p);
@@ -147,6 +152,7 @@ void paillier_thr_pbkey_share_t_delete(struct paillier_thr_pbkey_share_t* p);
 void paillier_thr_prkey_t_ctor(struct paillier_thr_prkey_t* p);
 void paillier_thr_prkey_t_dtor(struct paillier_thr_prkey_t* p);
 void paillier_thr_prkey_t_asg(struct paillier_thr_prkey_t* p, const struct paillier_thr_prkey_t* o);
+void paillier_thr_prkey_t_move(struct paillier_thr_prkey_t* p, struct paillier_thr_prkey_t* o);
 struct paillier_thr_prkey_t* paillier_thr_prkey_t_new();
 struct paillier_thr_prkey_t* paillier_thr_prkey_t_clone(const struct paillier_thr_prkey_t* o);
 void paillier_thr_prkey_t_delete(struct paillier_thr_prkey_t* p);
@@ -154,6 +160,7 @@ void paillier_thr_prkey_t_delete(struct paillier_thr_prkey_t* p);
 void paillier_thr_ciphertext_t_ctor(struct paillier_thr_ciphertext_t* p);
 void paillier_thr_ciphertext_t_dtor(struct paillier_thr_ciphertext_t* p);
 void paillier_thr_ciphertext_t_asg(struct paillier_thr_ciphertext_t* p, const struct paillier_thr_ciphertext_t* o);
+void paillier_thr_ciphertext_t_move(struct paillier_thr_ciphertext_t* p, struct paillier_thr_ciphertext_t* o);
 struct paillier_thr_ciphertext_t* paillier_thr_ciphertext_t_new();
 struct paillier_thr_ciphertext_t* paillier_thr_ciphertext_t_clone(const struct paillier_thr_ciphertext_t* o);
 void paillier_thr_ciphertext_t_delete(struct paillier_thr_ciphertext_t* p);
@@ -161,6 +168,7 @@ void paillier_thr_ciphertext_t_delete(struct paillier_thr_ciphertext_t* p);
 void paillier_thr_decrypt_share_t_ctor(struct paillier_thr_decrypt_share_t* p);
 void paillier_thr_decrypt_share_t_dtor(struct paillier_thr_decrypt_share_t* p);
 void paillier_thr_decrypt_share_t_asg(struct paillier_thr_decrypt_share_t* p, const struct paillier_thr_decrypt_share_t* o);
+void paillier_thr_decrypt_share_t_move(struct paillier_thr_decrypt_share_t* p, struct paillier_thr_decrypt_share_t* o);
 struct paillier_thr_decrypt_share_t* paillier_thr_decrypt_share_t_new();
 struct paillier_thr_decrypt_share_t* paillier_thr_decrypt_share_t_clone(const struct paillier_thr_decrypt_share_t* o);
 void paillier_thr_decrypt_share_t_delete(struct paillier_thr_decrypt_share_t* p);
@@ -168,6 +176,7 @@ void paillier_thr_decrypt_share_t_delete(struct paillier_thr_decrypt_share_t* p)
 void paillier_thr_dshare_acc_t_ctor(struct paillier_thr_dshare_acc_t* p);
 void paillier_thr_dshare_acc_t_dtor(struct paillier_thr_dshare_acc_t* p);
 void paillier_thr_dshare_acc_t_asg(struct paillier_thr_dshare_acc_t* p, const struct paillier_thr_dshare_acc_t* o);
+void paillier_thr_dshare_acc_t_move(struct paillier_thr_dshare_acc_t* p, struct paillier_thr_dshare_acc_t* o);
 struct paillier_thr_dshare_acc_t* paillier_thr_dshare_acc_t_new();
 struct paillier_thr_dshare_acc_t* paillier_thr_dshare_acc_t_clone(const struct paillier_thr_dshare_acc_t* o);
 void paillier_thr_dshare_acc_t_delete(struct paillier_thr_dshare_acc_t* p);

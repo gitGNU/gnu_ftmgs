@@ -64,11 +64,13 @@ extern "C" {
 	/*------------------------------------------------------------------------*/
 #define syspar_t_dtor(syspar_t_ptr) ((void)0)
 #define syspar_t_asg(d, o)			((void)(*(d) = *(o)))
+#define syspar_t_move(d, o)			((void)(*(d) = *(o)))
 	/*------------------------------------------------------------------------*/
 	void syspar_t_swap(struct syspar_t* p1, struct syspar_t* p2);
 	void syspar_t_ctor(struct syspar_t* p);
 	/*void syspar_t_dtor(struct syspar_t* p);*/
 	/*void syspar_t_asg(struct syspar_t* p, const struct syspar_t* o);*/
+	/*void syspar_t_move(struct syspar_t* p, struct syspar_t* o);*/
 	struct syspar_t* syspar_t_new();
 	struct syspar_t* syspar_t_clone(const struct syspar_t* o);
 	void syspar_t_delete(struct syspar_t* p);

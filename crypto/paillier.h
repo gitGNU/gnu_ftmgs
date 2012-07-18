@@ -25,19 +25,20 @@
 #include "random.h"
 BEGIN_EXTERN_C
 /*------------------------------------------------------------------------*/
+/* y = g^x (mod n^2) */
 typedef struct paillier_pbkey_t {
-	bigint_t n;
-	bigint_t g;
-	bigint_t y;			/* y = g^x (mod n^2) */
+	bigint_t n;		/* zero */
+	bigint_t g;		/* zero */
+	bigint_t y;		/* zero */
 } paillier_pbkey_t;
 /*----------------------------------------------------------------------------*/
 typedef struct paillier_prkey_t {
-	bigint_t x;
+	bigint_t x;		/* zero */
 } paillier_prkey_t;
 /*----------------------------------------------------------------------------*/
 typedef struct paillier_ciphertext_t {
-	bigint_t alpha;
-	bigint_t beta;
+	bigint_t alpha;		/* zero */
+	bigint_t beta;		/* zero */
 } paillier_ciphertext_t;
 /*----------------------------------------------------------------------------*/
 void paillier_create_keys(paillier_pbkey_t* pk,
@@ -67,6 +68,7 @@ bool_t paillier_decrypt(bigint_t msg,
 void paillier_pbkey_t_ctor(struct paillier_pbkey_t* p);
 void paillier_pbkey_t_dtor(struct paillier_pbkey_t* p);
 void paillier_pbkey_t_asg(struct paillier_pbkey_t* p, const struct paillier_pbkey_t* o);
+void paillier_pbkey_t_move(struct paillier_pbkey_t* p, struct paillier_pbkey_t* o);
 struct paillier_pbkey_t* paillier_pbkey_t_new();
 struct paillier_pbkey_t* paillier_pbkey_t_clone(const struct paillier_pbkey_t* o);
 void paillier_pbkey_t_delete(struct paillier_pbkey_t* p);
@@ -74,6 +76,7 @@ void paillier_pbkey_t_delete(struct paillier_pbkey_t* p);
 void paillier_prkey_t_ctor(struct paillier_prkey_t* p);
 void paillier_prkey_t_dtor(struct paillier_prkey_t* p);
 void paillier_prkey_t_asg(struct paillier_prkey_t* p, const struct paillier_prkey_t* o);
+void paillier_prkey_t_move(struct paillier_prkey_t* p, struct paillier_prkey_t* o);
 struct paillier_prkey_t* paillier_prkey_t_new();
 struct paillier_prkey_t* paillier_prkey_t_clone(const struct paillier_prkey_t* o);
 void paillier_prkey_t_delete(struct paillier_prkey_t* p);
@@ -81,6 +84,7 @@ void paillier_prkey_t_delete(struct paillier_prkey_t* p);
 void paillier_ciphertext_t_ctor(struct paillier_ciphertext_t* p);
 void paillier_ciphertext_t_dtor(struct paillier_ciphertext_t* p);
 void paillier_ciphertext_t_asg(struct paillier_ciphertext_t* p, const struct paillier_ciphertext_t* o);
+void paillier_ciphertext_t_move(struct paillier_ciphertext_t* p, struct paillier_ciphertext_t* o);
 struct paillier_ciphertext_t* paillier_ciphertext_t_new();
 struct paillier_ciphertext_t* paillier_ciphertext_t_clone(const struct paillier_ciphertext_t* o);
 void paillier_ciphertext_t_delete(struct paillier_ciphertext_t* p);

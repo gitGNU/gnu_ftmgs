@@ -45,6 +45,7 @@ const sphere_t* get_sphere_gamma_mu(const syssph_t* ss);
 void syssph_t_ctor(struct syssph_t* p);
 void syssph_t_dtor(struct syssph_t* p);
 void syssph_t_asg(struct syssph_t* p, const struct syssph_t* o);
+void syssph_t_move(struct syssph_t* p, struct syssph_t* o);
 struct syssph_t* syssph_t_new();
 struct syssph_t* syssph_t_clone(const struct syssph_t* o);
 void syssph_t_delete(struct syssph_t* p);

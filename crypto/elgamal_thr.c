@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #include "iexport.h"
 #include "generator.h"
 #include "sok.h"
@@ -231,10 +232,10 @@ bool_t elgamal_thr_decrypt(bigint_t msg,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_modfact_t_chk_members(struct elgamal_thr_modfact_t* p, int code)/*auto*/
+static int elgamal_thr_modfact_t_chk_members(const struct elgamal_thr_modfact_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -245,13 +246,13 @@ static int elgamal_thr_modfact_t_chk_members(struct elgamal_thr_modfact_t* p, in
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_modfact_t {
-		bigint_t p;
-		bigint_t q;
+		bigint_t p;		/* zero */
+		bigint_t q;		/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_modfact_t, elgamal_thr_modfact_t, p);
 	CHK_FIELD__(dummy_elgamal_thr_modfact_t, elgamal_thr_modfact_t, q);
 	CHK_SIZE__(dummy_elgamal_thr_modfact_t, elgamal_thr_modfact_t);
-	return (p!=NULL)&&(code == 178844723);
+	return (code == 506705555); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -261,7 +262,7 @@ static int elgamal_thr_modfact_t_chk_members(struct elgamal_thr_modfact_t* p, in
 void elgamal_thr_modfact_t_ctor(struct elgamal_thr_modfact_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_modfact_t_chk_members(p,178844723));
+	assert(elgamal_thr_modfact_t_chk_members(p,506705555));
 	bi_ctor(p->p);
 	bi_ctor(p->q);
 }
@@ -269,18 +270,33 @@ void elgamal_thr_modfact_t_ctor(struct elgamal_thr_modfact_t* p)/*auto*/
 void elgamal_thr_modfact_t_dtor(struct elgamal_thr_modfact_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_modfact_t_chk_members(p,178844723));
+	assert(elgamal_thr_modfact_t_chk_members(p,506705555));
+	bi_clear_zero(p->q);
 	bi_dtor(p->q);
+	bi_clear_zero(p->p);
 	bi_dtor(p->p);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_modfact_t_asg(struct elgamal_thr_modfact_t* p, const struct elgamal_thr_modfact_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_modfact_t_chk_members(p,178844723));
+	assert(elgamal_thr_modfact_t_chk_members(p,506705555));
 	if (p != o) {
 		bi_asg(p->p, o->p);
 		bi_asg(p->q, o->q);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_modfact_t_move(struct elgamal_thr_modfact_t* p, struct elgamal_thr_modfact_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_modfact_t_chk_members(p,506705555));
+	if (p != o) {
+		bi_asg_si(p->p, 0);
+		bi_swap(p->p, o->p);
+		bi_asg_si(p->q, 0);
+		bi_swap(p->q, o->q);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -315,10 +331,10 @@ void elgamal_thr_modfact_t_delete(struct elgamal_thr_modfact_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_modord_t_chk_members(struct elgamal_thr_modord_t* p, int code)/*auto*/
+static int elgamal_thr_modord_t_chk_members(const struct elgamal_thr_modord_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -329,13 +345,13 @@ static int elgamal_thr_modord_t_chk_members(struct elgamal_thr_modord_t* p, int 
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_modord_t {
-		bigint_t p1;
-		bigint_t q1;
+		bigint_t p1;		/* zero */
+		bigint_t q1;		/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_modord_t, elgamal_thr_modord_t, p1);
 	CHK_FIELD__(dummy_elgamal_thr_modord_t, elgamal_thr_modord_t, q1);
 	CHK_SIZE__(dummy_elgamal_thr_modord_t, elgamal_thr_modord_t);
-	return (p!=NULL)&&(code == 407299759);
+	return (code == 528613951); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -345,7 +361,7 @@ static int elgamal_thr_modord_t_chk_members(struct elgamal_thr_modord_t* p, int 
 void elgamal_thr_modord_t_ctor(struct elgamal_thr_modord_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_modord_t_chk_members(p,407299759));
+	assert(elgamal_thr_modord_t_chk_members(p,528613951));
 	bi_ctor(p->p1);
 	bi_ctor(p->q1);
 }
@@ -353,18 +369,33 @@ void elgamal_thr_modord_t_ctor(struct elgamal_thr_modord_t* p)/*auto*/
 void elgamal_thr_modord_t_dtor(struct elgamal_thr_modord_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_modord_t_chk_members(p,407299759));
+	assert(elgamal_thr_modord_t_chk_members(p,528613951));
+	bi_clear_zero(p->q1);
 	bi_dtor(p->q1);
+	bi_clear_zero(p->p1);
 	bi_dtor(p->p1);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_modord_t_asg(struct elgamal_thr_modord_t* p, const struct elgamal_thr_modord_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_modord_t_chk_members(p,407299759));
+	assert(elgamal_thr_modord_t_chk_members(p,528613951));
 	if (p != o) {
 		bi_asg(p->p1, o->p1);
 		bi_asg(p->q1, o->q1);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_modord_t_move(struct elgamal_thr_modord_t* p, struct elgamal_thr_modord_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_modord_t_chk_members(p,528613951));
+	if (p != o) {
+		bi_asg_si(p->p1, 0);
+		bi_swap(p->p1, o->p1);
+		bi_asg_si(p->q1, 0);
+		bi_swap(p->q1, o->q1);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -399,10 +430,10 @@ void elgamal_thr_modord_t_delete(struct elgamal_thr_modord_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_pbkey_t_chk_members(struct elgamal_thr_pbkey_t* p, int code)/*auto*/
+static int elgamal_thr_pbkey_t_chk_members(const struct elgamal_thr_pbkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -414,10 +445,10 @@ static int elgamal_thr_pbkey_t_chk_members(struct elgamal_thr_pbkey_t* p, int co
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_pbkey_t {
 		syspar_t sp;
-		bigint_t n;
-		bigint_t g;
-		bigint_t y;			/* y = PROD_j(yj) */
-		unsigned nkeys;
+		bigint_t n;		/* zero */
+		bigint_t g;		/* zero */
+		bigint_t y;		/* zero */
+		unsigned nkeys;	/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_pbkey_t, elgamal_thr_pbkey_t, sp);
 	CHK_FIELD__(dummy_elgamal_thr_pbkey_t, elgamal_thr_pbkey_t, n);
@@ -425,7 +456,7 @@ static int elgamal_thr_pbkey_t_chk_members(struct elgamal_thr_pbkey_t* p, int co
 	CHK_FIELD__(dummy_elgamal_thr_pbkey_t, elgamal_thr_pbkey_t, y);
 	CHK_FIELD__(dummy_elgamal_thr_pbkey_t, elgamal_thr_pbkey_t, nkeys);
 	CHK_SIZE__(dummy_elgamal_thr_pbkey_t, elgamal_thr_pbkey_t);
-	return (p!=NULL)&&(code == 320364432);
+	return (code == 94127212); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -435,7 +466,7 @@ static int elgamal_thr_pbkey_t_chk_members(struct elgamal_thr_pbkey_t* p, int co
 void elgamal_thr_pbkey_t_ctor(struct elgamal_thr_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_pbkey_t_chk_members(p,320364432));
+	assert(elgamal_thr_pbkey_t_chk_members(p,94127212));
 	syspar_t_ctor(&p->sp);
 	bi_ctor(p->n);
 	bi_ctor(p->g);
@@ -446,22 +477,43 @@ void elgamal_thr_pbkey_t_ctor(struct elgamal_thr_pbkey_t* p)/*auto*/
 void elgamal_thr_pbkey_t_dtor(struct elgamal_thr_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_pbkey_t_chk_members(p,320364432));
+	assert(elgamal_thr_pbkey_t_chk_members(p,94127212));
+	p->nkeys = 0;
+	bi_clear_zero(p->y);
 	bi_dtor(p->y);
+	bi_clear_zero(p->g);
 	bi_dtor(p->g);
+	bi_clear_zero(p->n);
 	bi_dtor(p->n);
 	syspar_t_dtor(&p->sp);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_pbkey_t_asg(struct elgamal_thr_pbkey_t* p, const struct elgamal_thr_pbkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_pbkey_t_chk_members(p,320364432));
+	assert(elgamal_thr_pbkey_t_chk_members(p,94127212));
 	if (p != o) {
 		syspar_t_asg(&p->sp, &o->sp);
 		bi_asg(p->n, o->n);
 		bi_asg(p->g, o->g);
 		bi_asg(p->y, o->y);
+		p->nkeys = o->nkeys;
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_pbkey_t_move(struct elgamal_thr_pbkey_t* p, struct elgamal_thr_pbkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_pbkey_t_chk_members(p,94127212));
+	if (p != o) {
+		syspar_t_move(&p->sp, &o->sp);
+		bi_asg_si(p->n, 0);
+		bi_swap(p->n, o->n);
+		bi_asg_si(p->g, 0);
+		bi_swap(p->g, o->g);
+		bi_asg_si(p->y, 0);
+		bi_swap(p->y, o->y);
 		p->nkeys = o->nkeys;
 	}
 }
@@ -497,10 +549,10 @@ void elgamal_thr_pbkey_t_delete(struct elgamal_thr_pbkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_pbkey_share_t_chk_members(struct elgamal_thr_pbkey_share_t* p, int code)/*auto*/
+static int elgamal_thr_pbkey_share_t_chk_members(const struct elgamal_thr_pbkey_share_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -511,11 +563,11 @@ static int elgamal_thr_pbkey_share_t_chk_members(struct elgamal_thr_pbkey_share_
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_pbkey_share_t {
-		bigint_t yj;		/* yj = g^xj (mod n) */
+		bigint_t yj;		/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_pbkey_share_t, elgamal_thr_pbkey_share_t, yj);
 	CHK_SIZE__(dummy_elgamal_thr_pbkey_share_t, elgamal_thr_pbkey_share_t);
-	return (p!=NULL)&&(code == 29563889);
+	return (code == 254608341); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -525,23 +577,35 @@ static int elgamal_thr_pbkey_share_t_chk_members(struct elgamal_thr_pbkey_share_
 void elgamal_thr_pbkey_share_t_ctor(struct elgamal_thr_pbkey_share_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_pbkey_share_t_chk_members(p,29563889));
+	assert(elgamal_thr_pbkey_share_t_chk_members(p,254608341));
 	bi_ctor(p->yj);
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_pbkey_share_t_dtor(struct elgamal_thr_pbkey_share_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_pbkey_share_t_chk_members(p,29563889));
+	assert(elgamal_thr_pbkey_share_t_chk_members(p,254608341));
+	bi_clear_zero(p->yj);
 	bi_dtor(p->yj);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_pbkey_share_t_asg(struct elgamal_thr_pbkey_share_t* p, const struct elgamal_thr_pbkey_share_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_pbkey_share_t_chk_members(p,29563889));
+	assert(elgamal_thr_pbkey_share_t_chk_members(p,254608341));
 	if (p != o) {
 		bi_asg(p->yj, o->yj);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_pbkey_share_t_move(struct elgamal_thr_pbkey_share_t* p, struct elgamal_thr_pbkey_share_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_pbkey_share_t_chk_members(p,254608341));
+	if (p != o) {
+		bi_asg_si(p->yj, 0);
+		bi_swap(p->yj, o->yj);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -576,10 +640,10 @@ void elgamal_thr_pbkey_share_t_delete(struct elgamal_thr_pbkey_share_t* p)/*auto
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_prkey_t_chk_members(struct elgamal_thr_prkey_t* p, int code)/*auto*/
+static int elgamal_thr_prkey_t_chk_members(const struct elgamal_thr_prkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -590,11 +654,11 @@ static int elgamal_thr_prkey_t_chk_members(struct elgamal_thr_prkey_t* p, int co
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_prkey_t {
-		bigint_t xj;
+		bigint_t xj;		/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_prkey_t, elgamal_thr_prkey_t, xj);
 	CHK_SIZE__(dummy_elgamal_thr_prkey_t, elgamal_thr_prkey_t);
-	return (p!=NULL)&&(code == 198508566);
+	return (code == 242573214); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -604,23 +668,35 @@ static int elgamal_thr_prkey_t_chk_members(struct elgamal_thr_prkey_t* p, int co
 void elgamal_thr_prkey_t_ctor(struct elgamal_thr_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_prkey_t_chk_members(p,198508566));
+	assert(elgamal_thr_prkey_t_chk_members(p,242573214));
 	bi_ctor(p->xj);
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_prkey_t_dtor(struct elgamal_thr_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_prkey_t_chk_members(p,198508566));
+	assert(elgamal_thr_prkey_t_chk_members(p,242573214));
+	bi_clear_zero(p->xj);
 	bi_dtor(p->xj);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_prkey_t_asg(struct elgamal_thr_prkey_t* p, const struct elgamal_thr_prkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_prkey_t_chk_members(p,198508566));
+	assert(elgamal_thr_prkey_t_chk_members(p,242573214));
 	if (p != o) {
 		bi_asg(p->xj, o->xj);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_prkey_t_move(struct elgamal_thr_prkey_t* p, struct elgamal_thr_prkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_prkey_t_chk_members(p,242573214));
+	if (p != o) {
+		bi_asg_si(p->xj, 0);
+		bi_swap(p->xj, o->xj);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -655,10 +731,10 @@ void elgamal_thr_prkey_t_delete(struct elgamal_thr_prkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_ciphertext_t_chk_members(struct elgamal_thr_ciphertext_t* p, int code)/*auto*/
+static int elgamal_thr_ciphertext_t_chk_members(const struct elgamal_thr_ciphertext_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -669,13 +745,13 @@ static int elgamal_thr_ciphertext_t_chk_members(struct elgamal_thr_ciphertext_t*
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_ciphertext_t {
-		bigint_t alpha;
-		bigint_t beta;
+		bigint_t alpha;		/* zero */
+		bigint_t beta;		/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_ciphertext_t, elgamal_thr_ciphertext_t, alpha);
 	CHK_FIELD__(dummy_elgamal_thr_ciphertext_t, elgamal_thr_ciphertext_t, beta);
 	CHK_SIZE__(dummy_elgamal_thr_ciphertext_t, elgamal_thr_ciphertext_t);
-	return (p!=NULL)&&(code == 211691810);
+	return (code == 230022130); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -685,7 +761,7 @@ static int elgamal_thr_ciphertext_t_chk_members(struct elgamal_thr_ciphertext_t*
 void elgamal_thr_ciphertext_t_ctor(struct elgamal_thr_ciphertext_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_ciphertext_t_chk_members(p,211691810));
+	assert(elgamal_thr_ciphertext_t_chk_members(p,230022130));
 	bi_ctor(p->alpha);
 	bi_ctor(p->beta);
 }
@@ -693,18 +769,33 @@ void elgamal_thr_ciphertext_t_ctor(struct elgamal_thr_ciphertext_t* p)/*auto*/
 void elgamal_thr_ciphertext_t_dtor(struct elgamal_thr_ciphertext_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_ciphertext_t_chk_members(p,211691810));
+	assert(elgamal_thr_ciphertext_t_chk_members(p,230022130));
+	bi_clear_zero(p->beta);
 	bi_dtor(p->beta);
+	bi_clear_zero(p->alpha);
 	bi_dtor(p->alpha);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_ciphertext_t_asg(struct elgamal_thr_ciphertext_t* p, const struct elgamal_thr_ciphertext_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_ciphertext_t_chk_members(p,211691810));
+	assert(elgamal_thr_ciphertext_t_chk_members(p,230022130));
 	if (p != o) {
 		bi_asg(p->alpha, o->alpha);
 		bi_asg(p->beta, o->beta);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_ciphertext_t_move(struct elgamal_thr_ciphertext_t* p, struct elgamal_thr_ciphertext_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_ciphertext_t_chk_members(p,230022130));
+	if (p != o) {
+		bi_asg_si(p->alpha, 0);
+		bi_swap(p->alpha, o->alpha);
+		bi_asg_si(p->beta, 0);
+		bi_swap(p->beta, o->beta);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -739,10 +830,10 @@ void elgamal_thr_ciphertext_t_delete(struct elgamal_thr_ciphertext_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_decrypt_share_t_chk_members(struct elgamal_thr_decrypt_share_t* p, int code)/*auto*/
+static int elgamal_thr_decrypt_share_t_chk_members(const struct elgamal_thr_decrypt_share_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -753,15 +844,15 @@ static int elgamal_thr_decrypt_share_t_chk_members(struct elgamal_thr_decrypt_sh
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_decrypt_share_t {
-		bigint_t alpha_xj;
-		bigint_t c;
-		bigint_t sx;
+		bigint_t alpha_xj;	/* zero */
+		bigint_t c;			/* zero */
+		bigint_t sx;		/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_decrypt_share_t, elgamal_thr_decrypt_share_t, alpha_xj);
 	CHK_FIELD__(dummy_elgamal_thr_decrypt_share_t, elgamal_thr_decrypt_share_t, c);
 	CHK_FIELD__(dummy_elgamal_thr_decrypt_share_t, elgamal_thr_decrypt_share_t, sx);
 	CHK_SIZE__(dummy_elgamal_thr_decrypt_share_t, elgamal_thr_decrypt_share_t);
-	return (p!=NULL)&&(code == 524542999);
+	return (code == 231743431); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -771,7 +862,7 @@ static int elgamal_thr_decrypt_share_t_chk_members(struct elgamal_thr_decrypt_sh
 void elgamal_thr_decrypt_share_t_ctor(struct elgamal_thr_decrypt_share_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_decrypt_share_t_chk_members(p,524542999));
+	assert(elgamal_thr_decrypt_share_t_chk_members(p,231743431));
 	bi_ctor(p->alpha_xj);
 	bi_ctor(p->c);
 	bi_ctor(p->sx);
@@ -780,20 +871,38 @@ void elgamal_thr_decrypt_share_t_ctor(struct elgamal_thr_decrypt_share_t* p)/*au
 void elgamal_thr_decrypt_share_t_dtor(struct elgamal_thr_decrypt_share_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_decrypt_share_t_chk_members(p,524542999));
+	assert(elgamal_thr_decrypt_share_t_chk_members(p,231743431));
+	bi_clear_zero(p->sx);
 	bi_dtor(p->sx);
+	bi_clear_zero(p->c);
 	bi_dtor(p->c);
+	bi_clear_zero(p->alpha_xj);
 	bi_dtor(p->alpha_xj);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_decrypt_share_t_asg(struct elgamal_thr_decrypt_share_t* p, const struct elgamal_thr_decrypt_share_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_decrypt_share_t_chk_members(p,524542999));
+	assert(elgamal_thr_decrypt_share_t_chk_members(p,231743431));
 	if (p != o) {
 		bi_asg(p->alpha_xj, o->alpha_xj);
 		bi_asg(p->c, o->c);
 		bi_asg(p->sx, o->sx);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_decrypt_share_t_move(struct elgamal_thr_decrypt_share_t* p, struct elgamal_thr_decrypt_share_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_decrypt_share_t_chk_members(p,231743431));
+	if (p != o) {
+		bi_asg_si(p->alpha_xj, 0);
+		bi_swap(p->alpha_xj, o->alpha_xj);
+		bi_asg_si(p->c, 0);
+		bi_swap(p->c, o->c);
+		bi_asg_si(p->sx, 0);
+		bi_swap(p->sx, o->sx);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -828,10 +937,10 @@ void elgamal_thr_decrypt_share_t_delete(struct elgamal_thr_decrypt_share_t* p)/*
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int elgamal_thr_dshare_acc_t_chk_members(struct elgamal_thr_dshare_acc_t* p, int code)/*auto*/
+static int elgamal_thr_dshare_acc_t_chk_members(const struct elgamal_thr_dshare_acc_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -842,13 +951,13 @@ static int elgamal_thr_dshare_acc_t_chk_members(struct elgamal_thr_dshare_acc_t*
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_elgamal_thr_dshare_acc_t {
-		unsigned nshares;
-		bigint_t a;
+		unsigned nshares;	/* zero */
+		bigint_t a;			/* zero */
 	};
 	CHK_FIELD__(dummy_elgamal_thr_dshare_acc_t, elgamal_thr_dshare_acc_t, nshares);
 	CHK_FIELD__(dummy_elgamal_thr_dshare_acc_t, elgamal_thr_dshare_acc_t, a);
 	CHK_SIZE__(dummy_elgamal_thr_dshare_acc_t, elgamal_thr_dshare_acc_t);
-	return (p!=NULL)&&(code == 266953664);
+	return (code == 238721724); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -858,7 +967,7 @@ static int elgamal_thr_dshare_acc_t_chk_members(struct elgamal_thr_dshare_acc_t*
 void elgamal_thr_dshare_acc_t_ctor(struct elgamal_thr_dshare_acc_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_dshare_acc_t_chk_members(p,266953664));
+	assert(elgamal_thr_dshare_acc_t_chk_members(p,238721724));
 	p->nshares = 0;
 	bi_ctor(p->a);
 }
@@ -866,17 +975,31 @@ void elgamal_thr_dshare_acc_t_ctor(struct elgamal_thr_dshare_acc_t* p)/*auto*/
 void elgamal_thr_dshare_acc_t_dtor(struct elgamal_thr_dshare_acc_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(elgamal_thr_dshare_acc_t_chk_members(p,266953664));
+	assert(elgamal_thr_dshare_acc_t_chk_members(p,238721724));
+	bi_clear_zero(p->a);
 	bi_dtor(p->a);
+	p->nshares = 0;
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void elgamal_thr_dshare_acc_t_asg(struct elgamal_thr_dshare_acc_t* p, const struct elgamal_thr_dshare_acc_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(elgamal_thr_dshare_acc_t_chk_members(p,266953664));
+	assert(elgamal_thr_dshare_acc_t_chk_members(p,238721724));
 	if (p != o) {
 		p->nshares = o->nshares;
 		bi_asg(p->a, o->a);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void elgamal_thr_dshare_acc_t_move(struct elgamal_thr_dshare_acc_t* p, struct elgamal_thr_dshare_acc_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(elgamal_thr_dshare_acc_t_chk_members(p,238721724));
+	if (p != o) {
+		p->nshares = o->nshares;
+		bi_asg_si(p->a, 0);
+		bi_swap(p->a, o->a);
 	}
 }
 /*----------------------------------------------------------------------------*/

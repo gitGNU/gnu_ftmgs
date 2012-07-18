@@ -28,27 +28,27 @@ BEGIN_EXTERN_C
 typedef struct nadrp_precomp_t {
 	sphere_t theta;
 	sphere_t omega;
-	bigint_t nadrp_1_g_x_theta;
-	bigint_t nadrp_1_h_r_omega;
-	bigint_t nadrp_1_y_r_omega;
-	bigint_t nadrp_2_g_m_theta_ek_range;
-	bigint_t nadrp_2_g_a_theta;
-	bigint_t nadrp_2_h_g_omega;
-	bigint_t nadrp_2_y_g_omega;
-	bigint_t nadrp_2_gm_b_theta;
-	bigint_t nadrp_2_a_a_theta;
+	bigint_t nadrp_1_g_x_theta;				/* zero */
+	bigint_t nadrp_1_h_r_omega;				/* zero */
+	bigint_t nadrp_1_y_r_omega;				/* zero */
+	bigint_t nadrp_2_g_m_theta_ek_range;	/* zero */
+	bigint_t nadrp_2_g_a_theta;				/* zero */
+	bigint_t nadrp_2_h_g_omega;				/* zero */
+	bigint_t nadrp_2_y_g_omega;				/* zero */
+	bigint_t nadrp_2_gm_b_theta;			/* zero */
+	bigint_t nadrp_2_a_a_theta;				/* zero */
 } nadrp_precomp_t;
 /*----------------------------------------------------------------------------*/
 typedef struct nadrp_parms_t {
-	const bigint_t* n;		/* modulus */
-	const bigint_t* a;		/* calculates x and a^x (mod n) */
+	const bigint_t* n;			/* n: modulus */
+	const bigint_t* a;			/* a: calculates x and a^x (mod n) */
 	const bigint_t* g;
 	const bigint_t* h;
 	const bigint_t* y;
 	const syspar_t* sp;
-	const sphere_t* sph;			/* sphere for x */
-	const sphere_t* theta;		/* outer sphere for Z_m */
-	const sphere_t* omega;		/* sphere for Z_{n^2} */
+	const sphere_t* sph;		/* sph: sphere for x */
+	const sphere_t* theta;		/* theta: outer sphere for Z_m */
+	const sphere_t* omega;		/* omega: sphere for Z_{n^2} */
 #ifdef PRECOMPUTATIONS__
 	const nadrp_precomp_t* precomp;
 #else
@@ -58,36 +58,36 @@ typedef struct nadrp_parms_t {
 } nadrp_parms_t;
 /*----------------------------------------------------------------------------*/
 typedef struct nadrp_a1prv_t {
-	bigint_t xx;
-	bigint_t rr;
+	bigint_t xx;		/* zero */
+	bigint_t rr;		/* zero */
 } nadrp_a1prv_t;
 /*----------------------------------------------------------------------------*/
 typedef struct nadrp_a1pbl_t {
-	bigint_t C1;
-	bigint_t C2;
-	bigint_t c;
-	bigint_t sx;
-	bigint_t sr;
+	bigint_t C1;		/* zero */
+	bigint_t C2;		/* zero */
+	bigint_t c;			/* zero */
+	bigint_t sx;		/* zero */
+	bigint_t sr;		/* zero */
 } nadrp_a1pbl_t;
 /*----------------------------------------------------------------------------*/
 typedef struct nadrp_b2pbl_t {
-	bigint_t yy;
+	bigint_t yy;		/* zero */
 } nadrp_b2pbl_t;
 /*----------------------------------------------------------------------------*/
 typedef struct nadrp_a3prv_t {
-	bigint_t x;
+	bigint_t x;		/* zero */
 } nadrp_a3prv_t;
 /*----------------------------------------------------------------------------*/
 typedef struct nadrp_a3pbl_t {
-	bigint_t C3;
-	bigint_t c;
-	bigint_t sx;
-	bigint_t sz;
-	bigint_t sr;
+	bigint_t C3;		/* zero */
+	bigint_t c;			/* zero */
+	bigint_t sx;		/* zero */
+	bigint_t sz;		/* zero */
+	bigint_t sr;		/* zero */
 } nadrp_a3pbl_t;
 /*----------------------------------------------------------------------------*/
 typedef struct nadrp_b4pbl_t {
-	bigint_t ax;
+	bigint_t ax;		/* zero */
 } nadrp_b4pbl_t;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -159,6 +159,7 @@ bool_t nadrp_prtcl(bigint_t* ax,
 void nadrp_precomp_t_ctor(struct nadrp_precomp_t* p);
 void nadrp_precomp_t_dtor(struct nadrp_precomp_t* p);
 void nadrp_precomp_t_asg(struct nadrp_precomp_t* p, const struct nadrp_precomp_t* o);
+void nadrp_precomp_t_move(struct nadrp_precomp_t* p, struct nadrp_precomp_t* o);
 struct nadrp_precomp_t* nadrp_precomp_t_new();
 struct nadrp_precomp_t* nadrp_precomp_t_clone(const struct nadrp_precomp_t* o);
 void nadrp_precomp_t_delete(struct nadrp_precomp_t* p);
@@ -166,6 +167,7 @@ void nadrp_precomp_t_delete(struct nadrp_precomp_t* p);
 void nadrp_parms_t_ctor(struct nadrp_parms_t* p);
 void nadrp_parms_t_dtor(struct nadrp_parms_t* p);
 void nadrp_parms_t_asg(struct nadrp_parms_t* p, const struct nadrp_parms_t* o);
+void nadrp_parms_t_move(struct nadrp_parms_t* p, struct nadrp_parms_t* o);
 struct nadrp_parms_t* nadrp_parms_t_new();
 struct nadrp_parms_t* nadrp_parms_t_clone(const struct nadrp_parms_t* o);
 void nadrp_parms_t_delete(struct nadrp_parms_t* p);
@@ -173,6 +175,7 @@ void nadrp_parms_t_delete(struct nadrp_parms_t* p);
 void nadrp_a1prv_t_ctor(struct nadrp_a1prv_t* p);
 void nadrp_a1prv_t_dtor(struct nadrp_a1prv_t* p);
 void nadrp_a1prv_t_asg(struct nadrp_a1prv_t* p, const struct nadrp_a1prv_t* o);
+void nadrp_a1prv_t_move(struct nadrp_a1prv_t* p, struct nadrp_a1prv_t* o);
 struct nadrp_a1prv_t* nadrp_a1prv_t_new();
 struct nadrp_a1prv_t* nadrp_a1prv_t_clone(const struct nadrp_a1prv_t* o);
 void nadrp_a1prv_t_delete(struct nadrp_a1prv_t* p);
@@ -180,6 +183,7 @@ void nadrp_a1prv_t_delete(struct nadrp_a1prv_t* p);
 void nadrp_a1pbl_t_ctor(struct nadrp_a1pbl_t* p);
 void nadrp_a1pbl_t_dtor(struct nadrp_a1pbl_t* p);
 void nadrp_a1pbl_t_asg(struct nadrp_a1pbl_t* p, const struct nadrp_a1pbl_t* o);
+void nadrp_a1pbl_t_move(struct nadrp_a1pbl_t* p, struct nadrp_a1pbl_t* o);
 struct nadrp_a1pbl_t* nadrp_a1pbl_t_new();
 struct nadrp_a1pbl_t* nadrp_a1pbl_t_clone(const struct nadrp_a1pbl_t* o);
 void nadrp_a1pbl_t_delete(struct nadrp_a1pbl_t* p);
@@ -187,6 +191,7 @@ void nadrp_a1pbl_t_delete(struct nadrp_a1pbl_t* p);
 void nadrp_b2pbl_t_ctor(struct nadrp_b2pbl_t* p);
 void nadrp_b2pbl_t_dtor(struct nadrp_b2pbl_t* p);
 void nadrp_b2pbl_t_asg(struct nadrp_b2pbl_t* p, const struct nadrp_b2pbl_t* o);
+void nadrp_b2pbl_t_move(struct nadrp_b2pbl_t* p, struct nadrp_b2pbl_t* o);
 struct nadrp_b2pbl_t* nadrp_b2pbl_t_new();
 struct nadrp_b2pbl_t* nadrp_b2pbl_t_clone(const struct nadrp_b2pbl_t* o);
 void nadrp_b2pbl_t_delete(struct nadrp_b2pbl_t* p);
@@ -194,6 +199,7 @@ void nadrp_b2pbl_t_delete(struct nadrp_b2pbl_t* p);
 void nadrp_a3prv_t_ctor(struct nadrp_a3prv_t* p);
 void nadrp_a3prv_t_dtor(struct nadrp_a3prv_t* p);
 void nadrp_a3prv_t_asg(struct nadrp_a3prv_t* p, const struct nadrp_a3prv_t* o);
+void nadrp_a3prv_t_move(struct nadrp_a3prv_t* p, struct nadrp_a3prv_t* o);
 struct nadrp_a3prv_t* nadrp_a3prv_t_new();
 struct nadrp_a3prv_t* nadrp_a3prv_t_clone(const struct nadrp_a3prv_t* o);
 void nadrp_a3prv_t_delete(struct nadrp_a3prv_t* p);
@@ -201,6 +207,7 @@ void nadrp_a3prv_t_delete(struct nadrp_a3prv_t* p);
 void nadrp_a3pbl_t_ctor(struct nadrp_a3pbl_t* p);
 void nadrp_a3pbl_t_dtor(struct nadrp_a3pbl_t* p);
 void nadrp_a3pbl_t_asg(struct nadrp_a3pbl_t* p, const struct nadrp_a3pbl_t* o);
+void nadrp_a3pbl_t_move(struct nadrp_a3pbl_t* p, struct nadrp_a3pbl_t* o);
 struct nadrp_a3pbl_t* nadrp_a3pbl_t_new();
 struct nadrp_a3pbl_t* nadrp_a3pbl_t_clone(const struct nadrp_a3pbl_t* o);
 void nadrp_a3pbl_t_delete(struct nadrp_a3pbl_t* p);
@@ -208,6 +215,7 @@ void nadrp_a3pbl_t_delete(struct nadrp_a3pbl_t* p);
 void nadrp_b4pbl_t_ctor(struct nadrp_b4pbl_t* p);
 void nadrp_b4pbl_t_dtor(struct nadrp_b4pbl_t* p);
 void nadrp_b4pbl_t_asg(struct nadrp_b4pbl_t* p, const struct nadrp_b4pbl_t* o);
+void nadrp_b4pbl_t_move(struct nadrp_b4pbl_t* p, struct nadrp_b4pbl_t* o);
 struct nadrp_b4pbl_t* nadrp_b4pbl_t_new();
 struct nadrp_b4pbl_t* nadrp_b4pbl_t_clone(const struct nadrp_b4pbl_t* o);
 void nadrp_b4pbl_t_delete(struct nadrp_b4pbl_t* p);

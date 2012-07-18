@@ -29,8 +29,8 @@
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 struct ftmgs_mtkey_t {
-	bigint_t n;
-	bigint_t x;
+	bigint_t n;		/* zero */
+	bigint_t x;		/* zero */
 };
 /*----------------------------------------------------------------------------*/
 struct ftmgs_mtkey_sharej_t {
@@ -46,14 +46,17 @@ struct ftmgs_mtkey_acc_t {
 void ftmgs_mtkey_t_ctor(struct ftmgs_mtkey_t* p);
 void ftmgs_mtkey_t_dtor(struct ftmgs_mtkey_t* p);
 void ftmgs_mtkey_t_asg(struct ftmgs_mtkey_t* p, const struct ftmgs_mtkey_t* o);
+void ftmgs_mtkey_t_move(struct ftmgs_mtkey_t* p, struct ftmgs_mtkey_t* o);
 /*----------------------------------------------------------------------------*/
 void ftmgs_mtkey_sharej_t_ctor(struct ftmgs_mtkey_sharej_t* p);
 void ftmgs_mtkey_sharej_t_dtor(struct ftmgs_mtkey_sharej_t* p);
 void ftmgs_mtkey_sharej_t_asg(struct ftmgs_mtkey_sharej_t* p, const struct ftmgs_mtkey_sharej_t* o);
+void ftmgs_mtkey_sharej_t_move(struct ftmgs_mtkey_sharej_t* p, struct ftmgs_mtkey_sharej_t* o);
 /*----------------------------------------------------------------------------*/
 void ftmgs_mtkey_acc_t_ctor(struct ftmgs_mtkey_acc_t* p);
 void ftmgs_mtkey_acc_t_dtor(struct ftmgs_mtkey_acc_t* p);
 void ftmgs_mtkey_acc_t_asg(struct ftmgs_mtkey_acc_t* p, const struct ftmgs_mtkey_acc_t* o);
+void ftmgs_mtkey_acc_t_move(struct ftmgs_mtkey_acc_t* p, struct ftmgs_mtkey_acc_t* o);
 /*----------------------------------------------------------------------------*/
 END_EXTERN_C
 #endif

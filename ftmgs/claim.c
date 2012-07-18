@@ -21,6 +21,7 @@
 #include "claim.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 #include "sok.h"
 #include "cdtor.h"
 /*----------------------------------------------------------------------------*/
@@ -181,7 +182,7 @@ bool_t ftmgs_vrfy_claim_dat(unsigned which_sha,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_claim_t_chk_members(struct ftmgs_claim_t* p, int code)/*auto*/
+static int ftmgs_claim_t_chk_members(const struct ftmgs_claim_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -195,13 +196,13 @@ static int ftmgs_claim_t_chk_members(struct ftmgs_claim_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_ftmgs_claim_t {
-		bigint_t c;
-		bigint_t sx;
+		bigint_t c;		/* zero */
+		bigint_t sx;	/* zero */
 	};
 	CHK_FIELD__(dummy_ftmgs_claim_t, ftmgs_claim_t, c);
 	CHK_FIELD__(dummy_ftmgs_claim_t, ftmgs_claim_t, sx);
 	CHK_SIZE__(dummy_ftmgs_claim_t, ftmgs_claim_t);
-	return (p!=NULL)&&(code == 156720532);
+	return (code == 476205863); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -211,7 +212,7 @@ static int ftmgs_claim_t_chk_members(struct ftmgs_claim_t* p, int code)/*auto*/
 void ftmgs_claim_t_ctor(struct ftmgs_claim_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_claim_t_chk_members(p,156720532));
+	assert(ftmgs_claim_t_chk_members(p,476205863));
 	bi_ctor(p->c);
 	bi_ctor(p->sx);
 }
@@ -219,18 +220,33 @@ void ftmgs_claim_t_ctor(struct ftmgs_claim_t* p)/*auto*/
 void ftmgs_claim_t_dtor(struct ftmgs_claim_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_claim_t_chk_members(p,156720532));
+	assert(ftmgs_claim_t_chk_members(p,476205863));
+	bi_clear_zero(p->sx);
 	bi_dtor(p->sx);
+	bi_clear_zero(p->c);
 	bi_dtor(p->c);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_claim_t_asg(struct ftmgs_claim_t* p, const struct ftmgs_claim_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(ftmgs_claim_t_chk_members(p,156720532));
+	assert(ftmgs_claim_t_chk_members(p,476205863));
 	if (p != o) {
 		bi_asg(p->c, o->c);
 		bi_asg(p->sx, o->sx);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_claim_t_move(struct ftmgs_claim_t* p, struct ftmgs_claim_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_claim_t_chk_members(p,476205863));
+	if (p != o) {
+		bi_asg_si(p->c, 0);
+		bi_swap(p->c, o->c);
+		bi_asg_si(p->sx, 0);
+		bi_swap(p->sx, o->sx);
 	}
 }
 /*----------------------------------------------------------------------------*/

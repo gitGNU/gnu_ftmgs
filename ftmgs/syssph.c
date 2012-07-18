@@ -21,6 +21,7 @@
 #include "syssph.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 /*----------------------------------------------------------------------------*/
 static bool_t nbits_in_range(unsigned nbx, unsigned nb)
 {
@@ -124,7 +125,7 @@ const sphere_t* get_sphere_gamma_mu(const syssph_t* ss)
 /*--------------------------------------------------------------------------- */
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int syssph_t_chk_members(struct syssph_t* p, int code)/*auto*/
+static int syssph_t_chk_members(const struct syssph_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -150,7 +151,7 @@ static int syssph_t_chk_members(struct syssph_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_syssph_t, syssph_t, gamma);
 	CHK_FIELD__(dummy_syssph_t, syssph_t, gamma_mu);
 	CHK_SIZE__(dummy_syssph_t, syssph_t);
-	return (p!=NULL)&&(code == 299838451);
+	return (code == 299838451); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -159,7 +160,7 @@ static int syssph_t_chk_members(struct syssph_t* p, int code)/*auto*/
 /*----------------------------------------------------------------------------*/
 void syssph_t_ctor(struct syssph_t* p)/*auto*/
 {
-	int i;
+	int i; (void)i;
 	assert(p != NULL);
 	assert(syssph_t_chk_members(p,299838451));
 	for (i=0; i < MAX_SYSPAR; ++i) {
@@ -173,7 +174,7 @@ void syssph_t_ctor(struct syssph_t* p)/*auto*/
 /*----------------------------------------------------------------------------*/
 void syssph_t_dtor(struct syssph_t* p)/*auto*/
 {
-	int i;
+	int i; (void)i;
 	assert(p != NULL);
 	assert(syssph_t_chk_members(p,299838451));
 	sphere_t_dtor(&p->gamma_mu);
@@ -183,6 +184,7 @@ void syssph_t_dtor(struct syssph_t* p)/*auto*/
 	for (i=0; i < MAX_SYSPAR; ++i) {
 		sphere_t_dtor(&p->lambda_sp[i]);
 	}
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void syssph_t_asg(struct syssph_t* p, const struct syssph_t* o)/*auto*/
@@ -190,7 +192,7 @@ void syssph_t_asg(struct syssph_t* p, const struct syssph_t* o)/*auto*/
 	assert(p != NULL && o != NULL);
 	assert(syssph_t_chk_members(p,299838451));
 	if (p != o) {
-		int i;
+		int i; (void)i;
 		for (i=0; i < MAX_SYSPAR; ++i) {
 			sphere_t_asg(&p->lambda_sp[i], &o->lambda_sp[i]);
 		}
@@ -198,6 +200,22 @@ void syssph_t_asg(struct syssph_t* p, const struct syssph_t* o)/*auto*/
 		sphere_t_asg(&p->mu, &o->mu);
 		sphere_t_asg(&p->gamma, &o->gamma);
 		sphere_t_asg(&p->gamma_mu, &o->gamma_mu);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void syssph_t_move(struct syssph_t* p, struct syssph_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(syssph_t_chk_members(p,299838451));
+	if (p != o) {
+		int i; (void)i;
+		for (i=0; i < MAX_SYSPAR; ++i) {
+			sphere_t_move(&p->lambda_sp[i], &o->lambda_sp[i]);
+		}
+		sphere_t_move(&p->lambda_dsa, &o->lambda_dsa);
+		sphere_t_move(&p->mu, &o->mu);
+		sphere_t_move(&p->gamma, &o->gamma);
+		sphere_t_move(&p->gamma_mu, &o->gamma_mu);
 	}
 }
 /*----------------------------------------------------------------------------*/

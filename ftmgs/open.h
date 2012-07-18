@@ -29,7 +29,7 @@
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 struct ftmgs_open_t {
-	bigint_t A;
+	bigint_t A;		/* zero */
 };
 /*----------------------------------------------------------------------------*/
 struct ftmgs_opensharej_t {
@@ -45,14 +45,17 @@ struct ftmgs_openacc_t {
 void ftmgs_open_t_ctor(struct ftmgs_open_t* p);
 void ftmgs_open_t_dtor(struct ftmgs_open_t* p);
 void ftmgs_open_t_asg(struct ftmgs_open_t* p, const struct ftmgs_open_t* o);
+void ftmgs_open_t_move(struct ftmgs_open_t* p, struct ftmgs_open_t* o);
 /*----------------------------------------------------------------------------*/
 void ftmgs_opensharej_t_ctor(struct ftmgs_opensharej_t* p);
 void ftmgs_opensharej_t_dtor(struct ftmgs_opensharej_t* p);
 void ftmgs_opensharej_t_asg(struct ftmgs_opensharej_t* p, const struct ftmgs_opensharej_t* o);
+void ftmgs_opensharej_t_move(struct ftmgs_opensharej_t* p, struct ftmgs_opensharej_t* o);
 /*----------------------------------------------------------------------------*/
 void ftmgs_openacc_t_ctor(struct ftmgs_openacc_t* p);
 void ftmgs_openacc_t_dtor(struct ftmgs_openacc_t* p);
 void ftmgs_openacc_t_asg(struct ftmgs_openacc_t* p, const struct ftmgs_openacc_t* o);
+void ftmgs_openacc_t_move(struct ftmgs_openacc_t* p, struct ftmgs_openacc_t* o);
 /*----------------------------------------------------------------------------*/
 END_EXTERN_C
 #endif

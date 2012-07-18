@@ -27,28 +27,28 @@
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_modfact_t {
-	bigint_t p;
-	bigint_t q;
+	bigint_t p;		/* zero */
+	bigint_t q;		/* zero */
 } elgamal_modfact_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_modord_t {
-	bigint_t p1;
-	bigint_t q1;
+	bigint_t p1;		/* zero */
+	bigint_t q1;		/* zero */
 } elgamal_modord_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_pbkey_t {
-	bigint_t n;
-	bigint_t g;
-	bigint_t y;			/* y = g^x (mod n) */
+	bigint_t n;		/* zero */
+	bigint_t g;		/* zero */
+	bigint_t y;		/* zero */
 } elgamal_pbkey_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_prkey_t {
-	bigint_t x;
+	bigint_t x;		/* zero */
 } elgamal_prkey_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_ciphertext_t {
-	bigint_t alpha;
-	bigint_t beta;
+	bigint_t alpha;		/* zero */
+	bigint_t beta;		/* zero */
 } elgamal_ciphertext_t;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -84,6 +84,7 @@ void elgamal_decrypt(bigint_t msg,
 void elgamal_modfact_t_ctor(struct elgamal_modfact_t* p);
 void elgamal_modfact_t_dtor(struct elgamal_modfact_t* p);
 void elgamal_modfact_t_asg(struct elgamal_modfact_t* d, const struct elgamal_modfact_t* o);
+void elgamal_modfact_t_move(struct elgamal_modfact_t* d, struct elgamal_modfact_t* o);
 struct elgamal_modfact_t* elgamal_modfact_t_new();
 struct elgamal_modfact_t* elgamal_modfact_t_clone(const struct elgamal_modfact_t* o);
 void elgamal_modfact_t_delete(struct elgamal_modfact_t* p);
@@ -91,6 +92,7 @@ void elgamal_modfact_t_delete(struct elgamal_modfact_t* p);
 void elgamal_modord_t_ctor(struct elgamal_modord_t* p);
 void elgamal_modord_t_dtor(struct elgamal_modord_t* p);
 void elgamal_modord_t_asg(struct elgamal_modord_t* d, const struct elgamal_modord_t* o);
+void elgamal_modord_t_move(struct elgamal_modord_t* d, struct elgamal_modord_t* o);
 struct elgamal_modord_t* elgamal_modord_t_new();
 struct elgamal_modord_t* elgamal_modord_t_clone(const struct elgamal_modord_t* o);
 void elgamal_modord_t_delete(struct elgamal_modord_t* p);
@@ -98,6 +100,7 @@ void elgamal_modord_t_delete(struct elgamal_modord_t* p);
 void elgamal_pbkey_t_ctor(struct elgamal_pbkey_t* p);
 void elgamal_pbkey_t_dtor(struct elgamal_pbkey_t* p);
 void elgamal_pbkey_t_asg(struct elgamal_pbkey_t* d, const struct elgamal_pbkey_t* o);
+void elgamal_pbkey_t_move(struct elgamal_pbkey_t* d, struct elgamal_pbkey_t* o);
 struct elgamal_pbkey_t* elgamal_pbkey_t_new();
 struct elgamal_pbkey_t* elgamal_pbkey_t_clone(const struct elgamal_pbkey_t* o);
 void elgamal_pbkey_t_delete(struct elgamal_pbkey_t* p);
@@ -105,6 +108,7 @@ void elgamal_pbkey_t_delete(struct elgamal_pbkey_t* p);
 void elgamal_prkey_t_ctor(struct elgamal_prkey_t* p);
 void elgamal_prkey_t_dtor(struct elgamal_prkey_t* p);
 void elgamal_prkey_t_asg(struct elgamal_prkey_t* d, const struct elgamal_prkey_t* o);
+void elgamal_prkey_t_move(struct elgamal_prkey_t* d, struct elgamal_prkey_t* o);
 struct elgamal_prkey_t* elgamal_prkey_t_new();
 struct elgamal_prkey_t* elgamal_prkey_t_clone(const struct elgamal_prkey_t* o);
 void elgamal_prkey_t_delete(struct elgamal_prkey_t* p);
@@ -112,6 +116,7 @@ void elgamal_prkey_t_delete(struct elgamal_prkey_t* p);
 void elgamal_ciphertext_t_ctor(struct elgamal_ciphertext_t* p);
 void elgamal_ciphertext_t_dtor(struct elgamal_ciphertext_t* p);
 void elgamal_ciphertext_t_asg(struct elgamal_ciphertext_t* d, const struct elgamal_ciphertext_t* o);
+void elgamal_ciphertext_t_move(struct elgamal_ciphertext_t* d, struct elgamal_ciphertext_t* o);
 struct elgamal_ciphertext_t* elgamal_ciphertext_t_new();
 struct elgamal_ciphertext_t* elgamal_ciphertext_t_clone(const struct elgamal_ciphertext_t* o);
 void elgamal_ciphertext_t_delete(struct elgamal_ciphertext_t* p);

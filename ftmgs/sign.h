@@ -35,17 +35,17 @@ BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 struct ftmgs_sign_t {
 	elgamal_thr_ciphertext_t T1_T2; /* T1: beta ; T2: alpha */
-	bigint_t T3;
-	bigint_t T4;
-	bigint_t T5;
-	bigint_t T6;
-	bigint_t T7;
-	bigint_t c;
-	bigint_t sx;
-	bigint_t sx1;
-	bigint_t se;
-	bigint_t sr;
-	bigint_t sh1;
+	bigint_t T3;		/* zero */
+	bigint_t T4;		/* zero */
+	bigint_t T5;		/* zero */
+	bigint_t T6;		/* zero */
+	bigint_t T7;		/* zero */
+	bigint_t c;			/* zero */
+	bigint_t sx;		/* zero */
+	bigint_t sx1;		/* zero */
+	bigint_t se;		/* zero */
+	bigint_t sr;		/* zero */
+	bigint_t sh1;		/* zero */
 };
 /*----------------------------------------------------------------------------*/
 void ftmgs_hash_sign(unsigned which_sha,
@@ -60,6 +60,7 @@ void ftmgs_hash_add_sign(USHAContext* sha_ctx, const ftmgs_sign_t* sg);
 void ftmgs_sign_t_ctor(struct ftmgs_sign_t* p);
 void ftmgs_sign_t_dtor(struct ftmgs_sign_t* p);
 void ftmgs_sign_t_asg(struct ftmgs_sign_t* p, const struct ftmgs_sign_t* o);
+void ftmgs_sign_t_move(struct ftmgs_sign_t* p, struct ftmgs_sign_t* o);
 /*----------------------------------------------------------------------------*/
 END_EXTERN_C
 #endif

@@ -28,13 +28,14 @@
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 struct ftmgs_claim_t {
-	bigint_t c;
-	bigint_t sx;
+	bigint_t c;		/* zero */
+	bigint_t sx;	/* zero */
 };
 /*----------------------------------------------------------------------------*/
 void ftmgs_claim_t_ctor(struct ftmgs_claim_t* p);
 void ftmgs_claim_t_dtor(struct ftmgs_claim_t* p);
 void ftmgs_claim_t_asg(struct ftmgs_claim_t* p, const struct ftmgs_claim_t* o);
+void ftmgs_claim_t_move(struct ftmgs_claim_t* p, struct ftmgs_claim_t* o);
 /*----------------------------------------------------------------------------*/
 END_EXTERN_C
 #endif

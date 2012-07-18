@@ -27,9 +27,9 @@
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 typedef struct sphere_t {
-	unsigned log2radius;
-	unsigned log2radius_ek;
-	bigint_t center;
+	unsigned log2radius;		/* zero */
+	unsigned log2radius_ek;		/* zero */
+	bigint_t center;			/* zero */
 } sphere_t;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -65,6 +65,7 @@ void bi_random_prime_sph(bigint_t x, const sphere_t* sph,
 void sphere_t_ctor(struct sphere_t* p);
 void sphere_t_dtor(struct sphere_t* p);
 void sphere_t_asg(struct sphere_t* p, const struct sphere_t* o);
+void sphere_t_move(struct sphere_t* p, struct sphere_t* o);
 struct sphere_t* sphere_t_new();
 struct sphere_t* sphere_t_clone(const struct sphere_t* o);
 void sphere_t_delete(struct sphere_t* p);

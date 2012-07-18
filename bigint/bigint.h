@@ -204,6 +204,21 @@ typedef mpz_t bigint_t;
 #define bigint_t_ctor(bigint_ptr)	(bi_ctor(*(bigint_ptr)))
 #define bigint_t_dtor(bigint_ptr)	(bi_dtor(*(bigint_ptr)))
 /*-----------------------------------------------------------------*/
+/*
+ * For security reasons, sometimes may be necessary to clear to zero
+ * the memory hold by a secret number before being discarded
+ *
+ * This is a low-level implementation that depends on the GMP
+ * implementation (not on the public interface)
+ */
+#define bi_clear_zero(bint_var)											\
+	do{																	\
+		if ((bint_var)->_mp_d != NULL) {								\
+			memset((bint_var)->_mp_d, 0,								\
+				   (sizeof(*(bint_var)->_mp_d) * (size_t)(bint_var)->_mp_alloc)); \
+		}																\
+	}while(0)
+/*-----------------------------------------------------------------*/
 /* 
  * bigint_t assignments
  */

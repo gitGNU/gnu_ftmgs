@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #include "syspar.h"
 #include "cdtor.h"
 
@@ -369,10 +370,10 @@ void bi_random_prime_sph(bigint_t x, const sphere_t* sph,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int sphere_t_chk_members(struct sphere_t* p, int code)/*auto*/
+static int sphere_t_chk_members(const struct sphere_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -383,15 +384,15 @@ static int sphere_t_chk_members(struct sphere_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_sphere_t {
-		unsigned log2radius;
-		unsigned log2radius_ek;
-		bigint_t center;
+		unsigned log2radius;		/* zero */
+		unsigned log2radius_ek;		/* zero */
+		bigint_t center;			/* zero */
 	};
 	CHK_FIELD__(dummy_sphere_t, sphere_t, log2radius);
 	CHK_FIELD__(dummy_sphere_t, sphere_t, log2radius_ek);
 	CHK_FIELD__(dummy_sphere_t, sphere_t, center);
 	CHK_SIZE__(dummy_sphere_t, sphere_t);
-	return (p!=NULL)&&(code == 490945622);
+	return (code == 398103045); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -419,7 +420,7 @@ void sphere_t_swap(struct sphere_t* p1, struct sphere_t* p2)
 void sphere_t_ctor(struct sphere_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(sphere_t_chk_members(p,490945622));
+	assert(sphere_t_chk_members(p,398103045));
 	p->log2radius = 0;
 	p->log2radius_ek = 0;
 	bi_ctor(p->center);
@@ -428,18 +429,34 @@ void sphere_t_ctor(struct sphere_t* p)/*auto*/
 void sphere_t_dtor(struct sphere_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(sphere_t_chk_members(p,490945622));
+	assert(sphere_t_chk_members(p,398103045));
+	bi_clear_zero(p->center);
 	bi_dtor(p->center);
+	p->log2radius_ek = 0;
+	p->log2radius = 0;
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void sphere_t_asg(struct sphere_t* p, const struct sphere_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(sphere_t_chk_members(p,490945622));
+	assert(sphere_t_chk_members(p,398103045));
 	if (p != o) {
 		p->log2radius = o->log2radius;
 		p->log2radius_ek = o->log2radius_ek;
 		bi_asg(p->center, o->center);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void sphere_t_move(struct sphere_t* p, struct sphere_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(sphere_t_chk_members(p,398103045));
+	if (p != o) {
+		p->log2radius = o->log2radius;
+		p->log2radius_ek = o->log2radius_ek;
+		bi_asg_si(p->center, 0);
+		bi_swap(p->center, o->center);
 	}
 }
 /*----------------------------------------------------------------------------*/

@@ -24,6 +24,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
 #include "iexport.h"
 #include "generator.h"
 /*----------------------------------------------------------------------------*/
@@ -188,10 +189,10 @@ bool_t schnorr_vrfy_dat(unsigned which_sha,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int schnorr_pbkey_t_chk_members(struct schnorr_pbkey_t* p, int code)/*auto*/
+static int schnorr_pbkey_t_chk_members(const struct schnorr_pbkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -203,16 +204,16 @@ static int schnorr_pbkey_t_chk_members(struct schnorr_pbkey_t* p, int code)/*aut
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_schnorr_pbkey_t {
 		syspar_t sp;
-		bigint_t n;
-		bigint_t g;
-		bigint_t y;			/* y = g^x (mod n) */
+		bigint_t n;		/* zero */
+		bigint_t g;		/* zero */
+		bigint_t y;		/* zero */
 	};
 	CHK_FIELD__(dummy_schnorr_pbkey_t, schnorr_pbkey_t, sp);
 	CHK_FIELD__(dummy_schnorr_pbkey_t, schnorr_pbkey_t, n);
 	CHK_FIELD__(dummy_schnorr_pbkey_t, schnorr_pbkey_t, g);
 	CHK_FIELD__(dummy_schnorr_pbkey_t, schnorr_pbkey_t, y);
 	CHK_SIZE__(dummy_schnorr_pbkey_t, schnorr_pbkey_t);
-	return (p!=NULL)&&(code == 389385271);
+	return (code == 428264136); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -222,7 +223,7 @@ static int schnorr_pbkey_t_chk_members(struct schnorr_pbkey_t* p, int code)/*aut
 void schnorr_pbkey_t_ctor(struct schnorr_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(schnorr_pbkey_t_chk_members(p,389385271));
+	assert(schnorr_pbkey_t_chk_members(p,428264136));
 	syspar_t_ctor(&p->sp);
 	bi_ctor(p->n);
 	bi_ctor(p->g);
@@ -232,22 +233,41 @@ void schnorr_pbkey_t_ctor(struct schnorr_pbkey_t* p)/*auto*/
 void schnorr_pbkey_t_dtor(struct schnorr_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(schnorr_pbkey_t_chk_members(p,389385271));
+	assert(schnorr_pbkey_t_chk_members(p,428264136));
+	bi_clear_zero(p->y);
 	bi_dtor(p->y);
+	bi_clear_zero(p->g);
 	bi_dtor(p->g);
+	bi_clear_zero(p->n);
 	bi_dtor(p->n);
 	syspar_t_dtor(&p->sp);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void schnorr_pbkey_t_asg(struct schnorr_pbkey_t* p, const struct schnorr_pbkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(schnorr_pbkey_t_chk_members(p,389385271));
+	assert(schnorr_pbkey_t_chk_members(p,428264136));
 	if (p != o) {
 		syspar_t_asg(&p->sp, &o->sp);
 		bi_asg(p->n, o->n);
 		bi_asg(p->g, o->g);
 		bi_asg(p->y, o->y);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void schnorr_pbkey_t_move(struct schnorr_pbkey_t* p, struct schnorr_pbkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(schnorr_pbkey_t_chk_members(p,428264136));
+	if (p != o) {
+		syspar_t_move(&p->sp, &o->sp);
+		bi_asg_si(p->n, 0);
+		bi_swap(p->n, o->n);
+		bi_asg_si(p->g, 0);
+		bi_swap(p->g, o->g);
+		bi_asg_si(p->y, 0);
+		bi_swap(p->y, o->y);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -282,10 +302,10 @@ void schnorr_pbkey_t_delete(struct schnorr_pbkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int schnorr_prkey_t_chk_members(struct schnorr_prkey_t* p, int code)/*auto*/
+static int schnorr_prkey_t_chk_members(const struct schnorr_prkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -296,11 +316,11 @@ static int schnorr_prkey_t_chk_members(struct schnorr_prkey_t* p, int code)/*aut
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_schnorr_prkey_t {
-		bigint_t x;
+		bigint_t x;		/* zero */
 	};
 	CHK_FIELD__(dummy_schnorr_prkey_t, schnorr_prkey_t, x);
 	CHK_SIZE__(dummy_schnorr_prkey_t, schnorr_prkey_t);
-	return (p!=NULL)&&(code == 411837210);
+	return (code == 451805986); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -310,23 +330,35 @@ static int schnorr_prkey_t_chk_members(struct schnorr_prkey_t* p, int code)/*aut
 void schnorr_prkey_t_ctor(struct schnorr_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(schnorr_prkey_t_chk_members(p,411837210));
+	assert(schnorr_prkey_t_chk_members(p,451805986));
 	bi_ctor(p->x);
 }
 /*----------------------------------------------------------------------------*/
 void schnorr_prkey_t_dtor(struct schnorr_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(schnorr_prkey_t_chk_members(p,411837210));
+	assert(schnorr_prkey_t_chk_members(p,451805986));
+	bi_clear_zero(p->x);
 	bi_dtor(p->x);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void schnorr_prkey_t_asg(struct schnorr_prkey_t* p, const struct schnorr_prkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(schnorr_prkey_t_chk_members(p,411837210));
+	assert(schnorr_prkey_t_chk_members(p,451805986));
 	if (p != o) {
 		bi_asg(p->x, o->x);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void schnorr_prkey_t_move(struct schnorr_prkey_t* p, struct schnorr_prkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(schnorr_prkey_t_chk_members(p,451805986));
+	if (p != o) {
+		bi_asg_si(p->x, 0);
+		bi_swap(p->x, o->x);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -361,10 +393,10 @@ void schnorr_prkey_t_delete(struct schnorr_prkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int schnorr_sign_t_chk_members(struct schnorr_sign_t* p, int code)/*auto*/
+static int schnorr_sign_t_chk_members(const struct schnorr_sign_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -375,13 +407,13 @@ static int schnorr_sign_t_chk_members(struct schnorr_sign_t* p, int code)/*auto*
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_schnorr_sign_t {
-		bigint_t c;
-		bigint_t sx;
+		bigint_t c;		/* zero */
+		bigint_t sx;	/* zero */
 	};
 	CHK_FIELD__(dummy_schnorr_sign_t, schnorr_sign_t, c);
 	CHK_FIELD__(dummy_schnorr_sign_t, schnorr_sign_t, sx);
 	CHK_SIZE__(dummy_schnorr_sign_t, schnorr_sign_t);
-	return (p!=NULL)&&(code == 156720532);
+	return (code == 476205863); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -391,7 +423,7 @@ static int schnorr_sign_t_chk_members(struct schnorr_sign_t* p, int code)/*auto*
 void schnorr_sign_t_ctor(struct schnorr_sign_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(schnorr_sign_t_chk_members(p,156720532));
+	assert(schnorr_sign_t_chk_members(p,476205863));
 	bi_ctor(p->c);
 	bi_ctor(p->sx);
 }
@@ -399,18 +431,33 @@ void schnorr_sign_t_ctor(struct schnorr_sign_t* p)/*auto*/
 void schnorr_sign_t_dtor(struct schnorr_sign_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(schnorr_sign_t_chk_members(p,156720532));
+	assert(schnorr_sign_t_chk_members(p,476205863));
+	bi_clear_zero(p->sx);
 	bi_dtor(p->sx);
+	bi_clear_zero(p->c);
 	bi_dtor(p->c);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void schnorr_sign_t_asg(struct schnorr_sign_t* p, const struct schnorr_sign_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(schnorr_sign_t_chk_members(p,156720532));
+	assert(schnorr_sign_t_chk_members(p,476205863));
 	if (p != o) {
 		bi_asg(p->c, o->c);
 		bi_asg(p->sx, o->sx);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void schnorr_sign_t_move(struct schnorr_sign_t* p, struct schnorr_sign_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(schnorr_sign_t_chk_members(p,476205863));
+	if (p != o) {
+		bi_asg_si(p->c, 0);
+		bi_swap(p->c, o->c);
+		bi_asg_si(p->sx, 0);
+		bi_swap(p->sx, o->sx);
 	}
 }
 /*----------------------------------------------------------------------------*/

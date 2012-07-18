@@ -28,45 +28,47 @@
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_thr_modfact_t {
-	bigint_t p;
-	bigint_t q;
+	bigint_t p;		/* zero */
+	bigint_t q;		/* zero */
 } elgamal_thr_modfact_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_thr_modord_t {
-	bigint_t p1;
-	bigint_t q1;
+	bigint_t p1;		/* zero */
+	bigint_t q1;		/* zero */
 } elgamal_thr_modord_t;
 /*----------------------------------------------------------------------------*/
+/* y = PROD_j(yj) */
 typedef struct elgamal_thr_pbkey_t {
 	syspar_t sp;
-	bigint_t n;
-	bigint_t g;
-	bigint_t y;			/* y = PROD_j(yj) */
-	unsigned nkeys;
+	bigint_t n;		/* zero */
+	bigint_t g;		/* zero */
+	bigint_t y;		/* zero */
+	unsigned nkeys;	/* zero */
 } elgamal_thr_pbkey_t;
 /*----------------------------------------------------------------------------*/
+/* yj = g^xj (mod n) */
 typedef struct elgamal_thr_pbkey_share_t {
-	bigint_t yj;		/* yj = g^xj (mod n) */
+	bigint_t yj;		/* zero */
 } elgamal_thr_pbkey_share_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_thr_prkey_t {
-	bigint_t xj;
+	bigint_t xj;		/* zero */
 } elgamal_thr_prkey_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_thr_ciphertext_t {
-	bigint_t alpha;
-	bigint_t beta;
+	bigint_t alpha;		/* zero */
+	bigint_t beta;		/* zero */
 } elgamal_thr_ciphertext_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_thr_decrypt_share_t {
-	bigint_t alpha_xj;
-	bigint_t c;
-	bigint_t sx;
+	bigint_t alpha_xj;	/* zero */
+	bigint_t c;			/* zero */
+	bigint_t sx;		/* zero */
 } elgamal_thr_decrypt_share_t;
 /*----------------------------------------------------------------------------*/
 typedef struct elgamal_thr_dshare_acc_t {
-	unsigned nshares;
-	bigint_t a;
+	unsigned nshares;	/* zero */
+	bigint_t a;			/* zero */
 } elgamal_thr_dshare_acc_t;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -132,6 +134,7 @@ bool_t elgamal_thr_decrypt(bigint_t msg,
 void elgamal_thr_modfact_t_ctor(struct elgamal_thr_modfact_t* p);
 void elgamal_thr_modfact_t_dtor(struct elgamal_thr_modfact_t* p);
 void elgamal_thr_modfact_t_asg(struct elgamal_thr_modfact_t* p, const struct elgamal_thr_modfact_t* o);
+void elgamal_thr_modfact_t_move(struct elgamal_thr_modfact_t* p, struct elgamal_thr_modfact_t* o);
 struct elgamal_thr_modfact_t* elgamal_thr_modfact_t_new();
 struct elgamal_thr_modfact_t* elgamal_thr_modfact_t_clone(const struct elgamal_thr_modfact_t* o);
 void elgamal_thr_modfact_t_delete(struct elgamal_thr_modfact_t* p);
@@ -139,6 +142,7 @@ void elgamal_thr_modfact_t_delete(struct elgamal_thr_modfact_t* p);
 void elgamal_thr_modord_t_ctor(struct elgamal_thr_modord_t* p);
 void elgamal_thr_modord_t_dtor(struct elgamal_thr_modord_t* p);
 void elgamal_thr_modord_t_asg(struct elgamal_thr_modord_t* p, const struct elgamal_thr_modord_t* o);
+void elgamal_thr_modord_t_move(struct elgamal_thr_modord_t* p, struct elgamal_thr_modord_t* o);
 struct elgamal_thr_modord_t* elgamal_thr_modord_t_new();
 struct elgamal_thr_modord_t* elgamal_thr_modord_t_clone(const struct elgamal_thr_modord_t* o);
 void elgamal_thr_modord_t_delete(struct elgamal_thr_modord_t* p);
@@ -146,6 +150,7 @@ void elgamal_thr_modord_t_delete(struct elgamal_thr_modord_t* p);
 void elgamal_thr_pbkey_t_ctor(struct elgamal_thr_pbkey_t* p);
 void elgamal_thr_pbkey_t_dtor(struct elgamal_thr_pbkey_t* p);
 void elgamal_thr_pbkey_t_asg(struct elgamal_thr_pbkey_t* p, const struct elgamal_thr_pbkey_t* o);
+void elgamal_thr_pbkey_t_move(struct elgamal_thr_pbkey_t* p, struct elgamal_thr_pbkey_t* o);
 struct elgamal_thr_pbkey_t* elgamal_thr_pbkey_t_new();
 struct elgamal_thr_pbkey_t* elgamal_thr_pbkey_t_clone(const struct elgamal_thr_pbkey_t* o);
 void elgamal_thr_pbkey_t_delete(struct elgamal_thr_pbkey_t* p);
@@ -153,6 +158,7 @@ void elgamal_thr_pbkey_t_delete(struct elgamal_thr_pbkey_t* p);
 void elgamal_thr_pbkey_share_t_ctor(struct elgamal_thr_pbkey_share_t* p);
 void elgamal_thr_pbkey_share_t_dtor(struct elgamal_thr_pbkey_share_t* p);
 void elgamal_thr_pbkey_share_t_asg(struct elgamal_thr_pbkey_share_t* p, const struct elgamal_thr_pbkey_share_t* o);
+void elgamal_thr_pbkey_share_t_move(struct elgamal_thr_pbkey_share_t* p, struct elgamal_thr_pbkey_share_t* o);
 struct elgamal_thr_pbkey_share_t* elgamal_thr_pbkey_share_t_new();
 struct elgamal_thr_pbkey_share_t* elgamal_thr_pbkey_share_t_clone(const struct elgamal_thr_pbkey_share_t* o);
 void elgamal_thr_pbkey_share_t_delete(struct elgamal_thr_pbkey_share_t* p);
@@ -160,6 +166,7 @@ void elgamal_thr_pbkey_share_t_delete(struct elgamal_thr_pbkey_share_t* p);
 void elgamal_thr_prkey_t_ctor(struct elgamal_thr_prkey_t* p);
 void elgamal_thr_prkey_t_dtor(struct elgamal_thr_prkey_t* p);
 void elgamal_thr_prkey_t_asg(struct elgamal_thr_prkey_t* p, const struct elgamal_thr_prkey_t* o);
+void elgamal_thr_prkey_t_move(struct elgamal_thr_prkey_t* p, struct elgamal_thr_prkey_t* o);
 struct elgamal_thr_prkey_t* elgamal_thr_prkey_t_new();
 struct elgamal_thr_prkey_t* elgamal_thr_prkey_t_clone(const struct elgamal_thr_prkey_t* o);
 void elgamal_thr_prkey_t_delete(struct elgamal_thr_prkey_t* p);
@@ -167,6 +174,7 @@ void elgamal_thr_prkey_t_delete(struct elgamal_thr_prkey_t* p);
 void elgamal_thr_ciphertext_t_ctor(struct elgamal_thr_ciphertext_t* p);
 void elgamal_thr_ciphertext_t_dtor(struct elgamal_thr_ciphertext_t* p);
 void elgamal_thr_ciphertext_t_asg(struct elgamal_thr_ciphertext_t* p, const struct elgamal_thr_ciphertext_t* o);
+void elgamal_thr_ciphertext_t_move(struct elgamal_thr_ciphertext_t* p, struct elgamal_thr_ciphertext_t* o);
 struct elgamal_thr_ciphertext_t* elgamal_thr_ciphertext_t_new();
 struct elgamal_thr_ciphertext_t* elgamal_thr_ciphertext_t_clone(const struct elgamal_thr_ciphertext_t* o);
 void elgamal_thr_ciphertext_t_delete(struct elgamal_thr_ciphertext_t* p);
@@ -174,6 +182,7 @@ void elgamal_thr_ciphertext_t_delete(struct elgamal_thr_ciphertext_t* p);
 void elgamal_thr_decrypt_share_t_ctor(struct elgamal_thr_decrypt_share_t* p);
 void elgamal_thr_decrypt_share_t_dtor(struct elgamal_thr_decrypt_share_t* p);
 void elgamal_thr_decrypt_share_t_asg(struct elgamal_thr_decrypt_share_t* p, const struct elgamal_thr_decrypt_share_t* o);
+void elgamal_thr_decrypt_share_t_move(struct elgamal_thr_decrypt_share_t* p, struct elgamal_thr_decrypt_share_t* o);
 struct elgamal_thr_decrypt_share_t* elgamal_thr_decrypt_share_t_new();
 struct elgamal_thr_decrypt_share_t* elgamal_thr_decrypt_share_t_clone(const struct elgamal_thr_decrypt_share_t* o);
 void elgamal_thr_decrypt_share_t_delete(struct elgamal_thr_decrypt_share_t* p);
@@ -181,6 +190,7 @@ void elgamal_thr_decrypt_share_t_delete(struct elgamal_thr_decrypt_share_t* p);
 void elgamal_thr_dshare_acc_t_ctor(struct elgamal_thr_dshare_acc_t* p);
 void elgamal_thr_dshare_acc_t_dtor(struct elgamal_thr_dshare_acc_t* p);
 void elgamal_thr_dshare_acc_t_asg(struct elgamal_thr_dshare_acc_t* p, const struct elgamal_thr_dshare_acc_t* o);
+void elgamal_thr_dshare_acc_t_move(struct elgamal_thr_dshare_acc_t* p, struct elgamal_thr_dshare_acc_t* o);
 struct elgamal_thr_dshare_acc_t* elgamal_thr_dshare_acc_t_new();
 struct elgamal_thr_dshare_acc_t* elgamal_thr_dshare_acc_t_clone(const struct elgamal_thr_dshare_acc_t* o);
 void elgamal_thr_dshare_acc_t_delete(struct elgamal_thr_dshare_acc_t* p);

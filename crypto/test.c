@@ -473,22 +473,21 @@ void check_nadrp_x(rnd_ctx_t* rnd_ctx)
 int main()
 {
 	BEG_BIGINT_CHK();
-	BEG_VAR_1(rndctx_t, rnd_ctx);
-	random_seed(&rnd_ctx, PSEUDO_ENTROPY);
-    /*random_seed(&rnd_ctx, NO_ENTROPY);*/
+	struct rndctx_t* rnd_ctx = rndctx_t_new();
+	random_seed(rnd_ctx, PSEUDO_ENTROPY);
+    /*random_seed(rnd_ctx, NO_ENTROPY);*/
 
-	check_spheres(&rnd_ctx);
-	check_schnorr(&rnd_ctx);
-	check_elgamal(&rnd_ctx);
-	check_elgamal_thr(&rnd_ctx);
-	check_paillier(&rnd_ctx);
-	check_paillier_thr(&rnd_ctx);
-	check_nadrp(&rnd_ctx);
+	check_spheres(rnd_ctx);
+	check_schnorr(rnd_ctx);
+	check_elgamal(rnd_ctx);
+	check_elgamal_thr(rnd_ctx);
+	check_paillier(rnd_ctx);
+	check_paillier_thr(rnd_ctx);
+	check_nadrp(rnd_ctx);
 /* 
- * 	check_nadrp_x(&rnd_ctx);
+ * 	check_nadrp_x(rnd_ctx);
  */
-
-	END_VAR_1(rndctx_t, rnd_ctx);
+	rndctx_t_delete(rnd_ctx);
 	END_BIGINT_CHK();
 	return 0;
 }

@@ -28,13 +28,14 @@
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/
 struct ftmgs_link_t {
-	bigint_t c;
-	bigint_t sx;
+	bigint_t c;		/* zero */
+	bigint_t sx;	/* zero */
 };
 /*----------------------------------------------------------------------------*/
 void ftmgs_link_t_ctor(struct ftmgs_link_t* p);
 void ftmgs_link_t_dtor(struct ftmgs_link_t* p);
 void ftmgs_link_t_asg(struct ftmgs_link_t* p, const struct ftmgs_link_t* o);
+void ftmgs_link_t_move(struct ftmgs_link_t* p, struct ftmgs_link_t* o);
 /*----------------------------------------------------------------------------*/
 END_EXTERN_C
 #endif

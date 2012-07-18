@@ -53,8 +53,8 @@ enum {
 	RANDOM_CTX_SEEDLEN = 55
 };
 struct rndctx_t {
-	char v[RANDOM_CTX_SEEDLEN];
-	char c[RANDOM_CTX_SEEDLEN];
+	char v[RANDOM_CTX_SEEDLEN];		/* zero */
+	char c[RANDOM_CTX_SEEDLEN];		/* zero */
 	unsigned counter;
 	MUTEX_VAR(mutex)
 };
@@ -356,13 +356,15 @@ unsigned random_uint(unsigned max, rnd_ctx_t* rnd_ctx)
 #define MUTEX_VAR_dtor(mutex_var__)	DESTROY_MUTEX(mutex_var__)
 #define MUTEX_VAR_ctor(mutex_var__)	CREATE_MUTEX(mutex_var__)
 #define MUTEX_VAR_asg(mutex_var_d__, mutex_var_o__)	do{DESTROY_MUTEX(mutex_var_d__);CREATE_MUTEX(mutex_var_d__);}while(0)
+#define MUTEX_VAR_move(mutex_var_d__, mutex_var_o__) do{DESTROY_MUTEX(mutex_var_d__);CREATE_MUTEX(mutex_var_d__);}while(0)
 /*----------------------------------------------------------------------------*/
 void rndctx_t_ctor(struct rndctx_t* p);
 void rndctx_t_dtor(struct rndctx_t* p);
 void rndctx_t_asg(struct rndctx_t* d, const struct rndctx_t* o);
+void rndctx_t_move(struct rndctx_t* d, struct rndctx_t* o);
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int rndctx_t_chk_members(struct rndctx_t* p, int code)/*auto*/
+static int rndctx_t_chk_members(const struct rndctx_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -376,8 +378,8 @@ static int rndctx_t_chk_members(struct rndctx_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_rndctx_t {
-		char v[RANDOM_CTX_SEEDLEN];
-		char c[RANDOM_CTX_SEEDLEN];
+		char v[RANDOM_CTX_SEEDLEN];		/* zero */
+		char c[RANDOM_CTX_SEEDLEN];		/* zero */
 		unsigned counter;
 		MUTEX_VAR(mutex)
 	};
@@ -386,19 +388,59 @@ static int rndctx_t_chk_members(struct rndctx_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, counter);
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, mutex);
 	CHK_SIZE__(dummy_rndctx_t, rndctx_t);
-	return (p!=NULL)&&(code == 85127968);
+	return (code == 435758464); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
 }
 #endif
 /*----------------------------------------------------------------------------*/
+void rndctx_t_ctor(struct rndctx_t* p)/*auto*/
+{
+	int i; (void)i;
+	assert(p != NULL);
+	assert(rndctx_t_chk_members(p,435758464));
+	memset(p->v, 0, sizeof(p->v));
+	memset(p->c, 0, sizeof(p->c));
+	p->counter = 0;
+	MUTEX_VAR_ctor(&p->mutex);
+}
+/*----------------------------------------------------------------------------*/
 void rndctx_t_dtor(struct rndctx_t* p)/*auto*/
 {
+	int i; (void)i;
 	assert(p != NULL);
-	assert(rndctx_t_chk_members(p,85127968));
+	assert(rndctx_t_chk_members(p,435758464));
 	MUTEX_VAR_dtor(&p->mutex);
+	memset(p->c, 0, sizeof(p->c));
+	memset(p->v, 0, sizeof(p->v));
 	(void)p;
+}
+/*----------------------------------------------------------------------------*/
+void rndctx_t_asg(struct rndctx_t* p, const struct rndctx_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(rndctx_t_chk_members(p,435758464));
+	if (p != o) {
+		int i; (void)i;
+		memcpy(p->v, o->v, sizeof(p->v));
+		memcpy(p->c, o->c, sizeof(p->c));
+		p->counter = o->counter;
+		MUTEX_VAR_asg(&p->mutex, &o->mutex);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void rndctx_t_move(struct rndctx_t* p, struct rndctx_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(rndctx_t_chk_members(p,435758464));
+	if (p != o) {
+		int i; (void)i;
+		memcpy(p->v, o->v, sizeof(p->v));
+		memcpy(p->c, o->c, sizeof(p->c));
+		p->counter = o->counter;
+		MUTEX_VAR_move(&p->mutex, &o->mutex);
+	}
 }
 /*----------------------------------------------------------------------------*/
 struct rndctx_t* rndctx_t_new()/*auto*/
@@ -428,28 +470,6 @@ void rndctx_t_delete(struct rndctx_t* p)/*auto*/
 	if (p != NULL) {
 		rndctx_t_dtor(p);
 		free(p);
-	}
-}
-/*----------------------------------------------------------------------------*/
-void rndctx_t_ctor(struct rndctx_t* p)/*modified*/
-{
-	assert(p != NULL);
-	assert(rndctx_t_chk_members(p,85127968));
-	p->v[0] = '\0';
-	p->c[0] = '\0';
-	p->counter = 0;
-	MUTEX_VAR_ctor(&p->mutex);
-}
-/*----------------------------------------------------------------------------*/
-void rndctx_t_asg(struct rndctx_t* p, const struct rndctx_t* o)/*modified*/
-{
-	assert(p != NULL && o != NULL);
-	assert(rndctx_t_chk_members(p,85127968));
-	if (p != o) {
-		memcpy(p->v, o->v, sizeof(p->v));
-		memcpy(p->c, o->c, sizeof(p->c));
-		p->counter = o->counter;
-		MUTEX_VAR_asg(&p->mutex, &o->mutex);
 	}
 }
 /*----------------------------------------------------------------------------*/

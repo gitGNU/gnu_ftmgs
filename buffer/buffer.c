@@ -72,8 +72,9 @@ void buffer_copy(struct buffer_t* buff, void* dat, unsigned datlen)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int buffer_t_chk_members(struct buffer_t* p, int code)/*auto*/
+static int buffer_t_chk_members(const struct buffer_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -88,12 +89,12 @@ static int buffer_t_chk_members(struct buffer_t* p, int code)/*auto*/
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_buffer_t {
 		unsigned size;
-		char* data_;	/* size */
+		char* data_;	/* size zero */
 	};
 	CHK_FIELD__(dummy_buffer_t, buffer_t, size);
 	CHK_FIELD__(dummy_buffer_t, buffer_t, data_);
 	CHK_SIZE__(dummy_buffer_t, buffer_t);
-	return (p!=NULL)&&(code == 264154485);
+	return (code == 333122365); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -103,7 +104,7 @@ static int buffer_t_chk_members(struct buffer_t* p, int code)/*auto*/
 void buffer_t_ctor(struct buffer_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(buffer_t_chk_members(p,264154485));
+	assert(buffer_t_chk_members(p,333122365));
 	p->size = 0;
 	p->data_ = NULL;
 }
@@ -111,7 +112,10 @@ void buffer_t_ctor(struct buffer_t* p)/*auto*/
 void buffer_t_dtor(struct buffer_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(buffer_t_chk_members(p,264154485));
+	assert(buffer_t_chk_members(p,333122365));
+	if (p->data_) {
+		memset(p->data_, 0, (size_t)p->size*sizeof(char));
+	}
 	free(p->data_);
 	(void)p;
 }
@@ -119,9 +123,12 @@ void buffer_t_dtor(struct buffer_t* p)/*auto*/
 void buffer_t_asg(struct buffer_t* p, const struct buffer_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(buffer_t_chk_members(p,264154485));
+	assert(buffer_t_chk_members(p,333122365));
 	if (p != o) {
 		p->size = o->size;
+		if (p->data_) {
+			memset(p->data_, 0, (size_t)p->size*sizeof(char));
+		}
 		free(p->data_);
 		if (o->data_ == NULL) {
 			p->data_ = NULL;
@@ -134,12 +141,27 @@ void buffer_t_asg(struct buffer_t* p, const struct buffer_t* o)/*auto*/
 	}
 }
 /*----------------------------------------------------------------------------*/
+void buffer_t_move(struct buffer_t* p, struct buffer_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(buffer_t_chk_members(p,333122365));
+	if (p != o) {
+		p->size = o->size;
+		if (p->data_) {
+			memset(p->data_, 0, (size_t)p->size*sizeof(char));
+		}
+		free(p->data_);
+		p->data_ = o->data_;
+		o->data_ = NULL;
+	}
+}
+/*----------------------------------------------------------------------------*/
 void buffer_t_swap(struct buffer_t* p, struct buffer_t* o)
 {
 	unsigned aux;
 	char* auxp;
 	assert(p != NULL && o != NULL);
-	assert(buffer_t_chk_members(p,264154485));
+	assert(buffer_t_chk_members(p,333122365));
 	if (p != o) {
 		aux = p->size;
 		p->size = o->size;

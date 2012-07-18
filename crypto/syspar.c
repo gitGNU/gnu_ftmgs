@@ -161,7 +161,7 @@ unsigned radius(const syspar_t* sp, unsigned nbits_ek)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int syspar_t_chk_members(struct syspar_t* p, int code)/*auto*/
+static int syspar_t_chk_members(const struct syspar_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
@@ -197,6 +197,7 @@ void syspar_t_ctor(struct syspar_t* p)/*mod*/
 }
 /*void syspar_t_dtor(struct syspar_t* p)/ *noauto*/
 /*void syspar_t_asg(struct syspar_t* p, const struct syspar_t* o)/ *noauto*/
+/*void syspar_t_move(struct syspar_t* p, struct syspar_t* o)/ *noauto*/
 /*-----------------------------------------------------------------*/
 void syspar_t_swap(struct syspar_t* p1, struct syspar_t* p2)
 {

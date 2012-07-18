@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #include "cdtor.h"
 /*----------------------------------------------------------------------------*/
 bool_t ftmgs_reveal_dshare_j(ftmgs_mtkey_sharej_t* mtk_shj,
@@ -149,7 +150,7 @@ bool_t ftmgs_reveal_prtcl(ftmgs_mtkey_t* mtk,
 	
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_mtkey_t_chk_members(struct ftmgs_mtkey_t* p, int code)/*auto*/
+static int ftmgs_mtkey_t_chk_members(const struct ftmgs_mtkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -163,13 +164,13 @@ static int ftmgs_mtkey_t_chk_members(struct ftmgs_mtkey_t* p, int code)/*auto*/
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_ftmgs_mtkey_t {
-		bigint_t n;
-		bigint_t x;
+		bigint_t n;		/* zero */
+		bigint_t x;		/* zero */
 	};
 	CHK_FIELD__(dummy_ftmgs_mtkey_t, ftmgs_mtkey_t, n);
 	CHK_FIELD__(dummy_ftmgs_mtkey_t, ftmgs_mtkey_t, x);
 	CHK_SIZE__(dummy_ftmgs_mtkey_t, ftmgs_mtkey_t);
-	return (p!=NULL)&&(code == 154774812);
+	return (code == 405954268); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -179,7 +180,7 @@ static int ftmgs_mtkey_t_chk_members(struct ftmgs_mtkey_t* p, int code)/*auto*/
 void ftmgs_mtkey_t_ctor(struct ftmgs_mtkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_mtkey_t_chk_members(p,154774812));
+	assert(ftmgs_mtkey_t_chk_members(p,405954268));
 	bi_ctor(p->n);
 	bi_ctor(p->x);
 }
@@ -187,18 +188,33 @@ void ftmgs_mtkey_t_ctor(struct ftmgs_mtkey_t* p)/*auto*/
 void ftmgs_mtkey_t_dtor(struct ftmgs_mtkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(ftmgs_mtkey_t_chk_members(p,154774812));
+	assert(ftmgs_mtkey_t_chk_members(p,405954268));
+	bi_clear_zero(p->x);
 	bi_dtor(p->x);
+	bi_clear_zero(p->n);
 	bi_dtor(p->n);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_mtkey_t_asg(struct ftmgs_mtkey_t* p, const struct ftmgs_mtkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(ftmgs_mtkey_t_chk_members(p,154774812));
+	assert(ftmgs_mtkey_t_chk_members(p,405954268));
 	if (p != o) {
 		bi_asg(p->n, o->n);
 		bi_asg(p->x, o->x);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_mtkey_t_move(struct ftmgs_mtkey_t* p, struct ftmgs_mtkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_mtkey_t_chk_members(p,405954268));
+	if (p != o) {
+		bi_asg_si(p->n, 0);
+		bi_swap(p->n, o->n);
+		bi_asg_si(p->x, 0);
+		bi_swap(p->x, o->x);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -233,7 +249,7 @@ void ftmgs_mtkey_t_delete(struct ftmgs_mtkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_mtkey_sharej_t_chk_members(struct ftmgs_mtkey_sharej_t* p, int code)/*auto*/
+static int ftmgs_mtkey_sharej_t_chk_members(const struct ftmgs_mtkey_sharej_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -251,7 +267,7 @@ static int ftmgs_mtkey_sharej_t_chk_members(struct ftmgs_mtkey_sharej_t* p, int 
 	};
 	CHK_FIELD__(dummy_ftmgs_mtkey_sharej_t, ftmgs_mtkey_sharej_t, dsharej);
 	CHK_SIZE__(dummy_ftmgs_mtkey_sharej_t, ftmgs_mtkey_sharej_t);
-	return (p!=NULL)&&(code == 137491709);
+	return (code == 137491709); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -270,6 +286,7 @@ void ftmgs_mtkey_sharej_t_dtor(struct ftmgs_mtkey_sharej_t* p)/*auto*/
 	assert(p != NULL);
 	assert(ftmgs_mtkey_sharej_t_chk_members(p,137491709));
 	paillier_thr_decrypt_share_t_dtor(&p->dsharej);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_mtkey_sharej_t_asg(struct ftmgs_mtkey_sharej_t* p, const struct ftmgs_mtkey_sharej_t* o)/*auto*/
@@ -278,6 +295,15 @@ void ftmgs_mtkey_sharej_t_asg(struct ftmgs_mtkey_sharej_t* p, const struct ftmgs
 	assert(ftmgs_mtkey_sharej_t_chk_members(p,137491709));
 	if (p != o) {
 		paillier_thr_decrypt_share_t_asg(&p->dsharej, &o->dsharej);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_mtkey_sharej_t_move(struct ftmgs_mtkey_sharej_t* p, struct ftmgs_mtkey_sharej_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_mtkey_sharej_t_chk_members(p,137491709));
+	if (p != o) {
+		paillier_thr_decrypt_share_t_move(&p->dsharej, &o->dsharej);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -312,7 +338,7 @@ void ftmgs_mtkey_sharej_t_delete(struct ftmgs_mtkey_sharej_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int ftmgs_mtkey_acc_t_chk_members(struct ftmgs_mtkey_acc_t* p, int code)/*auto*/
+static int ftmgs_mtkey_acc_t_chk_members(const struct ftmgs_mtkey_acc_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -330,7 +356,7 @@ static int ftmgs_mtkey_acc_t_chk_members(struct ftmgs_mtkey_acc_t* p, int code)/
 	};
 	CHK_FIELD__(dummy_ftmgs_mtkey_acc_t, ftmgs_mtkey_acc_t, dshacc);
 	CHK_SIZE__(dummy_ftmgs_mtkey_acc_t, ftmgs_mtkey_acc_t);
-	return (p!=NULL)&&(code == 102264701);
+	return (code == 102264701); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -349,6 +375,7 @@ void ftmgs_mtkey_acc_t_dtor(struct ftmgs_mtkey_acc_t* p)/*auto*/
 	assert(p != NULL);
 	assert(ftmgs_mtkey_acc_t_chk_members(p,102264701));
 	paillier_thr_dshare_acc_t_dtor(&p->dshacc);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void ftmgs_mtkey_acc_t_asg(struct ftmgs_mtkey_acc_t* p, const struct ftmgs_mtkey_acc_t* o)/*auto*/
@@ -357,6 +384,15 @@ void ftmgs_mtkey_acc_t_asg(struct ftmgs_mtkey_acc_t* p, const struct ftmgs_mtkey
 	assert(ftmgs_mtkey_acc_t_chk_members(p,102264701));
 	if (p != o) {
 		paillier_thr_dshare_acc_t_asg(&p->dshacc, &o->dshacc);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void ftmgs_mtkey_acc_t_move(struct ftmgs_mtkey_acc_t* p, struct ftmgs_mtkey_acc_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(ftmgs_mtkey_acc_t_chk_members(p,102264701));
+	if (p != o) {
+		paillier_thr_dshare_acc_t_move(&p->dshacc, &o->dshacc);
 	}
 }
 /*----------------------------------------------------------------------------*/

@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #include "iexport.h"
 #include "syspar.h"
 #include "generator.h"
@@ -129,10 +130,10 @@ bool_t paillier_decrypt(bigint_t msg, const paillier_ciphertext_t* ct,
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int paillier_pbkey_t_chk_members(struct paillier_pbkey_t* p, int code)/*auto*/
+static int paillier_pbkey_t_chk_members(const struct paillier_pbkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -143,15 +144,15 @@ static int paillier_pbkey_t_chk_members(struct paillier_pbkey_t* p, int code)/*a
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_paillier_pbkey_t {
-		bigint_t n;
-		bigint_t g;
-		bigint_t y;			/* y = g^x (mod n^2) */
+		bigint_t n;		/* zero */
+		bigint_t g;		/* zero */
+		bigint_t y;		/* zero */
 	};
 	CHK_FIELD__(dummy_paillier_pbkey_t, paillier_pbkey_t, n);
 	CHK_FIELD__(dummy_paillier_pbkey_t, paillier_pbkey_t, g);
 	CHK_FIELD__(dummy_paillier_pbkey_t, paillier_pbkey_t, y);
 	CHK_SIZE__(dummy_paillier_pbkey_t, paillier_pbkey_t);
-	return (p!=NULL)&&(code == 26604317);
+	return (code == 173374210); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -161,7 +162,7 @@ static int paillier_pbkey_t_chk_members(struct paillier_pbkey_t* p, int code)/*a
 void paillier_pbkey_t_ctor(struct paillier_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(paillier_pbkey_t_chk_members(p,26604317));
+	assert(paillier_pbkey_t_chk_members(p,173374210));
 	bi_ctor(p->n);
 	bi_ctor(p->g);
 	bi_ctor(p->y);
@@ -170,20 +171,38 @@ void paillier_pbkey_t_ctor(struct paillier_pbkey_t* p)/*auto*/
 void paillier_pbkey_t_dtor(struct paillier_pbkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(paillier_pbkey_t_chk_members(p,26604317));
+	assert(paillier_pbkey_t_chk_members(p,173374210));
+	bi_clear_zero(p->y);
 	bi_dtor(p->y);
+	bi_clear_zero(p->g);
 	bi_dtor(p->g);
+	bi_clear_zero(p->n);
 	bi_dtor(p->n);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void paillier_pbkey_t_asg(struct paillier_pbkey_t* p, const struct paillier_pbkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(paillier_pbkey_t_chk_members(p,26604317));
+	assert(paillier_pbkey_t_chk_members(p,173374210));
 	if (p != o) {
 		bi_asg(p->n, o->n);
 		bi_asg(p->g, o->g);
 		bi_asg(p->y, o->y);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void paillier_pbkey_t_move(struct paillier_pbkey_t* p, struct paillier_pbkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(paillier_pbkey_t_chk_members(p,173374210));
+	if (p != o) {
+		bi_asg_si(p->n, 0);
+		bi_swap(p->n, o->n);
+		bi_asg_si(p->g, 0);
+		bi_swap(p->g, o->g);
+		bi_asg_si(p->y, 0);
+		bi_swap(p->y, o->y);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -218,10 +237,10 @@ void paillier_pbkey_t_delete(struct paillier_pbkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int paillier_prkey_t_chk_members(struct paillier_prkey_t* p, int code)/*auto*/
+static int paillier_prkey_t_chk_members(const struct paillier_prkey_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -232,11 +251,11 @@ static int paillier_prkey_t_chk_members(struct paillier_prkey_t* p, int code)/*a
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_paillier_prkey_t {
-		bigint_t x;
+		bigint_t x;		/* zero */
 	};
 	CHK_FIELD__(dummy_paillier_prkey_t, paillier_prkey_t, x);
 	CHK_SIZE__(dummy_paillier_prkey_t, paillier_prkey_t);
-	return (p!=NULL)&&(code == 411837210);
+	return (code == 451805986); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -246,23 +265,35 @@ static int paillier_prkey_t_chk_members(struct paillier_prkey_t* p, int code)/*a
 void paillier_prkey_t_ctor(struct paillier_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(paillier_prkey_t_chk_members(p,411837210));
+	assert(paillier_prkey_t_chk_members(p,451805986));
 	bi_ctor(p->x);
 }
 /*----------------------------------------------------------------------------*/
 void paillier_prkey_t_dtor(struct paillier_prkey_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(paillier_prkey_t_chk_members(p,411837210));
+	assert(paillier_prkey_t_chk_members(p,451805986));
+	bi_clear_zero(p->x);
 	bi_dtor(p->x);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void paillier_prkey_t_asg(struct paillier_prkey_t* p, const struct paillier_prkey_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(paillier_prkey_t_chk_members(p,411837210));
+	assert(paillier_prkey_t_chk_members(p,451805986));
 	if (p != o) {
 		bi_asg(p->x, o->x);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void paillier_prkey_t_move(struct paillier_prkey_t* p, struct paillier_prkey_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(paillier_prkey_t_chk_members(p,451805986));
+	if (p != o) {
+		bi_asg_si(p->x, 0);
+		bi_swap(p->x, o->x);
 	}
 }
 /*----------------------------------------------------------------------------*/
@@ -297,10 +328,10 @@ void paillier_prkey_t_delete(struct paillier_prkey_t* p)/*auto*/
 }
 /*----------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int paillier_ciphertext_t_chk_members(struct paillier_ciphertext_t* p, int code)/*auto*/
+static int paillier_ciphertext_t_chk_members(const struct paillier_ciphertext_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
-	extern int (*StAssert__())[!!sizeof(struct{ unsigned Msg__:(Expr__)?1:-1;})]
+	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
 #define CHK_FIELD__(Type1,Type2,Field) \
 	STATIC_ASSERT__((&((struct Type1*)0)->Field==&((struct Type2*)0)->Field), \
 					Field_does_not_match__)
@@ -311,13 +342,13 @@ static int paillier_ciphertext_t_chk_members(struct paillier_ciphertext_t* p, in
 	/* Compile-time member's address comparison checks offset and type */
 	/* Code number checks that functions refer to the same definition */
 	struct dummy_paillier_ciphertext_t {
-		bigint_t alpha;
-		bigint_t beta;
+		bigint_t alpha;		/* zero */
+		bigint_t beta;		/* zero */
 	};
 	CHK_FIELD__(dummy_paillier_ciphertext_t, paillier_ciphertext_t, alpha);
 	CHK_FIELD__(dummy_paillier_ciphertext_t, paillier_ciphertext_t, beta);
 	CHK_SIZE__(dummy_paillier_ciphertext_t, paillier_ciphertext_t);
-	return (p!=NULL)&&(code == 211691810);
+	return (code == 230022130); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
@@ -327,7 +358,7 @@ static int paillier_ciphertext_t_chk_members(struct paillier_ciphertext_t* p, in
 void paillier_ciphertext_t_ctor(struct paillier_ciphertext_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(paillier_ciphertext_t_chk_members(p,211691810));
+	assert(paillier_ciphertext_t_chk_members(p,230022130));
 	bi_ctor(p->alpha);
 	bi_ctor(p->beta);
 }
@@ -335,18 +366,33 @@ void paillier_ciphertext_t_ctor(struct paillier_ciphertext_t* p)/*auto*/
 void paillier_ciphertext_t_dtor(struct paillier_ciphertext_t* p)/*auto*/
 {
 	assert(p != NULL);
-	assert(paillier_ciphertext_t_chk_members(p,211691810));
+	assert(paillier_ciphertext_t_chk_members(p,230022130));
+	bi_clear_zero(p->beta);
 	bi_dtor(p->beta);
+	bi_clear_zero(p->alpha);
 	bi_dtor(p->alpha);
+	(void)p;
 }
 /*----------------------------------------------------------------------------*/
 void paillier_ciphertext_t_asg(struct paillier_ciphertext_t* p, const struct paillier_ciphertext_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
-	assert(paillier_ciphertext_t_chk_members(p,211691810));
+	assert(paillier_ciphertext_t_chk_members(p,230022130));
 	if (p != o) {
 		bi_asg(p->alpha, o->alpha);
 		bi_asg(p->beta, o->beta);
+	}
+}
+/*----------------------------------------------------------------------------*/
+void paillier_ciphertext_t_move(struct paillier_ciphertext_t* p, struct paillier_ciphertext_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(paillier_ciphertext_t_chk_members(p,230022130));
+	if (p != o) {
+		bi_asg_si(p->alpha, 0);
+		bi_swap(p->alpha, o->alpha);
+		bi_asg_si(p->beta, 0);
+		bi_swap(p->beta, o->beta);
 	}
 }
 /*----------------------------------------------------------------------------*/

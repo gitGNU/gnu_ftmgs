@@ -32,7 +32,7 @@ extern "C" {
 	 */
 	struct buffer_t {
 		unsigned size;
-		char* data_;	/* size */
+		char* data_;	/* size zero */
 	};
 	/*------------------------------------------------------------------------*/
 	/**
@@ -105,6 +105,7 @@ extern "C" {
 	void buffer_t_ctor(struct buffer_t* p);
 	void buffer_t_dtor(struct buffer_t* p);
 	void buffer_t_asg(struct buffer_t* p, const struct buffer_t* o);
+	void buffer_t_move(struct buffer_t* p, struct buffer_t* o);
 	struct buffer_t* buffer_t_new();
 	struct buffer_t* buffer_t_clone(const struct buffer_t* o);
 	void buffer_t_delete(struct buffer_t* p);
