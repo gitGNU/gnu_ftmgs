@@ -43,7 +43,8 @@ PRIVHDRS=claim.h	\
 AUXS=README Makefile ftmgs.asn1 makeit.sh
 #------
 PRJLIBS=crypto bigint buffer vector random sha
-SYSLIBS=tasn1 gmp m pthread
+SYSLIBS=tasn1 gmp m
+#SYSLIBS=tasn1 gmp m pthread
 #-------------------------------------------------------------------------------
 PROGNAME=
 LNAME=
@@ -110,12 +111,12 @@ else
 OPTFLAGS4=
 endif
 #---------------------------------------
-ifdef NTHREADS
-OPTFLAGS5=-DNTHREADS__
-LIBS:=$(subst -lpthread,,$(LIBS))
-else
-OPTFLAGS5=
-endif
+# ifdef NTHREADS
+# OPTFLAGS5=-DNTHREADS__
+# LIBS:=$(subst -lpthread,,$(LIBS))
+# else
+# OPTFLAGS5=
+# endif
 #------------------------------------
 OPTFLAGS0=-DFTMGS_BUILDING__
 #------------------------------------
