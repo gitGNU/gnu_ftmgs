@@ -52,7 +52,7 @@ LIBNAME=
 SHAREDLIBNAME=
 VMAJOR=0
 VMINOR=1
-REVISION=0
+REVISION=1
 #----------------------------------
 INST_IDIR=/usr/include 
 INST_LDIR=/usr/lib

@@ -103,7 +103,7 @@ extern "C" {
 	 */
 #define FTMGS_VERSION_MAJOR		0
 #define FTMGS_VERSION_MINOR		1
-#define FTMGS_REVISION			0
+#define FTMGS_REVISION			1
 	/** @} */
 	/*------------------------------------------------------------------------*/
 	/*-- Hash ----------------------------------------------------------------*/
