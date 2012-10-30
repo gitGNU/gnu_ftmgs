@@ -52,7 +52,7 @@
 %-------------------------------------------------------------------------------
 \title{FTMGS: Fair Traceable Multi-Group Signatures}
 \author{User Manual (DRAFT)}
-\date{Version 0.1}
+\date{Version 0.2}
 \bibliographystyle{abbrv}
 %-------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------
@@ -650,6 +650,14 @@ VrfyJoinLog & (Join+UsrAuth) & 0.01 & 0.02 & \\
 %-------------------------------------------------------------------------------
 
 \begin{itemize}%
+\item It depends on the following external libraries: the system math
+  library, the GNU Multiple Precision (GMP) library, and the GNU
+  LIBTASN1 library (this latter dependency will probably be removed in
+  the future).
+\item Change working directory to 'ftmgs'
+\begin{verbatim}
+    $ cd ftmgs
+\end{verbatim}
 \item To cleanup the library
 \begin{verbatim}
     $ make cleanup
@@ -664,7 +672,7 @@ VrfyJoinLog & (Join+UsrAuth) & 0.01 & 0.02 & \\
 \end{verbatim}
 \item To compile the test program
 \begin{verbatim}
-    $ gcc -o test test.c -lftmgs
+    $ gcc -o test test.c -lftmgs -ltasn1 -lgmp -lm
 \end{verbatim}
 \item To run the test program
 \begin{verbatim}
@@ -692,9 +700,10 @@ included by the following directive:
 \end{verbatim}
 
 The object files should be linked with the FTMGS library
-(\verb|libftmgs.a| or \verb|libftmgs.so| in unix like systems):
+(\verb|libftmgs.a| or \verb|libftmgs.so| in unix like systems), the
+GNU libtasn1 and GMP libraries and the system math library:
 \begin{verbatim}
-    $ gcc -o test test.c -lftmgs
+    $ gcc -o test test.c -lftmgs -ltasn1 -lgmp -lm
 \end{verbatim}
 
 %-------------------------------------------------------------------------------

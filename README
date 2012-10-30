@@ -39,7 +39,7 @@ Library Installation:
 
 	To compile the test program
 
-    $ gcc -o test test.c -lftmgs
+    $ gcc -o test test.c -lftmgs -ltasn1 -lgmp -lm
 
     To run the test program
 
