@@ -21,7 +21,7 @@
 #ifndef umalccvbg_schnorr_h__
 #define umalccvbg_schnorr_h__	1
 #include "sha.h"
-#include "bigint.h"
+#include "bigintop.h"
 #include "birnd.h"
 #include "random.h"
 #include "syspar.h"

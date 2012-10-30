@@ -21,7 +21,7 @@
 #ifndef umalccvbg_sign_h__
 #define umalccvbg_sign_h__	1
 #include "ftmgs.h"
-#include "bigint.h"
+#include "bigintop.h"
 #include "iexport.h"
 #include "birnd.h"
 #include "random.h"

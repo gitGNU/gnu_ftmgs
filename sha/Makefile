@@ -84,7 +84,7 @@ else
   CDBGFLAGS=-O2 -DOPTLEVEL=0 -s
 endif
 #----------------------------------
-CERRFLAGS=-Wall -Wextra -Wno-long-long -Wfloat-equal -Wsign-compare -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings 
+CERRFLAGS=-Wall -Wextra -Wno-long-long -Wfloat-equal -Wsign-compare -Wpointer-arith -Wcast-align -Wwrite-strings 
 #----------------------------------
 CFLAGS=-fPIC $(CERRFLAGS) $(CDBGFLAGS) $(INCDIR)
 ALLDEFINES=$(CFLAGS)

@@ -18,10 +18,9 @@
 /* Public License along with this library. If not, see                        */
 /* <http://www.gnu.org/licenses/>.                                            */
 /*----------------------------------------------------------------------------*/
-#include "bigint.h"
+#include "bigintop.h"
 #include <assert.h>
 /*----------------------------------------------------------------------------*/
-#ifndef NDEBUG
 int bi_ctor_cnt(int n)
 {
 	static int cnt = 0;
@@ -36,15 +35,12 @@ int bi_cdtor_cntdiff()
 {
 	return bi_ctor_cnt(0) - bi_dtor_cnt(0);
 }
-#endif
 /*----------------------------------------------------------------------------*/
-#ifdef POWSTS__
 int powmod_cnt(int n)
 {
 	static int cnt = 0;
 	return cnt += n;
 }
-#endif
 /*----------------------------------------------------------------------------*/
 bool_t bi_iscoprime(const bigint_t val1, const bigint_t val2)
 {

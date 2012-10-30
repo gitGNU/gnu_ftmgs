@@ -21,7 +21,7 @@
 #ifndef umalccvbg_claim_h__
 #define umalccvbg_claim_h__	1
 #include "ftmgs.h"
-#include "bigint.h"
+#include "bigintop.h"
 #include "group.h"
 #include "join.h"
 #include "sign.h"

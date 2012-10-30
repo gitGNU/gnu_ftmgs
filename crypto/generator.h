@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 #ifndef umalccvbg_generator_h__
 #define umalccvbg_generator_h__		1
-#include "bigint.h"
+#include "bigintop.h"
 #include "random.h"
 #include "birnd.h"
 BEGIN_EXTERN_C

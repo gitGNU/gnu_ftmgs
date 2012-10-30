@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 #ifndef umalccvbg_elgamal_h__
 #define umalccvbg_elgamal_h__	1
-#include "bigint.h"
+#include "bigintop.h"
 #include "birnd.h"
 #include "random.h"
 #include "sphere.h"

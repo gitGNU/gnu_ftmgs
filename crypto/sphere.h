@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 #ifndef umalccvbg_sphere_h__
 #define umalccvbg_sphere_h__	1
-#include "bigint.h"
+#include "bigintop.h"
 #include "birnd.h"
 #include "random.h"
 #include "syspar.h"

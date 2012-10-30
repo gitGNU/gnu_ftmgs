@@ -21,7 +21,7 @@
 #ifndef umalccvbg_iexport_h__
 #define umalccvbg_iexport_h__	1
 #include <stdio.h>
-#include "bigint.h"
+#include "bigintop.h"
 #include "sha.h"
 BEGIN_EXTERN_C
 /*----------------------------------------------------------------------------*/

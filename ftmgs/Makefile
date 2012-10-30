@@ -201,14 +201,45 @@ ftmgs_asn1_tab.c: ftmgs.asn1
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
 test.o: ftmgs.h
-claim.o: claim.h ftmgs.h group.h ../include/random.h syssph.h join.h sign.h
-group.o: group.h ftmgs.h ../include/random.h syssph.h
-join.o: join.h ftmgs.h ../include/random.h group.h syssph.h
-link.o: link.h ftmgs.h group.h ../include/random.h syssph.h join.h sign.h
-open.o: open.h ftmgs.h group.h ../include/random.h syssph.h join.h sign.h
-revtrace.o: revtrace.h ftmgs.h group.h ../include/random.h syssph.h join.h
-revtrace.o: sign.h
-sign.o: sign.h ftmgs.h ../include/random.h group.h syssph.h join.h
-syssph.o: syssph.h
-ftmgs_asn1.o: system_endian.h ftmgs.h group.h ../include/random.h syssph.h
-ftmgs_asn1.o: join.h sign.h open.h revtrace.h claim.h link.h
+claim.o: claim.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
+claim.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
+claim.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
+claim.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
+claim.o: ../include/sok.h ../include/cdtor.h
+group.o: group.h ftmgs.h ../include/bigint.h ../include/birnd.h
+group.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
+group.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
+group.o: ../include/paillier_thr.h ../include/generator.h ../include/cdtor.h
+join.o: join.h ftmgs.h ../include/bigint.h ../include/birnd.h
+join.o: ../include/random.h ../include/paillier_thr.h ../include/syspar.h
+join.o: ../include/sha.h ../include/sphere.h ../include/nadrp.h group.h
+join.o: syssph.h ../include/elgamal_thr.h ../include/iexport.h
+join.o: ../include/sok.h ../include/cdtor.h
+link.o: link.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
+link.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
+link.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
+link.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
+link.o: ../include/sok.h ../include/cdtor.h
+open.o: open.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
+open.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
+open.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
+open.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
+open.o: ../include/cdtor.h
+revtrace.o: revtrace.h ftmgs.h ../include/bigint.h group.h ../include/birnd.h
+revtrace.o: ../include/random.h syssph.h ../include/syspar.h ../include/sha.h
+revtrace.o: ../include/sphere.h ../include/nadrp.h ../include/elgamal_thr.h
+revtrace.o: ../include/paillier_thr.h join.h sign.h ../include/iexport.h
+revtrace.o: ../include/cdtor.h
+sign.o: sign.h ftmgs.h ../include/bigint.h ../include/iexport.h
+sign.o: ../include/sha.h ../include/birnd.h ../include/random.h
+sign.o: ../include/elgamal_thr.h ../include/syspar.h ../include/sphere.h
+sign.o: group.h syssph.h ../include/nadrp.h ../include/paillier_thr.h join.h
+sign.o: ../include/sok.h ../include/cdtor.h
+syssph.o: syssph.h ../include/bigint.h ../include/syspar.h ../include/sha.h
+syssph.o: ../include/sphere.h ../include/birnd.h ../include/random.h
+ftmgs_asn1.o: ../include/bigint.h ../include/iexport.h ../include/sha.h
+ftmgs_asn1.o: ../include/buffer.h ../include/vector.h system_endian.h ftmgs.h
+ftmgs_asn1.o: group.h ../include/birnd.h ../include/random.h syssph.h
+ftmgs_asn1.o: ../include/syspar.h ../include/sphere.h ../include/nadrp.h
+ftmgs_asn1.o: ../include/elgamal_thr.h ../include/paillier_thr.h join.h
+ftmgs_asn1.o: sign.h open.h revtrace.h claim.h link.h

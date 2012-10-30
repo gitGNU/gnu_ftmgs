@@ -20,8 +20,8 @@
 #-------------------------------------------------------------------------------
 #- Makefile --------------------------------------------------------
 SRCS=test.c
-SRCSLIB=bigint.c iexport.c birnd.c
-HDRS=bigint.h iexport.h birnd.h cdtor.h
+SRCSLIB=bigintop.c iexport.c birnd.c
+HDRS=bigint.h bigintop.h bigint_cdtor.h iexport.h birnd.h cdtor.h
 PRIVHDRS=
 AUXS=Makefile
 #------
@@ -158,8 +158,8 @@ depend:
 # -----------------------------------------------------------------------
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
-test.o: bigint.h iexport.h ../include/sha.h birnd.h ../include/random.h
-test.o: cdtor.h
-bigint.o: bigint.h
-iexport.o: iexport.h bigint.h ../include/sha.h
-birnd.o: birnd.h bigint.h ../include/random.h
+test.o: bigintop.h bigint.h bigint_cdtor.h iexport.h ../include/sha.h birnd.h
+test.o: ../include/random.h cdtor.h
+bigintop.o: bigintop.h bigint.h bigint_cdtor.h
+iexport.o: iexport.h bigintop.h bigint.h bigint_cdtor.h ../include/sha.h
+birnd.o: birnd.h bigintop.h bigint.h bigint_cdtor.h ../include/random.h

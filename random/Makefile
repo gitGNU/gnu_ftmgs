@@ -22,12 +22,11 @@
 SRCS=test.c
 SRCSLIB=random.c system_rnd.c
 HDRS=random.h
-PRIVHDRS=system_rnd.h system_endian.h
-AUXS=Makefile system_mutex.h
+PRIVHDRS=system_rnd.h system_endian.h system_mutex.h
+AUXS=Makefile
 #------
 PRJLIBS=sha
-SYSLIBS=
-#SYSLIBS=pthread 
+SYSLIBS=pthread 
 #-------------------------------------------------------------------------------
 PROGNAME=
 LNAME=
@@ -48,12 +47,12 @@ LIBS:=$(addprefix -l,$(PRJLIBS) $(SYSLIBS))
 PLIBS:=$(addprefix $(LDIR)/lib,$(PRJLIBS)) 
 PLIBS:=$(addsuffix .a,$(PLIBS)) 
 #-------------------------------------------------------------------------------
-# ifdef NTHREADS
-#   OPTFLAGS=-DNTHREADS__
-#   LIBS:=$(subst -lpthread,,$(LIBS))
-# else
-#   OPTFLAGS=
-# endif
+ifdef NTHREADS
+  OPTFLAGS=-DNTHREADS__
+  LIBS:=$(subst -lpthread,,$(LIBS))
+else
+  OPTFLAGS=
+endif
 #-------------------------------------------------------------------------------
 ifeq ($(strip $(PROGNAME)),)
   PROGNAME=$(basename $(notdir $(firstword $(SRCS))))
@@ -154,4 +153,5 @@ depend:
 
 test.o: random.h
 random.o: random.h ../include/sha.h system_rnd.h system_endian.h
+random.o: system_mutex.h
 system_rnd.o: system_rnd.h

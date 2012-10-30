@@ -1,23 +1,23 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2012 Vicente Benjumea, University of Malaga, Spain           */
-/*                                                                            */
-/* This file is part of the <FTMGS> Library                                   */
-/*                                                                            */
-/* This library is free software: you can redistribute it and/or              */
-/* modify it under the terms of the GNU Lesser General Public                 */
-/* License as published by the Free Software Foundation, either               */
-/* version 2.1 of the License, or (at your option) any later                  */
-/* version.                                                                   */
-/*                                                                            */
-/* This library is distributed in the hope that it will be useful,            */
-/* but WITHOUT ANY WARRANTY; without even the implied warranty of             */
-/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the               */
-/* GNU Lesser General Public License for more details.                        */
-/*                                                                            */
-/* You should have received a copy of the GNU Lesser General                  */
-/* Public License along with this library. If not, see                        */
-/* <http://www.gnu.org/licenses/>.                                            */
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+/* Copyright (c) 2012 Vicente Benjumea, University of Malaga, Spain       */
+/*                                                                        */
+/* This file is part of the <FTMGS> Library                               */
+/*                                                                        */
+/* This library is free software: you can redistribute it and/or          */
+/* modify it under the terms of the GNU Lesser General Public             */
+/* License as published by the Free Software Foundation, either           */
+/* version 2.1 of the License, or (at your option) any later              */
+/* version.                                                               */
+/*                                                                        */
+/* This library is distributed in the hope that it will be useful,        */
+/* but WITHOUT ANY WARRANTY; without even the implied warranty of         */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           */
+/* GNU Lesser General Public License for more details.                    */
+/*                                                                        */
+/* You should have received a copy of the GNU Lesser General              */
+/* Public License along with this library. If not, see                    */
+/* <http://www.gnu.org/licenses/>.                                        */
+/*------------------------------------------------------------------------*/
 #include "random.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -31,9 +31,9 @@
 #include "system_rnd.h"
 #include "system_endian.h"
 
-/*#include "system_mutex.h"*/
+#include "system_mutex.h"
 
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 #ifndef UNUSED__
 #ifdef __GNUC__
 #define UNUSED__ __attribute__ ((unused))
@@ -41,12 +41,12 @@
 #define UNUSED__
 #endif
 #endif
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 #define STATIC_ASSERT(Expr__,Msg__) \
     extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 STATIC_ASSERT(TRUE_ENTROPY == 0, Bad_entropy_definition);
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 /* 
  * NISTSP80090. 10.1.1.1. pg: 35
  */
@@ -57,9 +57,9 @@ struct rndctx_t {
 	char v[RANDOM_CTX_SEEDLEN];		/* zero */
 	char c[RANDOM_CTX_SEEDLEN];		/* zero */
 	unsigned counter;
-	/*MUTEX_VAR(mutex)*/
+	MUTEX_VAR(mutex)
 };
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 /* Menezes HAC, Algorithm 14.7, pg 594 */
 /* z may be equal to a or b or both */
 /* big-endian representation */
@@ -113,7 +113,7 @@ static void add_mod2k(void* z, unsigned zlen,
 		}
 	}
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 static void inc_mod2k(void* a, unsigned alen,
 					  const void* b, unsigned blen)
 {
@@ -140,12 +140,12 @@ static void inc_mod2k(void* a, unsigned alen,
 		}
 	}
 }
-/*----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /* 
  * Based on NIST-SP-800-90
  */
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /*static*/ unsigned  memcat(void* dst, unsigned* len, unsigned maxlen,
 						const void* org, unsigned n)
 {
@@ -159,11 +159,11 @@ static void inc_mod2k(void* a, unsigned alen,
 	*len += n;
 	return n;
 }
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /* 
  * Random Numbers
  */
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /* 
  * Highest Security strengths for Random Number Generation (BITS)
  *		(table 3 pg 64 NIST SP 800-57)
@@ -176,17 +176,17 @@ static void inc_mod2k(void* a, unsigned alen,
  *	MinEntropy	128		192		| 256	 |	256		256
  *	SeedLen		440		440		| 440	 |	888		888
  */
-/*----------------------------------*/
+/*------------------------------*/
 enum {
 	/*RANDOM_CTX_SEEDLEN	= 55,*/
 	RANDOM_CTX_ENTROPY	= 32,
 	RANDOM_CTX_NONCE	= (RANDOM_CTX_ENTROPY/2),
 	RANDOM_CTX_HASH		= SHA256
 };
-/*----------------------------------*/
+/*------------------------------*/
 STATIC_ASSERT(RANDOM_CTX_ENTROPY + RANDOM_CTX_NONCE < RANDOM_CTX_SEEDLEN,
 			  Internal_random_context_bits);
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /* 
  * NISTSP80090. 10.4.1. pg: 65
  */
@@ -218,7 +218,7 @@ static unsigned hash_df(SHAversion which_sha,
 	assert(olen == maxlen);
 	return olen;
 }
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /* 
  * NISTSP80090. 10.1.1.4. pg: 39
  */
@@ -251,7 +251,7 @@ static unsigned hash_gen(SHAversion which_sha,
 	assert(olen == maxlen);
 	return olen;
 }
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 static unsigned hash_tag(SHAversion which_sha,
 						 uint8_t msg_digest[USHAMaxHashSize],
 						 const void* input_data1, unsigned idtlen1,
@@ -264,11 +264,11 @@ static unsigned hash_tag(SHAversion which_sha,
 	USHAResult(&sha_context, msg_digest);
 	return (unsigned)USHAHashSize(which_sha);
 }
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /* 
  * NISTSP80090. 10.1.1.2. pg: 37
  */
@@ -278,7 +278,7 @@ unsigned random_seed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	unsigned le = 0;
 	unsigned ln = 0;
 	assert(rnd_ctx != NULL);
-	/*BEGIN_MUTEX(&rnd_ctx->mutex);*/
+	BEGIN_MUTEX(&rnd_ctx->mutex);
 	if (entropy_src != NO_ENTROPY) {
 		le = entropy(rnd_ctx->c, RANDOM_CTX_ENTROPY, entropy_src);
 		ln = nonce(rnd_ctx->c+le, RANDOM_CTX_NONCE);
@@ -288,11 +288,11 @@ unsigned random_seed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	hash_df(RANDOM_CTX_HASH, rnd_ctx->c, sizeof(rnd_ctx->c),
 			&tag, sizeof(tag), rnd_ctx->v, sizeof(rnd_ctx->v), NULL, 0);
 	rnd_ctx->counter = 1;
-	/*END_MUTEX(&rnd_ctx->mutex);*/
-	/*------------------------------*/
+	END_MUTEX(&rnd_ctx->mutex);
+	/*--------------------------*/
 	return (le+ln);
 }
-/*----------------------------------*/
+/*------------------------------*/
 /* 
  * NISTSP80090. 10.1.1.3. pg: 37
  */
@@ -304,7 +304,7 @@ unsigned random_reseed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	unsigned le = 0;
 	unsigned ln = 0;
 	assert(rnd_ctx != NULL);
-	/*BEGIN_MUTEX(&rnd_ctx->mutex);*/
+	BEGIN_MUTEX(&rnd_ctx->mutex);
 	aux[0] = 0x01;
 	if (entropy_src != NO_ENTROPY) {
 		le = entropy(rnd_ctx->c, RANDOM_CTX_ENTROPY, entropy_src);
@@ -316,15 +316,16 @@ unsigned random_reseed(rnd_ctx_t* rnd_ctx, unsigned entropy_src)
 	hash_df(RANDOM_CTX_HASH, rnd_ctx->c, sizeof(rnd_ctx->c),
 			&tag0, sizeof(tag0), rnd_ctx->v, sizeof(rnd_ctx->v), NULL, 0);
 	rnd_ctx->counter = 1;
-	/*END_MUTEX(&rnd_ctx->mutex);*/
-	/*------------------------------*/
+	END_MUTEX(&rnd_ctx->mutex);
+	/*--------------------------*/
 	return (le+ln);
 }
-/*-----------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 /* 
  * NISTSP80090. 10.1.1.4. pg: 38
  */
-void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx)
+static void random_bytes_base(void* data, unsigned nbytes,
+							  rnd_ctx_t* rnd_ctx)
 {
 	uint8_t tag = 0x03;
 	uint8_t msg_digest[USHAMaxHashSize];
@@ -332,7 +333,7 @@ void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx)
 	unsigned counter = int2bigendian(rnd_ctx->counter);
 	assert(nbytes <= 65535); /*NISTSP80090 table 2: 2^19/2^3*/
 	assert(rnd_ctx != NULL);
-	/*BEGIN_MUTEX(&rnd_ctx->mutex);*/
+	BEGIN_MUTEX(&rnd_ctx->mutex);
 	hash_gen(RANDOM_CTX_HASH, data, nbytes, rnd_ctx->v, sizeof(rnd_ctx->v));
 	digest_len = hash_tag(RANDOM_CTX_HASH, msg_digest,
 						  &tag, sizeof(tag), rnd_ctx->v, sizeof(rnd_ctx->v));
@@ -340,30 +341,46 @@ void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx)
 	inc_mod2k(rnd_ctx->v, sizeof(rnd_ctx->v), rnd_ctx->c, sizeof(rnd_ctx->c));
 	inc_mod2k(rnd_ctx->v, sizeof(rnd_ctx->v), &counter, sizeof(counter));
 	++rnd_ctx->counter;
-	/*END_MUTEX(&rnd_ctx->mutex);*/
+	END_MUTEX(&rnd_ctx->mutex);
 }
-/*-----------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+void random_bytes(void* data, unsigned nbytes, rnd_ctx_t* rnd_ctx)
+{
+	if (data != NULL && rnd_ctx != NULL) {
+		unsigned nb;
+		char* buff = data;;
+		while (nbytes > 0) {
+			nb = (nbytes <= 65535) ? nbytes : 65535;
+			random_bytes_base(buff, nb, rnd_ctx);
+			buff += nb;
+			nbytes -= nb;
+		}
+	}
+}
+/*-------------------------------------------------------------*/
 /* r rnd such that 0 <= r < max */
 unsigned random_uint(unsigned max, rnd_ctx_t* rnd_ctx)
 {
-	unsigned data[2];
-	random_bytes(data, sizeof(data), rnd_ctx);
+	unsigned data[2] = { 0 };
+	if (rnd_ctx != NULL) {
+		random_bytes_base(data, sizeof(data), rnd_ctx);
+	}
 	return (unsigned)((max*(double)data[0])/(1.0+UINT_MAX));
 }
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 #define MUTEX_VAR_dtor(mutex_var__)	DESTROY_MUTEX(mutex_var__)
 #define MUTEX_VAR_ctor(mutex_var__)	CREATE_MUTEX(mutex_var__)
 #define MUTEX_VAR_asg(mutex_var_d__, mutex_var_o__)	do{DESTROY_MUTEX(mutex_var_d__);CREATE_MUTEX(mutex_var_d__);}while(0)
 #define MUTEX_VAR_move(mutex_var_d__, mutex_var_o__) do{DESTROY_MUTEX(mutex_var_d__);CREATE_MUTEX(mutex_var_d__);}while(0)
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void rndctx_t_ctor(struct rndctx_t* p);
 void rndctx_t_dtor(struct rndctx_t* p);
 void rndctx_t_asg(struct rndctx_t* d, const struct rndctx_t* o);
 void rndctx_t_move(struct rndctx_t* d, struct rndctx_t* o);
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 #ifndef NDEBUG
 static int rndctx_t_chk_members(const struct rndctx_t* p, int code)/*auto*/
 {
@@ -382,12 +399,12 @@ static int rndctx_t_chk_members(const struct rndctx_t* p, int code)/*auto*/
 		char v[RANDOM_CTX_SEEDLEN];		/* zero */
 		char c[RANDOM_CTX_SEEDLEN];		/* zero */
 		unsigned counter;
-		/*MUTEX_VAR(mutex)*/
+		MUTEX_VAR(mutex)
 	};
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, v);
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, c);
 	CHK_FIELD__(dummy_rndctx_t, rndctx_t, counter);
-	/*CHK_FIELD__(dummy_rndctx_t, rndctx_t, mutex);*/
+	CHK_FIELD__(dummy_rndctx_t, rndctx_t, mutex);
 	CHK_SIZE__(dummy_rndctx_t, rndctx_t);
 	return (code == 435758464); (void)p;
 #undef STATIC_ASSERT__
@@ -395,7 +412,7 @@ static int rndctx_t_chk_members(const struct rndctx_t* p, int code)/*auto*/
 #undef CHK_SIZE__
 }
 #endif
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void rndctx_t_ctor(struct rndctx_t* p)/*auto*/
 {
 	int i; (void)i;
@@ -404,20 +421,20 @@ void rndctx_t_ctor(struct rndctx_t* p)/*auto*/
 	memset(p->v, 0, sizeof(p->v));
 	memset(p->c, 0, sizeof(p->c));
 	p->counter = 0;
-	/*MUTEX_VAR_ctor(&p->mutex);*/
+	MUTEX_VAR_ctor(&p->mutex);
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void rndctx_t_dtor(struct rndctx_t* p)/*auto*/
 {
 	int i; (void)i;
 	assert(p != NULL);
 	assert(rndctx_t_chk_members(p,435758464));
-	/*MUTEX_VAR_dtor(&p->mutex);*/
+	MUTEX_VAR_dtor(&p->mutex);
 	memset(p->c, 0, sizeof(p->c));
 	memset(p->v, 0, sizeof(p->v));
 	(void)p;
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void rndctx_t_asg(struct rndctx_t* p, const struct rndctx_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
@@ -427,10 +444,10 @@ void rndctx_t_asg(struct rndctx_t* p, const struct rndctx_t* o)/*auto*/
 		memcpy(p->v, o->v, sizeof(p->v));
 		memcpy(p->c, o->c, sizeof(p->c));
 		p->counter = o->counter;
-		/*MUTEX_VAR_asg(&p->mutex, &o->mutex);*/
+		MUTEX_VAR_asg(&p->mutex, &o->mutex);
 	}
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void rndctx_t_move(struct rndctx_t* p, struct rndctx_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
@@ -440,10 +457,10 @@ void rndctx_t_move(struct rndctx_t* p, struct rndctx_t* o)/*auto*/
 		memcpy(p->v, o->v, sizeof(p->v));
 		memcpy(p->c, o->c, sizeof(p->c));
 		p->counter = o->counter;
-		/*MUTEX_VAR_move(&p->mutex, &o->mutex);*/
+		MUTEX_VAR_move(&p->mutex, &o->mutex);
 	}
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 struct rndctx_t* rndctx_t_new()/*auto*/
 {
 	struct rndctx_t* p = (struct rndctx_t*)malloc(sizeof(struct rndctx_t));
@@ -452,7 +469,7 @@ struct rndctx_t* rndctx_t_new()/*auto*/
 	}
 	return p;
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 struct rndctx_t* rndctx_t_clone(const struct rndctx_t* o)/*auto*/
 {
 	struct rndctx_t* p = NULL;
@@ -465,7 +482,7 @@ struct rndctx_t* rndctx_t_clone(const struct rndctx_t* o)/*auto*/
 	}
 	return p;
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void rndctx_t_delete(struct rndctx_t* p)/*auto*/
 {
 	if (p != NULL) {
@@ -473,4 +490,4 @@ void rndctx_t_delete(struct rndctx_t* p)/*auto*/
 		free(p);
 	}
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/

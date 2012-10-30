@@ -21,7 +21,7 @@
 #ifndef umalccvbg_join_h__
 #define umalccvbg_join_h__	1
 #include "ftmgs.h"
-#include "bigint.h"
+#include "bigintop.h"
 #include "birnd.h"
 #include "random.h"
 #include "paillier_thr.h"

@@ -21,7 +21,7 @@
 #ifndef umalccvbg_revtrace_h__
 #define umalccvbg_revtrace_h__	1
 #include "ftmgs.h"
-#include "bigint.h"
+#include "bigintop.h"
 #include "group.h"
 #include "join.h"
 #include "sign.h"

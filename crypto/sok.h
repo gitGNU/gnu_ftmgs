@@ -21,7 +21,7 @@
 #ifndef umalccvbg_sok_h__
 #define umalccvbg_sok_h__	1
 #include <assert.h>
-#include "bigint.h"
+#include "bigintop.h"
 #include "sphere.h"
 #include "sha.h"
 BEGIN_EXTERN_C

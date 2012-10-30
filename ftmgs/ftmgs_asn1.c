@@ -26,7 +26,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bigint.h"
+#include "bigintop.h"
 #include "iexport.h"
 #include "buffer.h"
 #include "vector.h"

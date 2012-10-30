@@ -20,8 +20,8 @@
 #-------------------------------------------------------------------------------
 #- Makefile --------------------------------------------------------
 SRCS=test.c
-SRCSLIB=vector.c
-HDRS=vector.h
+SRCSLIB=vector.c vect.c
+HDRS=vector.h vect.h
 PRIVHDRS=
 AUXS=Makefile
 #------
@@ -69,7 +69,7 @@ else
   CDBGFLAGS=-O2 -DOPTLEVEL=0 -s
 endif
 #----------------------------------
-CERRFLAGS=-ansi -pedantic -Wall -Werror -Wextra -Wno-long-long -Wshadow -Wfloat-equal -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Wconversion -Wsign-conversion -Wchar-subscripts
+CERRFLAGS=-ansi -pedantic -Wall -Werror -Wextra -Wno-long-long -Wshadow -Wfloat-equal -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Wchar-subscripts
 #----------------------------------
 CFLAGS=-fPIC $(CERRFLAGS) $(CDBGFLAGS) $(INCDIR)
 ALLDEFINES=$(CFLAGS)
@@ -145,3 +145,4 @@ depend:
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 
 vector.o: vector.h
+vect.o: vect.h

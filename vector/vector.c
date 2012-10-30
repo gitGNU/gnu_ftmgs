@@ -54,41 +54,45 @@ static void vector_realloc(struct vector_t* vect, unsigned sz)
 }
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void vector_reserve(struct vector_t* vect, unsigned maxsz)
+unsigned vector_reserve(struct vector_t* vect, unsigned maxsz)
 {
 	assert(vect != NULL);
 	if (maxsz > vect->max_size) {
 		vector_realloc(vect, maxsz);
 	}
+	return vect->max_size;
 }
 /*----------------------------------------------------------------------------*/
-void vector_shrink(struct vector_t* vect)
+unsigned vector_shrink(struct vector_t* vect)
 {
 	/* 
 	 * One addtional space to allow a place for '\0' if required
 	 */
 	assert(vect != NULL);
 	vector_realloc(vect, vect->size+1);
+	return vect->max_size;
 }
 /*----------------------------------------------------------------------------*/
-void vector_reset(struct vector_t* vect)
+unsigned vector_reset(struct vector_t* vect)
 {
 	assert(vect != NULL);
 	vect->size = 0;
 	vect->max_size = 0;
 	free(vect->data_);
 	vect->data_ = NULL;
+	return vect->size;
 }
 /*----------------------------------------------------------------------------*/
-void vector_clear(struct vector_t* vect)
+unsigned vector_clear(struct vector_t* vect)
 {
 	assert(vect != NULL);
 	vect->size = 0;
+	return vect->max_size;
 }
 /*----------------------------------------------------------------------------*/
 int vector_resize(struct vector_t* vect, unsigned newsz)
 {
-	int ok = 0;
+	int sz = (int)newsz;
 	assert(vect != NULL);
 	if ((newsz == 0)||(newsz < vect->max_size)) {
 		vect->size = newsz;
@@ -97,17 +101,31 @@ int vector_resize(struct vector_t* vect, unsigned newsz)
 		if ((vect->data_ != NULL)&&(newsz < vect->max_size)) {
 			vect->size = newsz;
 		} else {
-			ok = -1;
+			sz = -1;
 		}
 	}
 	assert(((vect->size == 0)&&(vect->max_size == 0))
 		   ||(vect->size < vect->max_size));
-	return ok;
+	return sz;
+}
+/*----------------------------------------------------------------------------*/
+int vector_pop(struct vector_t* vect, unsigned datlen)
+{
+	int sz = 0;
+	if (datlen > vect->size) {
+		sz = -1;
+	} else {
+		vect->size -= datlen;
+		sz = (int)vect->size;
+	}
+	assert(((vect->size == 0)&&(vect->max_size == 0))
+		   ||(vect->size < vect->max_size));
+	return sz;
 }
 /*----------------------------------------------------------------------------*/
 int vector_push(struct vector_t* vect, const void* dat, unsigned datlen)
 {
-	int ok = 0;
+	int sz = 0;
 	unsigned maxsz;
 	assert(vect != NULL);
 	if (datlen > 0) {
@@ -122,30 +140,30 @@ int vector_push(struct vector_t* vect, const void* dat, unsigned datlen)
 		if ((vect->data_ != NULL)&&(vect->size + datlen < vect->max_size)) {
 			memcpy(vect->data_ + vect->size, dat, datlen);
 			vect->size += datlen;
+			sz = (int)vect->size;
 		} else {
-			ok = -1;
+			sz = -1;
 		}
 	}
 	assert(((vect->size == 0)&&(vect->max_size == 0))
 		   ||(vect->size < vect->max_size));
-	return ok;
+	return sz;
 }
 /*----------------------------------------------------------------------------*/
 int vector_push_str(struct vector_t* vect, const char* str)
 {
-	int ok = vector_push(vect, str, (unsigned)strlen(str));
+	int sz = vector_push(vect, str, (unsigned)strlen(str));
 	vector_reserve(vect, vect->size + 1);
 	if (vect->size < vect->max_size) {
 		vect->data_[vect->size] = '\0';	/* '\0' is not counted in size */
 	}
-	return ok;
+	return sz;
 }
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 #ifndef NDEBUG
-static int vector_t_chk_members(struct vector_t* p, int code)/*auto*/
+static int vector_t_chk_members(const struct vector_t* p, int code)/*auto*/
 {
 #define STATIC_ASSERT__(Expr__,Msg__) \
 	extern int (*StAssert__())[!!sizeof(struct{unsigned Msg__:(Expr__)?1:-1;})]
@@ -167,13 +185,13 @@ static int vector_t_chk_members(struct vector_t* p, int code)/*auto*/
 	CHK_FIELD__(dummy_vector_t, vector_t, data_);
 	CHK_FIELD__(dummy_vector_t, vector_t, max_size);
 	CHK_SIZE__(dummy_vector_t, vector_t);
-	return (p!=NULL)&&(code == 310118405);
+	return (code == 310118405); (void)p;
 #undef STATIC_ASSERT__
 #undef CHK_FIELD__
 #undef CHK_SIZE__
 }
 #endif
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void vector_t_ctor(struct vector_t* p)/*auto*/
 {
 	assert(p != NULL);
@@ -182,7 +200,7 @@ void vector_t_ctor(struct vector_t* p)/*auto*/
 	p->data_ = NULL;
 	p->max_size = 0;
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void vector_t_dtor(struct vector_t* p)/*auto*/
 {
 	assert(p != NULL);
@@ -190,7 +208,7 @@ void vector_t_dtor(struct vector_t* p)/*auto*/
 	free(p->data_);
 	(void)p;
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void vector_t_asg(struct vector_t* p, const struct vector_t* o)/*auto*/
 {
 	assert(p != NULL && o != NULL);
@@ -209,7 +227,22 @@ void vector_t_asg(struct vector_t* p, const struct vector_t* o)/*auto*/
 		p->max_size = o->max_size;
 	}
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+void vector_t_move(struct vector_t* p, struct vector_t* o)/*auto*/
+{
+	assert(p != NULL && o != NULL);
+	assert(vector_t_chk_members(p,310118405));
+	if (p != o) {
+		p->size = o->size;
+		o->size = 0;
+		free(p->data_);
+		p->data_ = o->data_;
+		o->data_ = NULL;
+		p->max_size = o->max_size;
+		o->max_size = 0;
+	}
+}
+/*------------------------------------------------------------------------*/
 void vector_t_swap(struct vector_t* p, struct vector_t* o)
 {
 	unsigned aux;
@@ -230,7 +263,7 @@ void vector_t_swap(struct vector_t* p, struct vector_t* o)
 		o->max_size = aux;
 	}
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 struct vector_t* vector_t_new()/*auto*/
 {
 	struct vector_t* p = (struct vector_t*)malloc(sizeof(struct vector_t));
@@ -239,7 +272,7 @@ struct vector_t* vector_t_new()/*auto*/
 	}
 	return p;
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 struct vector_t* vector_t_clone(const struct vector_t* o)/*auto*/
 {
 	struct vector_t* p = NULL;
@@ -252,7 +285,7 @@ struct vector_t* vector_t_clone(const struct vector_t* o)/*auto*/
 	}
 	return p;
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
 void vector_t_delete(struct vector_t* p)/*auto*/
 {
 	if (p != NULL) {
@@ -260,4 +293,4 @@ void vector_t_delete(struct vector_t* p)/*auto*/
 		free(p);
 	}
 }
-/*----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*/

@@ -24,7 +24,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include "bigint.h"
+#include "bigintop.h"
 #include "random.h"
 #include "birnd.h"
 #include "syspar.h"

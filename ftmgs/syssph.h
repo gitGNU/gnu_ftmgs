@@ -20,7 +20,7 @@
 /*--------------------------------------------------------------------------- */
 #ifndef umalccvbg_syssph_h__
 #define umalccvbg_syssph_h__	1
-#include "bigint.h"
+#include "bigintop.h"
 #include "syspar.h"
 #include "sphere.h"
 BEGIN_EXTERN_C

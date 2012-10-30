@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
+#include <ctype.h>
 
 #include "random.h"
 
@@ -155,15 +156,11 @@ int test(struct rndctx_t* rnd_ctx)
 	return ok;
 }
 /*----------------------------------------------------------------------------*/
-int main(int argc, const char* argv[])
+void basic_test(unsigned entropy_src)
 {
 	struct rndctx_t* rnd_ctx;
 	unsigned aux, i, j;
-	unsigned entropy_src = PSEUDO_ENTROPY;
 	int ok;
-	if ((argc == 2)&&(strcmp(argv[1],"-t")==0)) {
-		entropy_src = TRUE_ENTROPY;
-	}
 	rnd_ctx = rndctx_t_new();
 	printf("Entropy Source: %s\n",
 		   entropy_src == TRUE_ENTROPY ? "TRUE_ENTROPY" : "PSEUDO_ENTROPY");
@@ -180,5 +177,52 @@ int main(int argc, const char* argv[])
 	ok = test(rnd_ctx);
 	printf("Test: %s\n", (ok?"Success":"Fail"));
 	rndctx_t_delete(rnd_ctx);
+}
+/*------------------------------------------------------------------------*/
+void gen_random_bytes(const char* filename, unsigned nbytes)
+{
+	struct rndctx_t* rnd_ctx;
+	unsigned nb, nbx;
+	char* buffer;
+	FILE* stream = fopen(filename, "w");
+	rnd_ctx = rndctx_t_new();
+	if (stream == NULL) {
+		printf("Unable to open file: %s\n", filename);
+	} else {
+		while (nbytes > 0) {
+			nbx = (nbytes <= 65535) ? nbytes : 65535;
+			buffer = malloc(nbx);
+			random_bytes(buffer, nbx, rnd_ctx);
+			nb = fwrite(buffer, sizeof(char), (size_t)nbx, stream);
+			assert(nb == nbx);
+			free(buffer);
+			nbytes -= nbx;
+		}
+		fclose(stream);
+	}
+	rndctx_t_delete(rnd_ctx);
+}
+/*----------------------------------------------------------------------------*/
+int main(int argc, const char* argv[])
+{
+	const char* filename = NULL;
+	unsigned entropy_src = PSEUDO_ENTROPY;
+	unsigned nbytes = 125000;
+	int i;
+	for (i = 1; i < argc; ++i) {
+		if (strcmp(argv[i],"-t") == 0) {
+			entropy_src = TRUE_ENTROPY;
+		} else if (isdigit(argv[i][0])) {
+			nbytes = (unsigned)atoi(argv[i]);
+		} else {
+			filename = argv[i];
+		}
+	}
+	if (filename == NULL) {
+		basic_test(entropy_src);
+	} else {
+		gen_random_bytes(filename, nbytes);
+	}
 	return 0;
 }
+/*------------------------------------------------------------------------*/

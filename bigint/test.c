@@ -20,7 +20,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "bigint.h"
+#include "bigintop.h"
 #include "iexport.h"
 #include "birnd.h"
 #include "cdtor.h"
@@ -314,7 +314,7 @@ void check_arit()
 void check_rsa()
 {
 	BEG_BIGINT_CHK();
-	BEG_VAR_1(rndctx_t, rnd_ctx);
+	BEG_PTR_1(rndctx_t, rnd_ctx);
 	BEG_VAR_11_bigint_t(n,
 					 p,
 					 q,
@@ -329,14 +329,14 @@ void check_rsa()
 	/*------------------------------*/
 	printf("RSA Encrypt/Decrypt\n");
 	/*------------------------------*/
-	random_seed(&rnd_ctx, PSEUDO_ENTROPY);
-	/*random_seed(&rnd_ctx, NO_ENTROPY);*/
+	random_seed(rnd_ctx, PSEUDO_ENTROPY);
+	/*random_seed(rnd_ctx, NO_ENTROPY);*/
 	/*------------------------------*/
 	{
 		INIT_TIMER(RSA_Modulus);
 		do {
-			bi_random_sgprime_nb(p, p1, 1024/2, DEF_NTESTS, &rnd_ctx);
-			bi_random_sgprime_nb(q, q1, 1024/2, DEF_NTESTS, &rnd_ctx);
+			bi_random_sgprime_nb(p, p1, 1024/2, DEF_NTESTS, rnd_ctx);
+			bi_random_sgprime_nb(q, q1, 1024/2, DEF_NTESTS, rnd_ctx);
 			bi_mul(n, p, q);
 		} while (bi_nbits(n) != 1024);
 		PRINT_TIMER(RSA_Modulus);
@@ -346,7 +346,7 @@ void check_rsa()
 	bi_mul(phi, p, q); /*bi_lcm(phi, p, q);*/
 	/*------------------------------*/
 	do {
-		bi_random_coprime(e, phi, &rnd_ctx);
+		bi_random_coprime(e, phi, rnd_ctx);
 	} while (!(bi_compare_ui(e, 1)>0
 			   && bi_compare(e, phi)<0
 			   && bi_iscoprime(e, phi) ));
@@ -358,7 +358,7 @@ void check_rsa()
 	}
 	/*------------------------------*/
 	do {
-		bi_random_coprime(aux1, n, &rnd_ctx);
+		bi_random_coprime(aux1, n, rnd_ctx);
 	} while (!(bi_compare_ui(aux1, 1)>0
 			   && bi_compare(aux1, n)<0 ));
 	/*------------------------------*/
@@ -381,7 +381,7 @@ void check_rsa()
 					 aux1,
 					 aux2,
 					 aux3);
-	END_VAR_1(rndctx_t, rnd_ctx);
+	END_PTR_1(rndctx_t, rnd_ctx);
 	END_BIGINT_CHK();
 }
 
